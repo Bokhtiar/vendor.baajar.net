@@ -108,9 +108,9 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
           )}
         </div> */}
         <div>
-          <div className="hidden md:block">
+          {/* <div className="hidden md:block">
             <ThemeColor toggleTheme={toggleTheme} theme={theme} />
-          </div>
+          </div> */}
         </div>
 
         <div className="relative">
@@ -134,7 +134,7 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
         <div onClick={handleFullscreen}>
           <RiFullscreenFill className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" />
         </div>
-        <FiGrid className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" />
+        {/* <FiGrid className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" /> */}
 
         {/* User Profile Section */}
         <div className="relative" ref={popupRef}>

@@ -8,112 +8,36 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 const localizer = momentLocalizer(moment);
 
 const CalendarComponent = () => {
-  const [events, setEvents] = useState([
+  const [data, setData] = useState([
     {
-      title: "Meeting with Client",
-      start: new Date(2025, 2, 20, 10, 0),
-      end: new Date(2025, 2, 20, 11, 30),
+      title:"New Orders",
+      value:5,
+       color: "bg-gradient-to-r from-[#D623FE]  to-[#A530F2]", // Tailwind gradient
     },
     {
-      title: "Project Deadline",
-      start: new Date(2025, 2, 25),
-      end: new Date(2025, 2, 25),
+      title:"Total Orders",
+      value:20,
+       color: "bg-gradient-to-r from-[#FA6464]  to-[#DC2626]",
     },
+    {
+      title:"Shipped Orders",
+      value:12,
+       color: "bg-gradient-to-r from-[#6BAAFC]  to-[#305FEC]",
+    },
+   
   ]);
 
   return (
-    <div className="h-[450px]  shadow-md p-3 dark:bg-darkCard bg-lightCard text-lightTitle dark:text-darkTitle rounded-md">
-      <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: "100%" }}
-      />
-    </div>
+  <div className="grid grid-cols-1 lg:grid-col-3">
+   {data.map((d, i) => (
+  <div key={i} className={`bg-${d?.color}`}>
+ 
+  </div>
+))}
+
+  </div>
   );
 };
 
 export default CalendarComponent;
 
-
-// import React, { useState, useEffect } from "react";
-// import { Calendar, momentLocalizer } from "react-big-calendar";
-// import moment from "moment";
-// import "react-big-calendar/lib/css/react-big-calendar.css";
-
-// const localizer = momentLocalizer(moment);
-
-// const CalendarComponent = () => {
-//   const [events, setEvents] = useState([
-//     {
-//       title: "Meeting with Client",
-//       start: new Date(2025, 2, 20, 10, 0),
-//       end: new Date(2025, 2, 20, 11, 30),
-//       isHoliday: false, // Custom flag
-//     },
-//     {
-//       title: "Project Deadline",
-//       start: new Date(2025, 2, 25),
-//       end: new Date(2025, 2, 28),
-//       isHoliday: false,
-//     },
-//   ]);
-
-//   // Fetch holidays from API
-//   useEffect(() => {
-//     const fetchHolidays = async () => {
-//       try {
-//         const response = await fetch(
-//           "https://date.nager.at/Api/v2/PublicHolidays/2025/BD"
-//         );
-//         const data = await response;
-//         console.log("data",data)
-
-//         const holidayEvents = data.map((holiday) => ({
-//           title: holiday.localName,
-//           start: new Date(holiday.date),
-//           end: new Date(holiday.date),
-//           allDay: true,
-//           isHoliday: true, // Custom flag for styling
-//         }));
-
-//         setEvents((prevEvents) => [...prevEvents, ...holidayEvents]);
-//       } catch (error) {
-//         console.error("Error fetching holidays:", error);
-//       }
-//     };
-
-//     fetchHolidays();
-//   }, []);
-
-//   // Custom styling for holidays
-//   const eventStyleGetter = (event) => {
-//     let style = {
-//       backgroundColor: event.isHoliday ? "#ff4d4d" : "#3174ad", // Holiday → Red, Others → Blue
-//       color: "white",
-//       borderRadius: "5px",
-//       padding: "5px",
-//     };
-//     return { style };
-//   };
-
-//   return (
-//     <div className="h-[600px] p-4">
-//       <h2 className="text-xl font-bold text-center mb-4">
-//         Bangladesh Holiday Calendar
-//       </h2>
-//       <Calendar
-//         localizer={localizer}
-//         events={events}
-//         startAccessor="start"
-//         endAccessor="end"
-//         style={{ height: "100%" }}
-//         defaultDate={new Date()}
-//         eventPropGetter={eventStyleGetter} // Apply custom styles
-//       />
-//     </div>
-//   );
-// };
-
-// export default CalendarComponent;

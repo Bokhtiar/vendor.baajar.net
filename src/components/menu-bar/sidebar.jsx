@@ -1,23 +1,16 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
-import { IoColorPaletteOutline, IoSettingsOutline } from "react-icons/io5";
+import {  IoSettingsOutline } from "react-icons/io5";
 import {
   RiGalleryFill,
   RiMenuFold4Fill,
-  RiProductHuntLine,
 } from "react-icons/ri";
-import { FaUnity } from "react-icons/fa";
-import { CgAttribution } from "react-icons/cg";
 import { HiBars3 } from "react-icons/hi2";
 import {
-  MdOutlineProductionQuantityLimits,
-  MdBrandingWatermark,
-  MdSettingsAccessibility,
-  MdOutlineCategory,
+
   MdOutlineInventory2,
 } from "react-icons/md";
-// import logo from "../../assets/logo/Zanicon.jpg";
 import logo from "../../assets/logo/ZanIcon.jpg";
 import { CiWallet } from "react-icons/ci";
 
@@ -128,13 +121,13 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
   return (
     <>
       {menuStyle === "hover" && (
-        <div className=" w-20 hover:w-64 h-screen bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 group  transition-all duration-300 ease-in-out overflow-hidden  z-50 ">
+        <div className="w-20 hover:w-64 h-screen bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 group  transition-all duration-300 ease-in-out overflow-hidden  z-50 ">
           {/* Logo */}
-          <div className="flex items-center space-x-2 pb-[22px] border-b border-gray-300 pl-4 ">
+          <div className="flex items-center space-x-2 pb-[22px]border-gray-300 pl-4 ">
             {/* <div className="text-blue-500 text-2xl font-bold">R</div> */}
-            <img src={logo} alt="" className="w-10 h-10 rounded-full " />
-            <span className="text-lg font-semibold hidden group-hover:block fixed left-20">
-              Zan Vision
+            {/* <img src={logo} alt="" className="w-10 h-10 rounded-full " /> */}
+            <span className="text-primary text-lg font-bold   left-5 p-5">
+           Baajar
             </span>
           </div>
 
@@ -157,7 +150,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                     className={`flex items-center w-full text-left rounded-md transition-all duration-200 group
             ${
               isActive
-                ? "bg-blue-200 text-[#0d6efd]"
+                ? "bg-primary text-white"
                 : "hover:text-black hover:bg-blue-100"
             }
           `}
@@ -176,7 +169,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
 
                   {/* Submenu Items */}
                   {item.childrens && openMenu === item.title && (
-                    <div className="ml-6 mt-1 flex flex-col space-y-1">
+                    <div className="ml-6 mt-1 flex flex-col space-y-2">
                       {item.childrens.map((subItem, subIndex) => {
                         const isSubActive = location.pathname === subItem.path;
 
@@ -184,10 +177,10 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                           <Link
                             key={subIndex}
                             to={subItem.path}
-                            className={`flex items-center text-sm rounded-md  pl-4 transition-all duration-200 relative
+                            className={`flex items-center  rounded-md  pl-4 transition-all duration-200 relative
                     ${
                       isSubActive
-                        ? "bg-blue-200 text-blue-900"
+                        ? " text-primary font-semibold hover:bg-blue-100"
                         : "hover:text-black hover:bg-blue-100"
                     }
                   `}
@@ -254,7 +247,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                 >
                   {/* Parent Menu Item */}
                   {isActive && (
-                    <span className="absolute left-0 top-0 h-full w-1 bg-[#0d6efd] z-50  "></span>
+                    <span className="absolute left-0 top-0 h-full w-1 bg-primary z-50  "></span>
                   )}
                   <Link
                     to={item.path}
@@ -262,7 +255,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                 p-2 pl-6 transition-all duration-200 relative 
                 ${
                   isActive
-                    ? "bg-blue-200 text-[#0d6efd]"
+                    ? "bg-primary text-[#0d6efd]"
                     : " hover:text-black hover:bg-blue-100 "
                 }
               `}
