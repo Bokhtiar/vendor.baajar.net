@@ -102,11 +102,11 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
         />
       )}
       <div className="flex justify-end gap-5 items-center relative">
-        <div className="text-4xl  rounded-full cursor-pointer hidden md:block">
+        {/* <div className="text-4xl  rounded-full cursor-pointer hidden md:block">
           {flagUrl && (
             <img src={flagUrl} alt="Country Flag" className=" w-8 h-6 " />
           )}
-        </div>
+        </div> */}
         <div>
           <div className="hidden md:block">
             <ThemeColor toggleTheme={toggleTheme} theme={theme} />
@@ -152,33 +152,7 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
           </div>
 
           {/* Popup Dropdown with Animation */}
-          {showPopup && (
-            <div
-              className={`absolute right-0 mt-2 w-48 bg-light shadow-lg rounded-lg py-2 dark:bg-darkCard dark:text-darkTitle 
-   transition-all duration-300 z-50 `}
-            >
-              <ul>
-                <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
-                  <FiUser className="text-lg" />
-                  <span>Profile</span>
-                  {/* Hover underline */}
-                  <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
-                </li>
 
-                <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
-                  <FiSettings className="text-lg" />
-                  <span>Settings</span>
-                  <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
-                </li>
-
-                <li className="flex items-center gap-3 px-4 py-2 cursor-pointer text-red-500 group relative">
-                  <FiLogOut className="text-lg" />
-                  <span>Logout</span>
-                  <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-red-500 transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
-                </li>
-              </ul>
-            </div>
-          )}
         </div>
 
         <CiSettings
