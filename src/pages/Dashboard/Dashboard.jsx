@@ -8,11 +8,11 @@ const Dashboard = () => {
     <div>
   <Card/>
       <DashboardChart/>
-<div className="flex flex-row gap-5 my-5">
-  <div className="w-1/2">
+<div className="flex flex-col md:flex-row gap-5 my-5">
+  <div className="md:w-1/2">
     <BestSellers />
   </div>
-  <div className="w-1/2">
+  <div className="md:w-1/2">
     <TrafficCard />
   </div>
 </div>

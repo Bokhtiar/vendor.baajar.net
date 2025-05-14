@@ -3,6 +3,7 @@ import { useController } from "react-hook-form";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import ReactDatePicker from "react-datepicker"; 
 import "react-datepicker/dist/react-datepicker.css";
+import Select from "react-select/base";
 const customInputFieldDesign = (props, pos) => {
   const labelPosition = () => {
     if (pos === "left") {
@@ -263,3 +264,264 @@ export const DateInput = (props) => {
     );
   };
   
+  /* ------------------------ Single Select field -------------------- */
+
+const customStyles = (error) => {
+  const myStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      minHeight: 50,
+      fontSize: 14,
+      color: "#000",
+      background: "#fff",
+      boxShadow: "none",
+      "&:hover": { borderColor: "1px solid #fff" },
+      border: error ? "1px solid red" : "1px solid #dfdfdf",
+      borderRadius: 6,
+    }),
+  };
+  return myStyles;
+};
+
+/* Single select field */
+export const SingleSelect = (props) => {
+  const {
+    field: { onChange, onBlur, value },
+  } = useController({
+    name: props.name,
+    control: props.control,
+    rules: { ...props.rules },
+    defaultValue: props.defaultvalue,
+  });
+
+  const handleSelect = (event) => {
+    onChange(event);
+    props.onSelected?.(event);
+  };
+
+  return (
+    <div>
+      {/* {props.error ? (
+          <p className="text-sm mb-1 text-red-500">{props.error}</p>
+        ) : (
+          <p className="text-sm mb-1 text-gray-500">
+            {props.label}
+            <span className="text-red-500">
+              {props.rules.required ? "*" : ""}
+            </span>
+          </p>
+        )} */}
+
+      {props.error ? (
+        <p className="text-sm mb-1 text-red-500">{props.error}</p>
+      ) : (
+        <p className="text-sm mb-1 text-gray-500">
+          {props.label}
+          <span className="text-red-500">
+            {props.rules.required ? "*" : ""}
+          </span>
+        </p>
+      )}
+
+    <Select
+  classNamePrefix={`custom-select`}
+  onBlur={onBlur}
+  value={value}
+  name={props.name}
+  styles={customStyles(props.error)}
+  components={{
+    DropdownIndicator: () => null,
+    IndicatorSeparator: () => null,
+  }}
+  options={props.options}
+  onChange={handleSelect}
+  isClearable={props.isClearable}
+  defaultValue={props.defaultvalue ? { ...props.defaultvalue } : null}
+  placeholder={props.placeholder}
+  onMenuOpen={typeof props.onMenuOpen === 'function' ? props.onMenuOpen : undefined}
+/>
+
+    </div>
+  );
+};
+
+/* ------------------------ Multi Select field -------------------- */
+export const MultiSelect = (props) => {
+  const {
+    field: { onChange, onBlur, value },
+  } = useController({
+    name: props.name,
+    control: props.control,
+    rules: { ...props.rules },
+    defaultValue: props.defaultvalue,
+  });
+
+  const handleSelect = (event) => {
+    onChange(event);
+    props.onSelected?.(event);
+  };
+
+  return (
+    <div>
+      {props.error ? (
+        <p className="text-sm mb-1 text-danger">{props.error}</p>
+      ) : (
+        <p className="text-sm mb-1 text-gray-500">{props.label}</p>
+      )}
+
+      <Select
+        isMulti
+        value={value}
+        onBlur={onBlur}
+        name={props.name}
+        options={props.options}
+        onChange={handleSelect}
+        classNamePrefix={`custom-select`}
+        styles={customStyles(props.error)}
+        components={{
+          DropdownIndicator: () => null,
+          IndicatorSeparator: () => null,
+        }}
+        isClearable={props.isClearable}
+        placeholder={props.placeholder}
+        defaultValue={
+          props.defaultvalue
+            ? props.defaultvalue.map((item) => ({
+                value: item.value,
+                label: item.label,
+              }))
+            : null
+        }
+      />
+    </div>
+  );
+};
+
+/* ------------------------ Searchable Select field -------------------- */
+export const SearchableSelect = (props) => {
+  const {
+    field: { onChange, onBlur, value },
+  } = useController({
+    name: props.name,
+    control: props.control,
+    rules: { ...props.rules },
+    defaultValue: props.defaultvalue,
+  });
+
+  /* Search from API */
+  const searchOptions = (inputValue, callback) => {
+    props.onSearch(inputValue).then((results) => {
+      if (results) {
+        setTimeout(() => {
+          callback(results);
+        }, 500);
+      }
+    });
+  };
+
+  const handleSelect = (event) => {
+    onChange(event);
+    props.onSelected?.(event);
+  };
+
+  return (
+    <div>
+      {props.error ? (
+        <p className="text-sm mb-1 text-danger">{props.error}</p>
+      ) : (
+        <p className="text-sm mb-1 text-gray-500">{props.label}</p>
+      )}
+
+      <AsyncSelect
+        classNamePrefix={`custom-select`}
+        cacheOptions
+        onBlur={onBlur} // notify when input is touched/blur
+        value={value} // input value
+        name={props.name} // send down the input name
+        styles={customStyles(props.error)}
+        onChange={handleSelect}
+        loadOptions={searchOptions}
+        isClearable={props.isClearable}
+        defaultValue={props.defaultvalue ? { ...props.defaultvalue } : null}
+        placeholder={props.placeholder}
+        loadingMessage={() => "Searching ..."}
+        noOptionsMessage={() => "No results found !"}
+        components={{
+          DropdownIndicator: () => null,
+          IndicatorSeparator: () => null,
+        }}
+      />
+    </div>
+  );
+};
+
+export const ImageUpload = (props) => {
+  const {
+    field: { onChange, onBlur, value },
+    fieldState: { error },
+  } = useController({
+    name: props.name,
+    control: props.control,
+    rules: {
+      required: props.required ? "Image is required" : false,
+      validate: (file) => {
+        if (!file && props.required) return "Image is required";
+        return !file || file.size < 2 * 1024 * 1024 || "File must be less than 2MB";
+      },
+    },
+    defaultValue: props.defaultValue || null,
+  });
+
+  const [preview, setPreview] = useState(
+    value ? URL.createObjectURL(value) : props.defaultValue || null
+  );
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      onChange(file);
+      setPreview(URL.createObjectURL(file)); // Show file preview
+      props.onUpload?.(file); // Callback for additional handling
+    }
+  }; 
+  return (
+    <div className="flex flex-col space-y-2">
+       
+       <span className="text-sm mb-1 text-gray-500 flex gap-1">
+        {props?.label}{" "}
+        <span className="text-white">{props?.rules?.required ? "*" : ""}</span>
+      </span>
+      <div className="relative border rounded-md w-full cursor-pointer bg-white">
+        <input
+          type="file"
+          accept="image/*"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          onBlur={onBlur}
+          onChange={handleFileChange}
+        />
+        <div className="flex items-center space-x-2 cursor-pointer">
+          {preview ? (
+            <img
+              src={preview}
+              alt="Preview"
+              className="h-12 w-12 object-cover rounded-md cursor-pointer"
+            />
+          ) : (
+            <div className="h-12 w-12 flex items-center justify-center bg-gray-200 rounded-md cursor-pointer">
+         {
+          props?.imgUrl?  <img src={`${process.env.NEXT_PUBLIC_API_SERVER}${props?.imgUrl}`}alt="loading"  className="h-12 w-12 object-cover rounded-md cursor-pointer"/> : "📷"
+         }     
+               
+           
+            </div>
+          )}
+          <span className="text-gray-700">Click to upload</span>
+        </div>
+        
+      </div>
+      {props?.error && (
+        <p className="text-xs text-red-500 pl-3.5">{props?.error}</p>
+      )}
+    </div>
+  );
+};

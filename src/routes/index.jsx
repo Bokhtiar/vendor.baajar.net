@@ -5,6 +5,7 @@ import Earning from "../pages/earning";
 import Inventory from "../pages/inventory/inex";
 import Orders from "../pages/order";
 import Products from "../pages/products";
+import ProductCreate from "../pages/products/Create";
 import Setting from "../pages/setting";  // Ensure this import is present
 
 const appRoutes = [
@@ -19,6 +20,7 @@ const appRoutes = [
       { path: "inventory", element: <Inventory /> },
       { path: "earnings", element: <Earning /> },
       { path: "setting", element: <Setting /> },  // Make sure this is defined
+      { path: "create-product", element: <ProductCreate/> },  // Make sure this is defined
     ],
   },
 ];
