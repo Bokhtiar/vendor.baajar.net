@@ -3,9 +3,10 @@ import { MdOutlineLock, MdOutlineMailOutline } from "react-icons/md";
 import { useForm } from "react-hook-form";
 // import { getToken, networkErrorHandeller, setToken } from "@/utils/helpers";
 // import { useProduct } from "@/hooks/useProducts";
-// import { PasswordInput, TextInput } from "@/components/input";
 // import Spinner from "@/components/spinner";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { PassworInput, TextInput } from "../../components/input";
+import { LuLockKeyhole } from "react-icons/lu";
 // import { publicRequest } from "@/config/axios.config";
 
 const Login = () => {
@@ -55,19 +56,17 @@ const Login = () => {
     <div className="container mt-36 mx-auto py-10 flex justify-center">
       <div className="flex flex-col items-center text-gray-700">
         <span className="font-semibold text-xl sm:text-2xl text-center leading-4">
-          Welcome to ZANmart
+          Welcome vendor.Login Hare
         </span>
-        <span className="font-semibold text-xl sm:text-2xl text-center pb-6 sm:pb-10 leading-4">
-          Sign into your account
-        </span>
-        <div className="bg-primary w-full sm:w-[550px] p-6 sm:p-10 rounded-xl flex flex-col items-center justify-center">
+
+        <div className=" w-full bg-[#8B70D1] my-5 sm:w-[550px] p-6 sm:p-10 rounded-xl flex flex-col items-center justify-center">
           <div className="w-[80px] h-[80px] sm:w-[110px] sm:h-[110px] rounded-full bg-white overflow-hidden">
             <img
-              src="/logo.png"
+              src="/image/login-profile.svg"
               height={80}
               width={80}
               alt="Logo"
-              className="p-5 w-full h-full object-contain"
+              className=" w-full h-full bg-[#8B70D1] object-contain"
             />
           </div>
 
@@ -77,8 +76,8 @@ const Login = () => {
           >
             {/* Email Field */}
             <div className="mt-5">
-              <input type="text" />
-              {/* <TextInput
+
+              <TextInput className="rounded-lg"
                 name="contactInfo"
                 type="email"
                 control={control}
@@ -98,32 +97,32 @@ const Login = () => {
                 error={errors?.contactInfo?.message}
                 placeholder="Enter your email"
                 trigger={trigger}
-              /> */}
+              />
             </div>
 
             {/* Password Field */}
             <div className="relative mt-5">
-              {/* <PasswordInput
-                name="password"
-                placeholder="Enter your Password"
+              <PassworInput className="rounded-lg"
+                name='Password'
                 control={control}
-                rules={{
-                  required: "Password is required",
-                  minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters",
-                  },
-                }}
                 label={
                   <div className="flex gap-2 pb-2 pl-3.5 text-white">
-                    <MdOutlineLock className="h-5 w-5" />
-                    Password
+                    <LuLockKeyhole className="h-5 w-5" />
+                    password
                   </div>
                 }
-                error={errors?.password?.message}
+                rules={{
+                  required: "Password Require",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$|^\d{10}$/,
+                    message: "Invalid Password",
+                  },
+                }}
+                error={errors?.contactInfo?.message}
+                placeholder="Enter your email"
                 trigger={trigger}
-              /> */}
-              <input type="text" />
+              />
+
             </div>
 
             {/* Submit Button */}
@@ -131,9 +130,8 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={!isValid}
-                className={`mt-2 sm:mt-4 gap-2 w-full text-primary flex justify-center items-center bg-white rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 hover:bg-gray-100 ${
-                  !isValid ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`mt-2 sm:mt-4 gap-2  text-primary flex justify-center items-center bg-white rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 hover:bg-gray-100 ${!isValid ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 {loading ? 'Running' : "Login"}
               </button>
@@ -141,14 +139,13 @@ const Login = () => {
           </form>
 
           {/* Divider */}
-          <div className="flex mt-4 items-center gap-4 w-full">
+          {/* <div className="flex mt-4 items-center gap-4 w-full">
             <hr className="block w-full" />
             <span className="text-white">or</span>
             <hr className="w-full block" />
-          </div>
+          </div> */}
 
-          {/* Google Sign-In */}
-          <div className="flex items-center justify-center mt-4 w-full bg-white text-gray-700 font-medium py-2 px-4 rounded-lg shadow-md hover:bg-gray-100 transition duration-200">
+          {/* <div className="flex items-center justify-center mt-4 w-full bg-white text-gray-700 font-medium py-2 px-4 rounded-lg shadow-md hover:bg-gray-100 transition duration-200">
             <button
               onClick={() => {
                 // Commented out since API is not available
@@ -164,9 +161,8 @@ const Login = () => {
               />
               <span>Continue with Google</span>
             </button>
-          </div>
+          </div> */}
 
-          {/* Navigation Links */}
           <div className="mt-5 text-center">
             <Link
               to="/auth/forget-pass"
@@ -187,7 +183,7 @@ const Login = () => {
                 <strong className="text-sm font-semibold">Sign Up Now</strong>
               </Link>
             </p>
-          </div>
+          </div> 
         </div>
       </div>
     </div>

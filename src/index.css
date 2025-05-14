@@ -17,6 +17,7 @@
   --color-darkTitle: #F3F4F6;
   --color-darkPrimary: #E5E7EB;
   --color-darkSecondary: #9CA3AF; 
+  --color-primary: #DC2626; 
 }
 /* Default Light Mode Styles */
 body {

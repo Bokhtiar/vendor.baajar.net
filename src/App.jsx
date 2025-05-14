@@ -5,6 +5,7 @@ import { DashboardLayout } from "./layouts/dashboard.layout";
 import { ToastContainer } from "react-toastify";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
+import Footer from "./components/footer/footer";
 
 function App() {
   const mainRoutes = {
@@ -25,6 +26,7 @@ function App() {
     <div className=" ">
       {routing} 
       <ToastContainer />
+      <Footer/>
     </div>
   );
 }

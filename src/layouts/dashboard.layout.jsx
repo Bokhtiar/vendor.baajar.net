@@ -54,6 +54,7 @@ export const DashboardLayout = () => {
               <Outlet />
             </div>
           </main>
+          
         </div>
       </div>
     </div>
