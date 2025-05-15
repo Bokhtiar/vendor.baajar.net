@@ -3,7 +3,6 @@ import ThemeColor from "./mode";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { RiFullscreenFill } from "react-icons/ri";
 import { FiGrid, FiUser, FiSettings, FiLogOut } from "react-icons/fi";
-import userimg from "../../assets/logo/userimg.jpg";
 import { CiSettings } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa6";
 import { RiMenuUnfold3Fill } from "react-icons/ri";
@@ -142,7 +141,7 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
             className="flex gap-3 items-center border-r-2 pr-5 border-lightBorder cursor-pointer"
             onClick={() => setShowPopup(!showPopup)}
           >
-            <img src={userimg} alt="User" className="w-9 h-9 rounded-full" />
+            <img src={'image/login-profile.svg'} alt="User" className="w-9 h-9 rounded-full" />
             <div className="flex items-center flex-col dark:text-darkTitle">
               <span className="font-bold text-[14px] text-left block">
                 Jone

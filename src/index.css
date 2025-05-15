@@ -21,7 +21,7 @@
 }
 /* Default Light Mode Styles */
 body {
-  background-color: #F9FAFB; 
+  background-color: #FFFFFF; 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 

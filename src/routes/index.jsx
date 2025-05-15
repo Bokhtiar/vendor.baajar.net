@@ -3,7 +3,14 @@ import CategoryShow from "../pages/category";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Earning from "../pages/earning";
 import Inventory from "../pages/inventory/inex";
+import AllOrderList from "../pages/order";
 import Orders from "../pages/order";
+import CanceledOrder from "../pages/order/Cencel-order";
+
+import CompletedOrder from "../pages/order/Completed-order";
+import PendingOrders from "../pages/order/pending-order";
+import ProcessedOrder from "../pages/order/processed-order";
+import ShippedOrder from "../pages/order/shipped-order";
 import Products from "../pages/products";
 import ProductCreate from "../pages/products/Create";
 import Setting from "../pages/setting";  // Ensure this import is present
@@ -15,12 +22,17 @@ const appRoutes = [
     children: [
       { index: true, element: <Dashboard /> },  // This will render at /dashboard
       { path: "category", element: <CategoryShow /> },
-      { path: "orders", element: <Orders /> },
+      { path: "orders", element: <AllOrderList /> },
       { path: "products", element: <Products /> },
       { path: "inventory", element: <Inventory /> },
       { path: "earnings", element: <Earning /> },
-      { path: "setting", element: <Setting /> },  // Make sure this is defined
-      { path: "create-product", element: <ProductCreate/> },  // Make sure this is defined
+      { path: "setting", element: <Setting /> }, 
+      { path: "create-product", element: <ProductCreate/> },  
+      { path: "pending-orders", element: <PendingOrders/> }, 
+      { path: "processed-orders", element: <ProcessedOrder/> }, 
+      { path: "shipped-orders", element: <ShippedOrder/> }, 
+      { path: "completed-orders", element: <CompletedOrder/> },  
+      { path: "canceled-orders", element: <CanceledOrder/> },  
     ],
   },
 ];

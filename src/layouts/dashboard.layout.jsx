@@ -45,7 +45,7 @@ export const DashboardLayout = () => {
          
           <main>
             <div
-              className={`mx-auto w-full p-2 md:p-4 2xl:p-6 bg-light dark:bg-dark     ${
+              className={`mx-auto w-full p-2 md:p-4 2xl:p-6      ${
                 menuPosition === "fixed"
                   ? "mt-20"
                   : ""

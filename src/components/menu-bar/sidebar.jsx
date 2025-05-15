@@ -11,7 +11,6 @@ import {
 
   MdOutlineInventory2,
 } from "react-icons/md";
-import logo from "../../assets/logo/ZanIcon.jpg";
 import { CiWallet } from "react-icons/ci";
 
 const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
@@ -45,26 +44,31 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
           title: "Pending Orders",
         
           path: "/dashboard/pending-orders",
+          status: "pending",
         },
         {
           title: "Processed Orders",
         
           path: "/dashboard/processed-orders",
+          status: "processed",
         },
         {
           title: "Shipped Orders",
         
           path: "/dashboard/shipped-orders",
+          status: "shipped",
         },
         {
           title: "Completed Orders",
         
           path: "/dashboard/completed-orders",
+          status: "delivered",
         },
         {
           title: "Canceled Orders",
-        
+
           path: "/dashboard/canceled-orders",
+          status: "cancelled",
         },
       ],
     },
@@ -176,7 +180,12 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                         return (
                           <Link
                             key={subIndex}
-                            to={subItem.path}
+                        to={
+  subItem.status
+    ? `${subItem.path}?status=${subItem.status}`
+    : subItem.path
+}
+
                             className={`flex items-center  rounded-md  pl-4 transition-all duration-200 relative
                     ${
                       isSubActive

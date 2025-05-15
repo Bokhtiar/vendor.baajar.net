@@ -70,6 +70,7 @@ const ProductCreate = () => {
       <input type="hidden" {...register('images')} />
 
       {/* Other form inputs */}
+      
       <input
         type="text"
         placeholder="Product Name"
