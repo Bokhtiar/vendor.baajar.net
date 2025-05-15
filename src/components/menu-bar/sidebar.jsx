@@ -79,7 +79,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
         {
           title: "All Product",
 
-          path: "/dashboard/all-product",
+          path: "/dashboard/products",
         },
         {
           title: "Stock Out",
