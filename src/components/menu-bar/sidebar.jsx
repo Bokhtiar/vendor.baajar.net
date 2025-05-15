@@ -1,28 +1,23 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
-import {  IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsOutline } from "react-icons/io5";
 import {
   RiGalleryFill,
   RiMenuFold4Fill,
 } from "react-icons/ri";
 import { HiBars3 } from "react-icons/hi2";
 import {
-
   MdOutlineInventory2,
 } from "react-icons/md";
 import { CiWallet } from "react-icons/ci";
 
 const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
   const [openMenu, setOpenMenu] = useState(null);
-
   const location = useLocation();
-
   const toggleMenu = (title) => {
     setOpenMenu(openMenu === title ? null : title);
   };
-
-  console.log("menuStyle", menuStyle);
 
   const menuData = [
     {
@@ -37,30 +32,30 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
       childrens: [
         {
           title: "All Orders",
-      
+
           path: "/dashboard/orders",
         },
         {
           title: "Pending Orders",
-        
+
           path: "/dashboard/pending-orders",
           status: "pending",
         },
         {
           title: "Processed Orders",
-        
+
           path: "/dashboard/processed-orders",
           status: "processed",
         },
         {
           title: "Shipped Orders",
-        
+
           path: "/dashboard/shipped-orders",
           status: "shipped",
         },
         {
           title: "Completed Orders",
-        
+
           path: "/dashboard/completed-orders",
           status: "delivered",
         },
@@ -83,15 +78,15 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
         },
         {
           title: "All Product",
-        
+
           path: "/dashboard/all-product",
         },
         {
           title: "Stock Out",
-        
+
           path: "/dashboard/stock-out",
         },
-        
+
       ],
     },
     {
@@ -110,7 +105,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
         },
         {
           title: "Withdrawal",
-        
+
           path: "/dashboard/Withdrawal",
         },
       ],
@@ -131,7 +126,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
             {/* <div className="text-blue-500 text-2xl font-bold">R</div> */}
             {/* <img src={logo} alt="" className="w-10 h-10 rounded-full " /> */}
             <span className="text-primary text-lg font-bold   left-5 p-5">
-           Baajar
+              Baajar
             </span>
           </div>
 
@@ -152,11 +147,10 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                   <Link
                     to={item.path}
                     className={`flex items-center w-full text-left rounded-md transition-all duration-200 group
-            ${
-              isActive
-                ? "bg-primary text-white"
-                : "hover:text-black hover:bg-blue-100"
-            }
+            ${isActive
+                        ? "bg-primary text-white"
+                        : "hover:text-black hover:bg-blue-100"
+                      }
           `}
                     onClick={() => toggleMenu(item.title)}
                   >
@@ -180,18 +174,17 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                         return (
                           <Link
                             key={subIndex}
-                        to={
-  subItem.status
-    ? `${subItem.path}?status=${subItem.status}`
-    : subItem.path
-}
+                            to={
+                              subItem.status
+                                ? `${subItem.path}?status=${subItem.status}`
+                                : subItem.path
+                            }
 
                             className={`flex items-center  rounded-md  pl-4 transition-all duration-200 relative
-                    ${
-                      isSubActive
-                        ? " text-primary font-semibold hover:bg-blue-100"
-                        : "hover:text-black hover:bg-blue-100"
-                    }
+                    ${isSubActive
+                                ? " text-primary font-semibold hover:bg-blue-100"
+                                : "hover:text-black hover:bg-blue-100"
+                              }
                   `}
                           >
                             {/* Submenu Icon */}
@@ -217,9 +210,8 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
 
       {menuStyle === "click" && (
         <div
-          className={`w-64 fixed z-50  top-0 left-0 h-screen bg-lightCard dark:bg-darkCard dark:text-darkTitle shadow-2xl transition-all duration-300 ${
-            menuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`w-64 fixed z-50  top-0 left-0 h-screen bg-lightCard dark:bg-darkCard dark:text-darkTitle shadow-2xl transition-all duration-300 ${menuOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
           {/* Logo */}
           <div className="flex items-center justify-between w-full p-[18px] border-b border-gray-300">
@@ -235,9 +227,8 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
               onClick={toggleSidebar}
             >
               <RiMenuFold4Fill
-                className={`text-xl transform transition-transform duration-300 z-50 cursor-pointer ${
-                  menuOpen ? "rotate-180" : ""
-                }`}
+                className={`text-xl transform transition-transform duration-300 z-50 cursor-pointer ${menuOpen ? "rotate-180" : ""
+                  }`}
               />
             </button>
           </div>
@@ -262,11 +253,10 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                     to={item.path}
                     className={`flex items-center w-full  text-left rounded-md 
                 p-2 pl-6 transition-all duration-200 relative 
-                ${
-                  isActive
-                    ? "bg-primary text-[#0d6efd]"
-                    : " hover:text-black hover:bg-blue-100 "
-                }
+                ${isActive
+                        ? "bg-primary text-[#0d6efd]"
+                        : " hover:text-black hover:bg-blue-100 "
+                      }
               `}
                     onClick={() => toggleMenu(item.title)}
                   >
@@ -288,11 +278,10 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                             key={subIndex}
                             to={subItem.path}
                             className={`flex items-center text-sm rounded-md p-2 pl-4 transition-all duration-200 relative text-lightTitle dark:text-darkTitle
-                        ${
-                          isSubActive
-                            ? "bg-blue-200 text-blue-900"
-                            : "hover:bg-blue-100 hover:text-lightTitle"
-                        }
+                        ${isSubActive
+                                ? "bg-blue-200 text-blue-900"
+                                : "hover:bg-blue-100 hover:text-lightTitle"
+                              }
                       `}
                           >
                             {/* Active Vertical Bar for Submenu */}
