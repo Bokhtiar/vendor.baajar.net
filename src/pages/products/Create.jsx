@@ -1,25 +1,33 @@
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiUpload } from 'react-icons/fi';
+import { SingleSelect, TextAreaInput, TextInput } from '../../components/input';
 
 const ProductCreate = () => {
-  const { register, handleSubmit, setValue } = useForm();
-  const [images, setImages] = useState([null, null, null, null]); // Store preview URLs
-  const [imageFiles, setImageFiles] = useState([]); // Store actual File objects
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    watch,
+    trigger,
+    formState: { errors },
+  } = useForm();
+
+  const [images, setImages] = useState([null, null, null, null]);
+  const [imageFiles, setImageFiles] = useState([]);
   const fileInputRef = useRef(null);
 
   const handleImagesSelected = (e) => {
-    const files = Array.from(e.target.files).slice(0, 4); // Limit to 4 images
-    const previewUrls = files.map(file => URL.createObjectURL(file));
-
+    const files = Array.from(e.target.files).slice(0, 4);
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
     const updatedImages = [null, null, null, null];
     files.forEach((file, idx) => {
       updatedImages[idx] = previewUrls[idx];
     });
-
     setImages(updatedImages);
     setImageFiles(files);
-    setValue('images', files); // Store in react-hook-form
+    setValue('images', files); // Set value in react-hook-form
   };
 
   const onSubmit = (data) => {
@@ -30,16 +38,31 @@ const ProductCreate = () => {
     });
     formData.append('productName', data.productName);
     // Add other form fields similarly...
-
-    // Send formData via axios/fetch to backend
+    // Send formData to backend
   };
+
+  // Options arrays for reuse
+  const categoryOptions = [
+    { label: 'Electronics', value: 'electronics' },
+    { label: 'Fashion', value: 'fashion' },
+    { label: 'Home Appliances', value: 'home-appliances' },
+  ];
+
+  const subCategoryOptions = [
+    { label: 'Mobile Phones', value: 'mobiles' },
+    { label: 'Laptops', value: 'laptops' },
+    { label: 'Shirts', value: 'shirts' },
+  ];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Image preview slots */}
+      {/* Image Upload Preview */}
       <div className="grid grid-cols-4 gap-4">
         {images.map((img, index) => (
-          <div key={index} className="relative bg-gray-100 h-32 rounded-md overflow-hidden flex justify-center items-center">
+          <div
+            key={index}
+            className="relative bg-gray-100 h-32 rounded-md overflow-hidden flex justify-center items-center"
+          >
             {img ? (
               <img src={img} alt={`Preview ${index}`} className="object-cover w-full h-full" />
             ) : (
@@ -49,12 +72,12 @@ const ProductCreate = () => {
         ))}
       </div>
 
-      {/* Upload button (custom div triggers file input) */}
+      {/* Upload Button */}
       <div
         onClick={() => fileInputRef.current.click()}
         className="cursor-pointer text-sm text-gray-700 flex items-center gap-2 w-max"
       >
-        <span><FiUpload className='text-3xl'/></span>
+        <FiUpload className="text-3xl" />
         <span>Upload Photo</span>
         <input
           type="file"
@@ -66,92 +89,132 @@ const ProductCreate = () => {
         />
       </div>
 
-      {/* Hidden field to register files in react-hook-form */}
+      {/* Hidden input for images */}
       <input type="hidden" {...register('images')} />
 
-      {/* Other form inputs */}
-      
-      <input
-        type="text"
-        placeholder="Product Name"
-        {...register('productName')}
-        className="w-full p-2 border border-gray-300 rounded"
+      {/* Text Inputs */}
+      <TextInput
+        name="productName"
+        label="Product Name"
+        placeholder="Enter product name"
+        control={control}
+        rules={{ required: "Product name is required" }}
+        error={errors.productName?.message}
       />
 
       <div className="grid grid-cols-2 gap-4">
-        <input
-          type="text"
-          placeholder="Short Name"
-          {...register('shortName')}
-          className="p-2 border border-gray-300 rounded"
+        <TextInput
+          name="shortName"
+          label="Short Name"
+          placeholder="Enter short name"
+          control={control}
+          rules={{ required: "Short name is required" }}
+          error={errors.shortName?.message}
         />
-        <input
-          type="text"
-          placeholder="Slug"
-          {...register('slug')}
-          className="p-2 border border-gray-300 rounded"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <select {...register('category')} className="p-2 border border-gray-300 rounded">
-          <option value="">Select Product Category</option>
-        </select>
-        <select {...register('subCategory')} className="p-2 border border-gray-300 rounded">
-          <option value="">Select Product Sub Category</option>
-        </select>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <input
-          type="text"
-          placeholder="Child Category"
-          {...register('childCategory')}
-          className="p-2 border border-gray-300 rounded"
-        />
-        <input
-          type="text"
-          placeholder="Brand"
-          {...register('brand')}
-          className="p-2 border border-gray-300 rounded"
+        <TextInput
+          name="slug"
+          label="Slug"
+          placeholder="Enter slug"
+          control={control}
+          rules={{ required: "Slug is required" }}
+          error={errors.slug?.message}
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <input
-          type="text"
-          placeholder="SKU"
-          {...register('sku')}
-          className="p-2 border border-gray-300 rounded"
+        <SingleSelect
+          name="category"
+          control={control}
+          options={[
+            { label: 'Electronics', value: 'electronics' },
+            { label: 'Fashion', value: 'fashion' },
+            { label: 'Home Appliances', value: 'home-appliances' },
+          ]}
+          label="Category"
+          placeholder="Select category"
+          rules={{ required: 'Category is required' }}
+          error={errors.category?.message}
+          isClearable
         />
-        <input
+
+
+        <SingleSelect
+          name="subCategory"
+          control={control}
+          options={subCategoryOptions}
+          label="Sub Category"
+          placeholder="Select sub category"
+          rules={{ required: 'Sub category is required' }}
+          error={errors.subCategory?.message}
+          isClearable
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <TextInput
+          name="childCategory"
+          label="Child Category"
+          placeholder="Enter child category"
+          control={control}
+          error={errors.childCategory?.message}
+        />
+        <TextInput
+          name="brand"
+          label="Brand"
+          placeholder="Enter brand"
+          control={control}
+          rules={{ required: "Brand is required" }}
+          error={errors.brand?.message}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <TextInput
+          name="sku"
+          label="SKU"
+          placeholder="Enter SKU"
+          control={control}
+          rules={{ required: "SKU is required" }}
+          error={errors.sku?.message}
+        />
+        <TextInput
+          name="stockQuantity"
+          label="Stock Quantity"
+          placeholder="Enter quantity"
           type="number"
-          placeholder="Stock Quantity"
-          {...register('stockQuantity')}
-          className="p-2 border border-gray-300 rounded"
+          control={control}
+          error={errors.stockQuantity?.message}
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <input
-          type="text"
-          placeholder="Regular Price"
-          {...register('regularPrice')}
-          className="p-2 border border-gray-300 rounded"
+        <TextInput
+          name="regularPrice"
+          label="Regular Price"
+          placeholder="Enter price"
+          control={control}
+          error={errors.regularPrice?.message}
         />
-        <input
-          type="text"
-          placeholder="Offer Price"
-          {...register('offerPrice')}
-          className="p-2 border border-gray-300 rounded"
+        <TextInput
+          name="offerPrice"
+          label="Offer Price"
+          placeholder="Enter offer price"
+          control={control}
+          error={errors.offerPrice?.message}
         />
       </div>
 
-      <textarea
-        placeholder="Short Description"
-        {...register('shortDescription')}
-        className="w-full p-2 border border-gray-300 rounded h-32"
-      ></textarea>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Short Description</label>
+        <TextAreaInput
+          name="shortDescription"
+          placeholder="Enter short description"
+          label="Short Description"
+          control={control}
+          rules={{ required: "Short description is required" }}
+          error={errors.shortDescription?.message}
+        />
+      </div>
 
       <button type="submit" className="bg-red-600 text-white px-6 py-2 rounded-full">
         Create Product

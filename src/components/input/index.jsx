@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useController } from "react-hook-form";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import ReactDatePicker from "react-datepicker"; 
@@ -283,67 +283,32 @@ const customStyles = (error) => {
   return myStyles;
 };
 
-/* Single select field */
-export const SingleSelect = (props) => {
+
+
+export const SingleSelect = ({ name, control, rules, options, placeholder, isClearable, error }) => {
   const {
     field: { onChange, onBlur, value },
-  } = useController({
-    name: props.name,
-    control: props.control,
-    rules: { ...props.rules },
-    defaultValue: props.defaultvalue,
-  });
+  } = useController({ name, control, rules, defaultValue: null });
 
-  const handleSelect = (event) => {
-    onChange(event);
-    props.onSelected?.(event);
-  };
+  // Find the full option object matching current value
+  const selectedOption = options?.find((opt) => opt.value === value) || null;
 
   return (
     <div>
-      {/* {props.error ? (
-          <p className="text-sm mb-1 text-red-500">{props.error}</p>
-        ) : (
-          <p className="text-sm mb-1 text-gray-500">
-            {props.label}
-            <span className="text-red-500">
-              {props.rules.required ? "*" : ""}
-            </span>
-          </p>
-        )} */}
-
-      {props.error ? (
-        <p className="text-sm mb-1 text-red-500">{props.error}</p>
-      ) : (
-        <p className="text-sm mb-1 text-gray-500">
-          {props.label}
-          <span className="text-red-500">
-            {props.rules.required ? "*" : ""}
-          </span>
-        </p>
-      )}
-
-    <Select
-  classNamePrefix={`custom-select`}
-  onBlur={onBlur}
-  value={value}
-  name={props.name}
-  styles={customStyles(props.error)}
-  components={{
-    DropdownIndicator: () => null,
-    IndicatorSeparator: () => null,
-  }}
-  options={props.options}
-  onChange={handleSelect}
-  isClearable={props.isClearable}
-  defaultValue={props.defaultvalue ? { ...props.defaultvalue } : null}
-  placeholder={props.placeholder}
-  onMenuOpen={typeof props.onMenuOpen === 'function' ? props.onMenuOpen : undefined}
-/>
-
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <Select
+        name={name}
+        value={selectedOption}   // must be object or null
+        onChange={(option) => onChange(option ? option.value : null)}  // send value back to react-hook-form
+        onBlur={onBlur}
+        options={options}
+        placeholder={placeholder}
+        isClearable={isClearable}
+      />
     </div>
   );
 };
+
 
 /* ------------------------ Multi Select field -------------------- */
 export const MultiSelect = (props) => {
