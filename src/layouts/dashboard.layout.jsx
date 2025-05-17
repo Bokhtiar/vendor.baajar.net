@@ -19,7 +19,7 @@ export const DashboardLayout = () => {
   return (
     // <div className="dark:bg-boxdark-2 dark:text-bodydark">
     <div>
-      <div className="flex h-screen overflow-hidden">
+      <div className="flex  h-screen overflow-hidden">
         {/* sidbar start  */}
         <Sidebar
           toggleSidebar={toggleSidebar}
@@ -43,17 +43,16 @@ export const DashboardLayout = () => {
               setMenuPosition={setMenuPosition}
             />
          
-          <main>
-            <div
-              className={`mx-auto w-full p-2 md:p-4 2xl:p-6      ${
-                menuPosition === "fixed"
-                  ? "mt-20"
-                  : ""
-              } `}
-            >
-              <Outlet />
-            </div>
-          </main>
+         <main className="flex-1 overflow-y-auto">
+  <div
+    className={`mx-auto w-full p-2 md:p-4 2xl:p-6 ${
+      menuPosition === "fixed" ? "mt-20" : ""
+    }`}
+  >
+    <Outlet />
+  </div>
+</main>
+
           
         </div>
       </div>

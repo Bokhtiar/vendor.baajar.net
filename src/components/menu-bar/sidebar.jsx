@@ -78,12 +78,10 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
         },
         {
           title: "All Product",
-
           path: "/dashboard/products",
         },
         {
           title: "Stock Out",
-
           path: "/dashboard/stock-out",
         },
 
@@ -137,7 +135,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
               const isActive = location.pathname === item.path;
 
               return (
-                <div key={index} className="mb-2 relative">
+                <div key={index} className="mb-2 relative ms-4">
                   {/* Active Indicator */}
                   {isActive && (
                     <span className="absolute left-0 top-0 h-full w-1 bg-[#0d6efd] z-50"></span>
@@ -146,7 +144,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                   {/* Parent Menu Item */}
                   <Link
                     to={item.path}
-                    className={`flex items-center w-full text-left rounded-md transition-all duration-200 group
+                    className={`flex items-center border border-[#F3F4F6] w-full text-left rounded-md transition-all duration-200 group
             ${isActive
                         ? "bg-primary text-white"
                         : "hover:text-black hover:bg-blue-100"
@@ -180,7 +178,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                                 : subItem.path
                             }
 
-                            className={`flex items-center  rounded-md  pl-4 transition-all duration-200 relative
+                            className={`flex  rounded-md  pl-4 transition-all duration-200 relative
                     ${isSubActive
                                 ? " text-primary font-semibold hover:bg-blue-100"
                                 : "hover:text-black hover:bg-blue-100"
@@ -193,7 +191,7 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
                             </span>
 
                             {/* Submenu Title */}
-                            <div className="truncate w-full">
+                            <div className="truncate hidden group-hover:block w-full">
                               {subItem.title}
                             </div>
                           </Link>

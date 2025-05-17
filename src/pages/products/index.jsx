@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { FaTrash } from 'react-icons/fa';
 import { RiEditFill } from 'react-icons/ri';
-import DeleteProductModal from '../../components/deleteModal/Modal';
-
-// Modal Component
+import DeleteProductModal from '../../components/modal/productDelete';
 
 
 const ProductTable = () => {
@@ -144,7 +142,7 @@ const ProductTable = () => {
   };
 
   return (
-    <div className="w-full p-4  relative z-10">
+    <div className="w-full p-4  relative">
       <DataTable
         columns={columns}
         data={productList}

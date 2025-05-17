@@ -1,9 +1,10 @@
 import React from 'react';
+import InventoryComponent from '../../components/inventory/Inventory';
 
 const Inventory = () => {
   return (
     <div>
-      <h1>Inventory</h1>
+      <InventoryComponent/>
     </div>
   );
 };

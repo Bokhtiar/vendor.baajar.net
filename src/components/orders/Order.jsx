@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { RiEditFill } from "react-icons/ri";
+import OrderModal from "../modal/orderStatus";
 
 const getStatusBadge = (status) => {
   const colorMap = {
@@ -17,7 +18,6 @@ const getStatusBadge = (status) => {
   );
 };
 
-// Full order list
 const allOrders = [
   {
     date: "26 Apr 25",
@@ -71,91 +71,95 @@ const allOrders = [
   },
 ];
 
-const columns = [
-  {
-    name: "SN",
-    cell: (row, index) => (
-      <span className="font-medium">{String(index + 1).padStart(2, "0")}.</span>
-    ),
-    width: "70px",
-    center: true,
-  },
-  {
-    name: "Date",
-    sortable: true,
-    cell: (row) => (
-      <div>
-        <div>{row.date}</div>
-      </div>
-    ),
-  },
-  { name: "Customer", selector: (row) => row.customer },
-  { name: "Order No", selector: (row) => row.orderNo },
-  {
-    name: "Quantity",
-    cell: (row) => <div>{row.quantity} Pcs</div>,
-    center: true,
-  },
-  {
-    name: "Price",
-    selector: (row) => `${row.price}`,
-    center: true,
-  },
-  {
-    name: "Order Status",
-    cell: (row) => getStatusBadge(row.status),
-    center: true,
-  },
-  {
-    name: "Payment",
-    cell: (row) => row.payment,
-    center: true,
-  },
-  {
-    name: "Action",
-    cell: () => (
-      <div className="flex space-x-2">
-        <button>
-          <RiEditFill className="text-blue-600 h-6 cursor-pointer" />
-        </button>
-        <button>
-          <img className="h-5" src="/image/Vector.svg" alt="" />
-        </button>
-      </div>
-    ),
-  },
-];
-
-const customStyles = {
-  headCells: {
-    style: {
-      fontWeight: "600",
-      fontSize: "14px",
-      color: "#6B7280",
-    },
-  },
-  rows: {
-    style: {
-      minHeight: "64px",
-      borderBottom: "1px solid #E5E7EB",
-    },
-  },
-  cells: {
-    style: {
-      paddingTop: "14px",
-      paddingBottom: "14px",
-    },
-  },
-};
-
-// ✅ This is the reusable component
 const Orders = ({ status }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
   const filteredOrders = status
     ? allOrders.filter((order) => order.status === status)
     : allOrders;
 
+  const columns = [
+    {
+      name: "SN",
+      cell: (row, index) => (
+        <span className="font-medium">{String(index + 1).padStart(2, "0")}.</span>
+      ),
+      width: "70px",
+      center: true,
+    },
+    {
+      name: "Date",
+      sortable: true,
+      cell: (row) => <div>{row.date}</div>,
+    },
+    { name: "Customer", selector: (row) => row.customer },
+    { name: "Order No", selector: (row) => row.orderNo },
+    {
+      name: "Quantity",
+      cell: (row) => <div>{row.quantity} Pcs</div>,
+      center: true,
+    },
+    {
+      name: "Price",
+      selector: (row) => `${row.price}`,
+      center: true,
+    },
+    {
+      name: "Order Status",
+      cell: (row) => getStatusBadge(row.status),
+      center: true,
+    },
+    {
+      name: "Payment",
+      cell: (row) => row.payment,
+      center: true,
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <div className="flex space-x-2">
+          <button
+            className="cursor-pointer"
+            onClick={() => {
+              setSelectedOrder(row);
+              setIsOpen(true);
+            }}
+          >
+            <RiEditFill className="h-5 w-5" />
+          </button>
+          <button className="cursor-pointer">
+            <img className="h-5" src="/image/Vector.svg" alt="delete" />
+          </button>
+        </div>
+      ),
+    },
+  ];
+
+  const customStyles = {
+    headCells: {
+      style: {
+        fontWeight: "600",
+        fontSize: "14px",
+        color: "#6B7280",
+      },
+    },
+    rows: {
+      style: {
+        minHeight: "64px",
+        borderBottom: "1px solid #E5E7EB",
+      },
+    },
+    cells: {
+      style: {
+        paddingTop: "14px",
+        paddingBottom: "14px",
+      },
+    },
+  };
+
   return (
-    <div className="w-full p-4 bg-white rounded shadow-md">
+    <div className="w-full p-4  relative">
       <DataTable
         columns={columns}
         data={filteredOrders}
@@ -164,6 +168,17 @@ const Orders = ({ status }) => {
         highlightOnHover
         responsive
       />
+
+      {isOpen && selectedOrder && (
+        <OrderModal
+          isOpen={isOpen}
+          order={selectedOrder}
+          onClose={() => {
+            setIsOpen(false);
+            setSelectedOrder(null);
+          }}
+        />
+      )}
     </div>
   );
 };
