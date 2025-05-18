@@ -72,14 +72,15 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
       icon: <RiGalleryFill />,
       path: "/dashboard/products",
       childrens: [
+         {
+          title: "All Product",
+          path: "/dashboard/products",
+        },
         {
           title: "Create Product",
           path: "/dashboard/create-product",
         },
-        {
-          title: "All Product",
-          path: "/dashboard/products",
-        },
+       
         {
           title: "Stock Out",
           path: "/dashboard/stock-out",
@@ -118,9 +119,9 @@ const Sidebar = ({ toggleSidebar, menuOpen, menuStyle }) => {
   return (
     <>
       {menuStyle === "hover" && (
-        <div className="w-20 hover:w-64 h-screen bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 group  transition-all duration-300 ease-in-out overflow-hidden  z-50 ">
+        <div className="md:w-24  md:hover:w-64 h-screen fixed bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 group  transition-all duration-300 ease-in-out overflow-hidden  z-30 ">
           {/* Logo */}
-          <div className="flex items-center space-x-2 pb-[22px]border-gray-300 pl-4 ">
+          <div className="flex items-center space-x-2  border-gray-300 pl-4 ">
             {/* <div className="text-blue-500 text-2xl font-bold">R</div> */}
             {/* <img src={logo} alt="" className="w-10 h-10 rounded-full " /> */}
             <span className="text-primary text-lg font-bold   left-5 p-5">

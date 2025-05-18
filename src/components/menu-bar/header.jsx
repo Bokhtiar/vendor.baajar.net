@@ -94,6 +94,7 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
           : "relative"
       } z-10  `}
     >
+      
       {menuStyle == "click" && !menuOpen && (
         <RiMenuUnfold3Fill
           onClick={() => toggleSidebar()}
