@@ -1,3 +1,4 @@
+import { FaArrowRight } from 'react-icons/fa';
 import {
   BarChart,
   Bar,
@@ -31,8 +32,9 @@ const DashboardChart = () => {
     <div className="w-full h-80 bg-white md:px-10 py-10 rounded-lg shadow">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-gray-800">Dashboard</h2>
-        <a href="#" className="text-sm text-gray-500 hover:underline">
-          Advanced Report →
+        <a href="#" className="text-sm flex items-center gap-5 text-gray-500 hover:underline">
+          Advanced Report<FaArrowRight />
+
         </a>
       </div>
 
@@ -46,13 +48,13 @@ const DashboardChart = () => {
             bottom: 5,
           }}
         >
-         
+
           <XAxis dataKey="name" />
           <YAxis tickFormatter={(v) => `$${v}`} />
           <Tooltip formatter={(value) => `$${value}`} />
-     
-          <Bar dataKey="pv" stackId="a" fill="#CDD1DE" barSize={10}/>
-          <Bar dataKey="uv" stackId="a" fill="#FF8901" barSize={2} />
+
+          <Bar dataKey="pv" stackId="a" fill="#CDD1DE" barSize={10} />
+          <Bar dataKey="uv" stackId="a" fill="#FF8901" barSize={10} />
         </BarChart>
       </ResponsiveContainer>
     </div>

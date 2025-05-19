@@ -1,4 +1,5 @@
 import React from "react";
+import { FaArrowRight } from "react-icons/fa";
 import {
   LineChart,
   Line,
@@ -38,7 +39,10 @@ const TrafficCard = () => {
         <div>
           <h2 className="text-lg font-semibold text-gray-800">Traffic</h2>
         </div>
-        <div className="text-sm hover:text-primary cursor-pointer">More →</div>
+        <a href="#" className="text-sm  text-gray-500 hover:underline flex items-center gap-5">
+               More <span className="text-lg"> <FaArrowRight/>
+      </span>
+             </a>
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-6">
