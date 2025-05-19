@@ -7,7 +7,7 @@ export const DashboardLayout = () => {
   const [menuOpen, setMenuOpen] = useState(true);
   const [menuStyle, setMenuStyle] = useState("hover");
   const [menuPosition, setMenuPosition] = useState("fixed");
-
+ const[openMobileMenu,setOpenMobileMenu]=useState(false)
   console.log("menuStyle", menuStyle);
   console.log("menuPosition", menuPosition);
 
@@ -26,9 +26,11 @@ export const DashboardLayout = () => {
           menuOpen={menuOpen}
           menuStyle={menuStyle}
           setMenuStyle={setMenuStyle}
+          setOpenMobileMenu={setOpenMobileMenu}
+          openMobileMenu={openMobileMenu}
 
         />
-        <div className=" ms-20 relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden   ">
+        <div className="  md:ms-20 relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden   ">
           
   
           
@@ -40,6 +42,7 @@ export const DashboardLayout = () => {
               setMenuStyle={setMenuStyle}
               menuPosition={menuPosition}
               setMenuPosition={setMenuPosition}
+                setOpenMobileMenu={setOpenMobileMenu}
             />
          
          <main className="flex-1 overflow-y-auto">

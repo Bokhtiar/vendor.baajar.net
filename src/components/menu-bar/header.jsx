@@ -7,8 +7,9 @@ import { CiSettings } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa6";
 import { RiMenuUnfold3Fill } from "react-icons/ri";
 import { FaFlag } from "react-icons/fa";
+import { HiBars3 } from "react-icons/hi2";
 
-const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPosition,menuPosition }) => {
+const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuStyle,setMenuPosition,menuPosition }) => {
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
   // const [header, setHeader] = useState("fixed");
@@ -88,12 +89,21 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
 
   return (
     <div
-      className={`bg-lightCard dark:bg-darkCard  py-4 px-2 shadow-md dark:shadow-md w-full ${
+      className={`bg-lightCard dark:bg-darkCard flex items-center justify-between  py-4 px-2 shadow-md dark:shadow-md w-full ${
         menuPosition === "fixed"
           ? "fixed top-0 right-0"
           : "relative"
       } z-10  `}
     >
+      <div>
+  <button
+    onClick={() => setOpenMobileMenu(true)}
+    className="cursor-pointer text-2xl p-2 hover:text-primary"
+    aria-label="Open menu"
+  >
+    <HiBars3 />
+  </button>
+</div>
       
       {menuStyle == "click" && !menuOpen && (
         <RiMenuUnfold3Fill
@@ -101,7 +111,7 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
           className="absolute left-5 top-6 text-2xl z-10 cursor-pointer text-lightTitle dark:text-darkTitle"
         />
       )}
-      <div className="flex justify-end gap-5 items-center relative">
+      <div className="flex justify-end md:gap-5 gap-2 items-center relative">
         {/* <div className="text-4xl  rounded-full cursor-pointer hidden md:block">
           {flagUrl && (
             <img src={flagUrl} alt="Country Flag" className=" w-8 h-6 " />
@@ -114,7 +124,7 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
         </div>
 
         <div className="relative">
-          <IoNotificationsOutline className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" />
+          <IoNotificationsOutline className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer  " />
 
           {/* Badge with blinking and solid center */}
           <div className="absolute -top-1 -right-1">
@@ -124,14 +134,14 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
 
               {/* Solid badge with text */}
               <span className="absolute top-0 left-0 h-full w-full rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">
-                999
+                9+
               </span>
             </div>
           </div>
         </div>
 
         {/* <RiFullscreenFill className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" /> */}
-        <div onClick={handleFullscreen}>
+        <div className="hidden lg:flex" onClick={handleFullscreen}>
           <RiFullscreenFill className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" />
         </div>
         {/* <FiGrid className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" /> */}
@@ -142,7 +152,7 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle, menuStyle,setMenuPositi
             className="flex gap-3 items-center border-r-2 pr-5 border-lightBorder cursor-pointer"
             onClick={() => setShowPopup(!showPopup)}
           >
-            <img src={'image/login-profile.svg'} alt="User" className="w-9 h-9 rounded-full" />
+            <img src={'image/login-profile.svg'} alt="User" className="w-9 h-9 bg-gray-200 rounded-full" />
             <div className="flex items-center flex-col dark:text-darkTitle">
               <span className="font-bold text-[14px] text-left block">
                 Jone
