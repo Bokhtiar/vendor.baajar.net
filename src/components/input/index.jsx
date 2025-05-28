@@ -285,25 +285,60 @@ const customStyles = (error) => {
 
 
 
-export const SingleSelect = ({ name, control, rules, options, placeholder, isClearable, error }) => {
+export const SingleSelect = (props) => {
   const {
     field: { onChange, onBlur, value },
-  } = useController({ name, control, rules, defaultValue: null });
+  } = useController({
+    name: props.name,
+    control: props.control,
+    rules: { ...props.rules },
+    defaultValue: props.defaultvalue,
+  });
+  // console.log("value",value)
+  const handleSelect = (event) => {
+    onChange(event);
+    props.onSelected?.(event);
+  };
+  // ||"light"
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
-  // Find the full option object matching current value
-  const selectedOption = options?.find((opt) => opt.value === value) || null;
+  // Optional: Listen for theme changes across tabs
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      setTheme(event.detail); // Update the state with the new theme from the event
+    };
+
+    window.addEventListener("localStorageUpdated", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("localStorageUpdated", handleStorageChange);
+    };
+  }, []);
 
   return (
-    <div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div className="">
+      {props.error ? (
+        <p className="text-sm mb-1 text-danger text-red-500">{props.error}</p>
+      ) : (
+        <p className="text-sm mb-1 text-gray-500 ">{props.label}</p>
+      )}
       <Select
-        name={name}
-        value={selectedOption}   // must be object or null
-        onChange={(option) => onChange(option ? option.value : null)}  // send value back to react-hook-form
-        onBlur={onBlur}
-        options={options}
-        placeholder={placeholder}
-        isClearable={isClearable}
+        classNamePrefix={`custom-select cursor-pointer`}
+        onBlur={onBlur} // notify when input is touched/blur
+        value={value} // input value
+        name={props.name} // send down the input name
+        styles={customStyles(props.error, theme)}
+        components={{
+          DropdownIndicator: () => null,
+          IndicatorSeparator: () => null,
+        }}
+        options={props.options}
+        onChange={handleSelect}
+        isClearable={props.isClearable}
+        defaultValue={props.defaultvalue ? { ...props.defaultvalue } : null}
+        placeholder={props.placeholder}
+        // disabled={props.disabled}
+        isDisabled={props.disabled}
       />
     </div>
   );

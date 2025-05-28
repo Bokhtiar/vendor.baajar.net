@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiUpload } from 'react-icons/fi';
 import { SingleSelect, TextAreaInput, TextInput } from '../../components/input';
+import { NetworkServices } from '../../network';
 
 const ProductCreate = () => {
   const {
@@ -18,6 +19,13 @@ const ProductCreate = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const fileInputRef = useRef(null);
 
+  const [categories, setCategories] = useState([]);
+  const selectedCategoryId = watch('category_id');
+
+  useEffect(() => {
+    setValue('subCategory', null);
+  }, [selectedCategoryId, setValue]);
+
   const handleImagesSelected = (e) => {
     const files = Array.from(e.target.files).slice(0, 4);
     const previewUrls = files.map((file) => URL.createObjectURL(file));
@@ -27,8 +35,22 @@ const ProductCreate = () => {
     });
     setImages(updatedImages);
     setImageFiles(files);
-    setValue('images', files); // Set value in react-hook-form
+    setValue('images', files);
   };
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const response = await NetworkServices.Category.index();
+      setCategories(response.data.data);
+      console.log('Fetched categories:', response.data.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const onSubmit = (data) => {
     console.log('Form data:', data);
@@ -38,25 +60,12 @@ const ProductCreate = () => {
     });
     formData.append('productName', data.productName);
     // Add other form fields similarly...
-    // Send formData to backend
   };
 
-  // Options arrays for reuse
-  const categoryOptions = [
-    { label: 'Electronics', value: 'electronics' },
-    { label: 'Fashion', value: 'fashion' },
-    { label: 'Home Appliances', value: 'home-appliances' },
-  ];
 
-  const subCategoryOptions = [
-    { label: 'Mobile Phones', value: 'mobiles' },
-    { label: 'Laptops', value: 'laptops' },
-    { label: 'Shirts', value: 'shirts' },
-  ];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Image Upload Preview */}
       <div className="grid grid-cols-4 gap-4">
         {images.map((img, index) => (
           <div
@@ -72,7 +81,6 @@ const ProductCreate = () => {
         ))}
       </div>
 
-      {/* Upload Button */}
       <div
         onClick={() => fileInputRef.current.click()}
         className="cursor-pointer text-sm text-gray-700 flex items-center gap-2 w-max"
@@ -89,10 +97,8 @@ const ProductCreate = () => {
         />
       </div>
 
-      {/* Hidden input for images */}
       <input type="hidden" {...register('images')} />
 
-      {/* Text Inputs */}
       <TextInput
         name="productName"
         label="Product Name"
@@ -122,32 +128,36 @@ const ProductCreate = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <SingleSelect
-          name="category"
-          control={control}
-          options={[
-            { label: 'Electronics', value: 'electronics' },
-            { label: 'Fashion', value: 'fashion' },
-            { label: 'Home Appliances', value: 'home-appliances' },
-          ]}
-          label="Category"
-          placeholder="Select category"
-          rules={{ required: 'Category is required' }}
-          error={errors.category?.message}
-          isClearable
-        />
+       <SingleSelect
+  name="category_id"
+  control={control}
+  options={categories}
+  onSelected={(selected) => setValue('category_id', selected?.value || null)}
+  // value={categories.find((item) => item.value === watch('category_id')) || null}
+   placeholder={
+                  categories.find(
+                    (item) => item.value === watch("category_id")
+                  )?.label ?? "Select Parent Category Id"
+                }
+  error={errors.category_id?.message}
+  label="Choose a Parent Category"
+  isClearable
+/>
 
+{/* <SingleSelect
+  name="subCategory"
+  control={control}
+  options={mappedSubCategoryOptions}
+  onSelected={(selected) => setValue('subCategory', selected?.value || null)}
+  value={mappedSubCategoryOptions.find((item) => item.value === watch('subCategory')) || null}
+  label="Sub Category"
+  placeholder="Select sub category"
+  rules={{ required: 'Sub category is required' }}
+  error={errors.subCategory?.message}
+  isClearable
+  isDisabled={!selectedCategoryId}
+/> */}
 
-        <SingleSelect
-          name="subCategory"
-          control={control}
-          options={subCategoryOptions}
-          label="Sub Category"
-          placeholder="Select sub category"
-          rules={{ required: 'Sub category is required' }}
-          error={errors.subCategory?.message}
-          isClearable
-        />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -205,7 +215,7 @@ const ProductCreate = () => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Short Description</label>
+     
         <TextAreaInput
           name="shortDescription"
           placeholder="Enter short description"

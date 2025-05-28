@@ -1,13 +1,13 @@
 import axios from "axios";
-import { getToken } from "../utils/helper";
-
+// import { getToken } from "../utils/helper";
+const VITE_API_ENDPOINT = "http://127.0.0.1:8000/api/";
  
 const publicRequest = axios.create({
-    baseURL: process.env.REACT_APP_API_ENDPOINT,
+    baseURL: VITE_API_ENDPOINT,
 });
 
 const privateRequest = axios.create({
-    baseURL: process.env.REACT_APP_API_ENDPOINT,
+    baseURL: VITE_API_ENDPOINT,
 }); 
 
 /* Public request config */
@@ -44,14 +44,14 @@ publicRequest.interceptors.request.use(
 // );
 privateRequest.interceptors.request.use(
     async (config) => {
-        const token = getToken();
+        // const token = getToken();
         if (config.headers === undefined) {
             config.headers = {};
         }
-        if (token) {
-            //config.headers["content-type"] = 'multipart/form-data';
-            config.headers["Authorization"] = "Bearer " + token || "";
-        }
+        // if (token) {
+        //     //config.headers["content-type"] = 'multipart/form-data';
+        //     config.headers["Authorization"] = "Bearer " + token || "";
+        // }
         return config;
     },
     (err) => {

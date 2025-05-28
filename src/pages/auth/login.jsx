@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { MdOutlineLock, MdOutlineMailOutline } from "react-icons/md";
+import { MdOutlineMailOutline } from "react-icons/md";
 import { useForm } from "react-hook-form";
-// import { getToken, networkErrorHandeller, setToken } from "@/utils/helpers";
-// import { useProduct } from "@/hooks/useProducts";
-// import Spinner from "@/components/spinner";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PassworInput, TextInput } from "../../components/input";
 import { LuLockKeyhole } from "react-icons/lu";
-// import { publicRequest } from "@/config/axios.config";
+import { publicRequest } from "../../config/axios.config";
 
 const Login = () => {
-  // const userInfo = useProduct();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,47 +22,41 @@ const Login = () => {
   } = useForm({ mode: "onChange" });
 
   const onSubmit = async (data) => {
+    // console.log("Form Data:", data);
     setLoading(true);
-    // const newData = {
-    //   email: data.contactInfo,
-    //   password: data.password,
-    // };
+    const newData = {
+      phone_number: data.phone_number,
+      password: data.password,
+    };
+    console.log("Submitted Data:", newData);
     try {
-      // const response = await publicRequest.post("login", newData);
-      // if (response.data.data.token) {
-      //   userInfo.setToken(response.data.data.token);
-      //   setToken(response.data.data.token);
-      //   navigate(redirect ? redirect : "/");
-      // }
-      console.log("Submitted Data:", data); // Simulate login
-      navigate(redirect ? redirect : "/");
+      const response = await publicRequest.post("vendor/login", newData);
+      if (response.data.data.token) {
+        console.log("Login successful:", response.data);
+         navigate(redirect ? redirect : "/dashboard");
+      }
     } catch (error) {
-      // networkErrorHandeller(error);
       console.error("Login error:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    // if (getToken()) navigate("/");
-  }, [navigate]);
-
   return (
     <div className="container mt-36 mx-auto py-10 flex justify-center">
       <div className="flex flex-col items-center text-gray-700">
         <span className="font-semibold text-xl sm:text-2xl text-center leading-4">
-          Welcome vendor.Login Hare
+          Welcome vendor. Login Here
         </span>
 
-        <div className=" w-full bg-[#8B70D1] my-5 sm:w-[550px] p-6 sm:p-10 rounded-xl flex flex-col items-center justify-center">
+        <div className="w-full bg-[#8B70D1] my-5 sm:w-[550px] p-6 sm:p-10 rounded-xl flex flex-col items-center justify-center">
           <div className="w-[80px] h-[80px] sm:w-[110px] sm:h-[110px] rounded-full bg-white overflow-hidden">
             <img
               src="/image/login-profile.svg"
               height={80}
               width={80}
               alt="Logo"
-              className=" w-full h-full bg-[#8B70D1] object-contain"
+              className="w-full h-full bg-[#8B70D1] object-contain"
             />
           </div>
 
@@ -74,95 +64,72 @@ const Login = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="w-full flex flex-col justify-center"
           >
-            {/* Email Field */}
+            {/* Phone Field */}
             <div className="mt-5">
-
-              <TextInput className="rounded-lg"
-                name="contactInfo"
-                type="email"
+              <TextInput
+                className="rounded-lg"
+                name="phone_number"
+                type="tel"
                 control={control}
                 label={
                   <div className="flex gap-2 pb-2 pl-3.5 text-white">
                     <MdOutlineMailOutline className="h-5 w-5" />
-                    E-mail
+                    Phone
                   </div>
                 }
                 rules={{
-                  required: "Email required",
+                  required: "Phone number is required",
                   pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$|^\d{10}$/,
-                    message: "Invalid phone number or email",
+                    value: /^\d{11}$/,
+                    message: "Invalid phone number",
                   },
                 }}
                 error={errors?.contactInfo?.message}
-                placeholder="Enter your email"
+                placeholder="Enter your phone number"
                 trigger={trigger}
               />
             </div>
 
             {/* Password Field */}
             <div className="relative mt-5">
-              <PassworInput className="rounded-lg"
-                name='Password'
+              <PassworInput
+                className="rounded-lg"
+                name="password"
                 control={control}
                 label={
                   <div className="flex gap-2 pb-2 pl-3.5 text-white">
                     <LuLockKeyhole className="h-5 w-5" />
-                    password
+                    Password
                   </div>
                 }
                 rules={{
-                  required: "Password Require",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$|^\d{10}$/,
-                    message: "Invalid Password",
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
                   },
                 }}
-                error={errors?.contactInfo?.message}
-                placeholder="Enter your email"
+                error={errors?.password?.message}
+                placeholder="Enter your password"
                 trigger={trigger}
               />
-
             </div>
 
             {/* Submit Button */}
             <div className="flex justify-center mt-4">
               <button
                 type="submit"
-                disabled={!isValid}
-                className={`mt-2 sm:mt-4 gap-2  text-primary flex justify-center items-center bg-white rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 hover:bg-gray-100 ${!isValid ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                className={`mt-2 sm:mt-4 gap-2 text-primary flex justify-center items-center bg-white rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 hover:bg-gray-100 ${
+                  !isValid ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={!isValid || loading}
               >
-                {loading ? 'Running' : "Login"}
+                {loading ? "Running..." : "Login"}
               </button>
             </div>
           </form>
 
-          {/* Divider */}
-          {/* <div className="flex mt-4 items-center gap-4 w-full">
-            <hr className="block w-full" />
-            <span className="text-white">or</span>
-            <hr className="w-full block" />
-          </div> */}
-
-          {/* <div className="flex items-center justify-center mt-4 w-full bg-white text-gray-700 font-medium py-2 px-4 rounded-lg shadow-md hover:bg-gray-100 transition duration-200">
-            <button
-              onClick={() => {
-                // Commented out since API is not available
-                // window.location.href = `${process.env.REACT_APP_API_SERVER}api/auth/google?route=${redirect ? redirect : "/"}`;
-                alert("Google Sign-In Redirect (placeholder)");
-              }}
-              className="w-full flex items-center justify-center gap-3"
-            >
-              <img
-                src="https://www.svgrepo.com/show/475656/google-color.svg"
-                className="w-7 h-7"
-                alt="Google logo"
-              />
-              <span>Continue with Google</span>
-            </button>
-          </div> */}
-
+          {/* Forgot Password & Register */}
           <div className="mt-5 text-center">
             <Link
               to="/auth/forget-pass"
@@ -183,10 +150,11 @@ const Login = () => {
                 <strong className="text-sm font-semibold">Sign Up Now</strong>
               </Link>
             </p>
-          </div> 
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default Login;
