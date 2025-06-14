@@ -1,5 +1,6 @@
 import React from 'react';
 import DataTable from 'react-data-table-component';
+import { FaArrowRight } from 'react-icons/fa';
 
 // Sample data
 const bestSellers = [
@@ -112,8 +113,9 @@ const BestSellersTable = () => {
     <div className="bg-white p-6 rounded-xl shadow-md">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-gray-800">Best Sellers</h2>
-        <a href="#" className="text-sm text-gray-500 hover:underline flex items-center gap-1">
-          More <span className="text-lg">→</span>
+        <a href="#" className="text-sm  text-gray-500 hover:underline flex items-center gap-5">
+          More <span className="text-lg"> <FaArrowRight/>
+ </span>
         </a>
       </div>
 
