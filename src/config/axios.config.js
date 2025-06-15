@@ -1,6 +1,7 @@
 import axios from "axios";
 // import { getToken } from "../utils/helper";
-const VITE_API_ENDPOINT = "http://127.0.0.1:8000/api/";
+// const VITE_API_ENDPOINT = "http://127.0.0.1:8000/api/";
+const VITE_API_ENDPOINT = "http://192.168.68.102:8000/api";
  
 const publicRequest = axios.create({
     baseURL: VITE_API_ENDPOINT,

@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { FiUpload } from 'react-icons/fi';
-import { SingleSelect, TextAreaInput, TextInput } from '../../components/input';
-import { NetworkServices } from '../../network';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { FiUpload } from "react-icons/fi";
+import { SingleSelect, TextAreaInput, TextInput } from "../../components/input";
+import { NetworkServices } from "../../network";
 
 const ProductCreate = () => {
   const {
@@ -20,10 +20,12 @@ const ProductCreate = () => {
   const fileInputRef = useRef(null);
 
   const [categories, setCategories] = useState([]);
-  const selectedCategoryId = watch('category_id');
+  const selectedCategoryId = watch("category_id");
+
+  console.log("categories", categories);
 
   useEffect(() => {
-    setValue('subCategory', null);
+    setValue("subCategory", null);
   }, [selectedCategoryId, setValue]);
 
   const handleImagesSelected = (e) => {
@@ -35,16 +37,24 @@ const ProductCreate = () => {
     });
     setImages(updatedImages);
     setImageFiles(files);
-    setValue('images', files);
+    setValue("images", files);
   };
 
   const fetchCategories = useCallback(async () => {
     try {
       const response = await NetworkServices.Category.index();
-      setCategories(response.data.data);
-      console.log('Fetched categories:', response.data.data);
+      console.log("response", response);
+      const formattedCategories = response?.data?.data?.map((item) => ({
+        value: item.category_name, // dropdown value
+        label: item.category_name, // dropdown label
+        ...item,
+      }));
+
+      setCategories(formattedCategories); // <-- Create this state using useState
+
+      console.log("Fetched formatted categories:", formattedCategories);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   }, []);
 
@@ -53,19 +63,17 @@ const ProductCreate = () => {
   }, [fetchCategories]);
 
   const onSubmit = (data) => {
-    console.log('Form data:', data);
+    console.log("Form data:", data);
     const formData = new FormData();
     imageFiles.forEach((file, index) => {
       formData.append(`images[${index}]`, file);
     });
-    formData.append('productName', data.productName);
+    formData.append("productName", data.productName);
     // Add other form fields similarly...
   };
 
-
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 ">
       <div className="grid grid-cols-4 gap-4">
         {images.map((img, index) => (
           <div
@@ -73,9 +81,17 @@ const ProductCreate = () => {
             className="relative bg-gray-100 h-32 rounded-md overflow-hidden flex justify-center items-center"
           >
             {img ? (
-              <img src={img} alt={`Preview ${index}`} className="object-cover w-full h-full" />
+              <img
+                src={img}
+                alt={`Preview ${index}`}
+                className="object-cover w-full h-full"
+              />
             ) : (
-              <img src="/image-placeholder.svg" alt="Upload" className="w-12 h-12" />
+              <img
+                src="/image-placeholder.svg"
+                alt="Upload"
+                className="w-12 h-12"
+              />
             )}
           </div>
         ))}
@@ -97,7 +113,7 @@ const ProductCreate = () => {
         />
       </div>
 
-      <input type="hidden" {...register('images')} />
+      <input type="hidden" {...register("images")} />
 
       <TextInput
         name="productName"
@@ -128,23 +144,38 @@ const ProductCreate = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-       <SingleSelect
-  name="category_id"
-  control={control}
-  options={categories}
-  onSelected={(selected) => setValue('category_id', selected?.value || null)}
-  // value={categories.find((item) => item.value === watch('category_id')) || null}
-   placeholder={
-                  categories.find(
-                    (item) => item.value === watch("category_id")
-                  )?.label ?? "Select Parent Category Id"
-                }
-  error={errors.category_id?.message}
-  label="Choose a Parent Category"
-  isClearable
-/>
+        {/* <SingleSelect
+          name="category_id"
+          control={control}
+          options={categories}
+          onSelected={(selected) =>
+            setValue("category_id", selected?.value || null)
+          }
+          // value={categories.find((item) => item.value === watch('category_id')) || null}
+          placeholder={
+            categories.find((item) => item.value === watch("category_id"))
+              ?.label ?? "Select Parent Category Id"
+          }
+          error={errors.category_id?.message}
+          label="Choose a Parent Category"
+          isClearable
+        /> */}
+        {/* new */}
+        <SingleSelect
+          name="category_name"
+          control={control}
+          options={categories}
+          rules={{ required: "Category selection is required" }}
+          onSelected={(selected) =>
+            setValue("category_id", selected?.category_id)
+          }
+          placeholder="Select a category *"
+          error={errors.category_name?.message}
+          label="Choose a category"
+          // error={errors} // Pass an error message if validation fails
+        />
 
-{/* <SingleSelect
+        {/* <SingleSelect
   name="subCategory"
   control={control}
   options={mappedSubCategoryOptions}
@@ -157,7 +188,6 @@ const ProductCreate = () => {
   isClearable
   isDisabled={!selectedCategoryId}
 /> */}
-
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -215,7 +245,6 @@ const ProductCreate = () => {
       </div>
 
       <div>
-     
         <TextAreaInput
           name="shortDescription"
           placeholder="Enter short description"
@@ -226,7 +255,10 @@ const ProductCreate = () => {
         />
       </div>
 
-      <button type="submit" className="bg-red-600 text-white px-6 py-2 rounded-full">
+      <button
+        type="submit"
+        className="bg-red-600 text-white px-6 py-2 rounded-full"
+      >
         Create Product
       </button>
     </form>
