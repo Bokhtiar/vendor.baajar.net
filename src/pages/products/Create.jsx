@@ -45,7 +45,7 @@ const ProductCreate = () => {
       const response = await NetworkServices.Category.index();
       console.log("response", response);
       const formattedCategories = response?.data?.data?.map((item) => ({
-        value: item.category_name, // dropdown value
+        value: item.category_id, // dropdown value
         label: item.category_name, // dropdown label
         ...item,
       }));
