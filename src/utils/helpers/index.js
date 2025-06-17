@@ -2,20 +2,20 @@
 import Cookies from 'js-cookie'; 
 /* Set token */
 export const setToken = async (token) => {
-    Cookies.set('token', token, { expires: 7, path: '/' }); // Set token with expiration (7 days) and path
+    Cookies.set('bajjar-vendor', token, { expires: 7, path: '/' }); // Set token with expiration (7 days) and path
     return true;
 };
 
 /* Get token */
 export const getToken = () => {
     if (typeof window !== 'undefined') {
-        return Cookies.get('token'); // Retrieve token from cookie
+        return Cookies.get('bajjar-vendor'); // Retrieve token from cookie
     }
 };
 
 /* Remove token */
 export const removeToken = () => {
-    Cookies.remove('token');
+    Cookies.remove('bajjar-vendor');
     return true;
 };
 

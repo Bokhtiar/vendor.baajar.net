@@ -1,5 +1,6 @@
 import axios from "axios";
-// import { getToken } from "../utils/helper";
+import { getToken } from "../utils/helpers";
+
 // const VITE_API_ENDPOINT = "http://127.0.0.1:8000/api/";
 const VITE_API_ENDPOINT = "http://192.168.68.102:8000/api";
  
@@ -26,33 +27,33 @@ publicRequest.interceptors.request.use(
 );
 
 /* Private request config */
-// privateRequest.interceptors.request.use(
-//     async (config) => {
-//         const token = getToken();
-//         if (config.headers === undefined) {
-//             config.headers = {};
-//         }
-//         if (token) {
-           
-//             config.headers["Authorization"] = "Bearer " + token || "";
-//         }
-//         return config;
-//     },
-//     (err) => {
- 
-//         Promise.reject(err);
-//     }
-// );
 privateRequest.interceptors.request.use(
     async (config) => {
-        // const token = getToken();
+        const token = getToken();
         if (config.headers === undefined) {
             config.headers = {};
         }
-        // if (token) {
-        //     //config.headers["content-type"] = 'multipart/form-data';
-        //     config.headers["Authorization"] = "Bearer " + token || "";
-        // }
+        if (token) {
+           
+            config.headers["Authorization"] = "Bearer " + token || "";
+        }
+        return config;
+    },
+    (err) => {
+ 
+        Promise.reject(err);
+    }
+);
+privateRequest.interceptors.request.use(
+    async (config) => {
+        const token = getToken();
+        if (config.headers === undefined) {
+            config.headers = {};
+        }
+        if (token) {
+            //config.headers["content-type"] = 'multipart/form-data';
+            config.headers["Authorization"] = "Bearer " + token || "";
+        }
         return config;
     },
     (err) => {

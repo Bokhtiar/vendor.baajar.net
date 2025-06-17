@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { FiUpload } from "react-icons/fi";
 import { SingleSelect, TextAreaInput, TextInput } from "../../components/input";
 import { NetworkServices } from "../../network";
+import Select from "react-select";
+import { Toastify } from "../../components/toastify";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const ProductCreate = () => {
   const {
@@ -18,15 +21,29 @@ const ProductCreate = () => {
   const [images, setImages] = useState([null, null, null, null]);
   const [imageFiles, setImageFiles] = useState([]);
   const fileInputRef = useRef(null);
-
   const [categories, setCategories] = useState([]);
-  const selectedCategoryId = watch("category_id");
+  const [subcategories, setSubCategories] = useState([]);
+  // const selectedCategoryId = watch("category_id");
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  const navigate = useNavigate();
+
+  const handleChange = (option) => {
+    setSelectedCategory(option);
+    console.log(option);
+  };
+  const handleSubCateChange = (option) => {
+    setSelectedSubCategory(option);
+    console.log(option);
+  };
 
   console.log("categories", categories);
+  console.log("subcategories", subcategories);
 
-  useEffect(() => {
-    setValue("subCategory", null);
-  }, [selectedCategoryId, setValue]);
+  // useEffect(() => {
+  //   setValue("subCategory", null);
+  // }, [selectedCategoryId, setValue]);
 
   const handleImagesSelected = (e) => {
     const files = Array.from(e.target.files).slice(0, 4);
@@ -43,12 +60,14 @@ const ProductCreate = () => {
   const fetchCategories = useCallback(async () => {
     try {
       const response = await NetworkServices.Category.index();
-      console.log("response", response);
-      const formattedCategories = response?.data?.data?.map((item) => ({
-        value: item.category_id, // dropdown value
-        label: item.category_name, // dropdown label
-        ...item,
-      }));
+      console.log("responsessss", response);
+      const formattedCategories = response?.data?.data?.parent_category?.map(
+        (item) => ({
+          value: item.category_id, // dropdown value
+          label: item.category_name, // dropdown label
+          ...item,
+        })
+      );
 
       setCategories(formattedCategories); // <-- Create this state using useState
 
@@ -62,15 +81,112 @@ const ProductCreate = () => {
     fetchCategories();
   }, [fetchCategories]);
 
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
-    const formData = new FormData();
-    imageFiles.forEach((file, index) => {
-      formData.append(`images[${index}]`, file);
-    });
-    formData.append("productName", data.productName);
-    // Add other form fields similarly...
+  const fetchSubCategories = useCallback(async () => {
+    try {
+      const response = await NetworkServices.Category.index();
+      console.log("responsessss", response);
+      const formattedCategories = response?.data?.data?.child_category?.map(
+        (item) => ({
+          value: item.category_id, // dropdown value
+          label: item.category_name, // dropdown label
+          ...item,
+        })
+      );
+
+      setSubCategories(formattedCategories); // <-- Create this state using useState
+
+      console.log("Fetched formatted categories:", formattedCategories);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSubCategories();
+  }, [fetchSubCategories]);
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      padding: "5px",
+      borderRadius: "1px",
+      borderColor: "#ccc",
+      boxShadow: "none",
+      outline: "none",
+      "&:hover": {
+        borderColor: "#999",
+      },
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#999",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      zIndex: 9999,
+    }),
   };
+
+  // const onSubmit = (data) => {
+  //   console.log("Form data:", data);
+  //   const formData = new FormData();
+  //   imageFiles.forEach((file, index) => {
+  //     formData.append(`images[${index}]`, file);
+  //   });
+  //   formData.append("productName", data.productName);
+  //   // Add other form fields similarly...
+  // };
+
+  const onSubmit = async (data) => {
+  console.log("formData", data);
+  try {
+    // setBtnLoading(true);
+
+    const formData = new FormData();
+    formData.append("product_name", data?.productName);
+    formData.append("shortName", data?.shortName);
+    formData.append("category_id", selectedCategory?.value);
+    formData.append("slug", data?.slug);
+    formData.append("brand", data?.brand || ""); // if brand is null
+    formData.append("reguler_price", data?.regularPrice);
+    formData.append("offer_price", data?.offerPrice || "");
+    formData.append("stock", "0");
+    formData.append("status", "1");
+    formData.append("description", data?.shortDescription || "");
+    formData.append("color", JSON.stringify(data.color || []));
+    formData.append("size", JSON.stringify(data.size || []));
+    formData.append("sku", data.sku || "");
+    formData.append("purchase_price","222.00" );
+    formData.append("lat", data.lat || "");
+    formData.append("long", data.long || "");
+
+    // Thumbnail single image
+    if (data.thumbnail) {
+      formData.append("thumbnail", data.thumbnail);
+    }
+
+    // product_image multiple images
+    if (imageFiles) {
+      imageFiles.forEach((file, index) => {
+        formData.append(`product_image[${index}]`, file);
+      });
+    }
+
+    const response = await NetworkServices.Product.store(formData); // <-- Update API service accordingly
+
+    console.log("response", response);
+    if (response && response.status === 200) {
+      Toastify.Success("Product created successfully");
+      navigate("/dashboard/products"); // Change to your route
+    }
+  } catch (error) {
+    // networkErrorHandeller(error);
+    console.log(error)
+  } finally {
+    // setBtnLoading(false);
+  }
+};
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 ">
@@ -144,50 +260,38 @@ const ProductCreate = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        {/* <SingleSelect
-          name="category_id"
-          control={control}
-          options={categories}
-          onSelected={(selected) =>
-            setValue("category_id", selected?.value || null)
-          }
-          // value={categories.find((item) => item.value === watch('category_id')) || null}
-          placeholder={
-            categories.find((item) => item.value === watch("category_id"))
-              ?.label ?? "Select Parent Category Id"
-          }
-          error={errors.category_id?.message}
-          label="Choose a Parent Category"
-          isClearable
-        /> */}
-        {/* new */}
-        <SingleSelect
-          name="category_name"
-          control={control}
-          options={categories}
-          rules={{ required: "Category selection is required" }}
-          onSelected={(selected) =>
-            setValue("category_id", selected?.category_id)
-          }
-          placeholder="Select a category *"
-          error={errors.category_name?.message}
-          label="Choose a category"
-          // error={errors} // Pass an error message if validation fails
-        />
 
-        {/* <SingleSelect
-  name="subCategory"
-  control={control}
-  options={mappedSubCategoryOptions}
-  onSelected={(selected) => setValue('subCategory', selected?.value || null)}
-  value={mappedSubCategoryOptions.find((item) => item.value === watch('subCategory')) || null}
-  label="Sub Category"
-  placeholder="Select sub category"
-  rules={{ required: 'Sub category is required' }}
-  error={errors.subCategory?.message}
-  isClearable
-  isDisabled={!selectedCategoryId}
-/> */}
+
+        <div className="mb-">
+          <label className="block text-sm  text-gray-500 mb-1">Category</label>
+          <Select
+            value={selectedCategory}
+            onChange={handleChange}
+            options={categories}
+            onMenuOpen={() => {
+              console.log("Menu opened");
+            }}
+            placeholder="Select a category"
+            styles={customStyles}
+            isClearable
+          />
+        </div>
+        <div className="mb-">
+          <label className="block text-sm  text-gray-500 mb-1">
+            Subcategory
+          </label>
+          <Select
+            value={selectedSubCategory}
+            onChange={handleSubCateChange}
+            options={subcategories}
+            onMenuOpen={() => {
+              console.log("Menu opened");
+            }}
+            placeholder="Select a sub category"
+            styles={customStyles}
+            isClearable
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">

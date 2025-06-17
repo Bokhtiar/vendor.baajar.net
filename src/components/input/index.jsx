@@ -299,6 +299,9 @@ export const SingleSelect = (props) => {
     props.onSelected?.(event);
   };
 
+  console.log("value",value)
+
+
   return (
     <div>
       {props.error ? (
@@ -320,9 +323,9 @@ export const SingleSelect = (props) => {
         options={props.options}
         onChange={handleSelect}
         isClearable={props.isClearable}
-        defaultValue={props.defaultvalue ? { ...props.defaultvalue } : null}
+        defaultValue={props.defaultvalue}
         placeholder={props.placeholder}
-        onMenuOpen={props.onMenuOpen ?? (() => {})}
+        onMenuOpen={props.onMenuOpen ?? (() => {console.log("Menu opened");})}
       />
     </div>
   );

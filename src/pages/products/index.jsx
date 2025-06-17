@@ -81,7 +81,7 @@ const ProductTable = () => {
       selector: row => row.name,
       width: '20%',
       cell: row => (
-        <div className="text-left font-medium text-gray-800">{row.name}</div>
+        <div className="text-left font-medium text-black font-poppins text-base">{row.name}</div>
       ),
     },
     {
@@ -89,7 +89,7 @@ const ProductTable = () => {
       selector: row => row.sku,
       center: true,
       cell: row => (
-        <div className="text-sm font-medium text-gray-700">{row.sku}</div>
+        <div className="  font-medium text-gray-800 font-poppins text-base">{row.sku}</div>
       ),
     },
     {

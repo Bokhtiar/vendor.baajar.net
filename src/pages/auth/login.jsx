@@ -5,6 +5,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PassworInput, TextInput } from "../../components/input";
 import { LuLockKeyhole } from "react-icons/lu";
 import { publicRequest } from "../../config/axios.config";
+import { setToken } from "../../utils/helpers";
+import { Toastify } from "../../components/toastify";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -22,6 +24,7 @@ const Login = () => {
   } = useForm({ mode: "onChange" });
 
   const onSubmit = async (data) => {
+    // navigate('/dashboard')
     // console.log("Form Data:", data);
     setLoading(true);
     const newData = {
@@ -31,12 +34,15 @@ const Login = () => {
     console.log("Submitted Data:", newData);
     try {
       const response = await publicRequest.post("vendor/login", newData);
-      if (response.data.data.token) {
+      console.log("response",response)
+      if (response?.data?.data?.vendor?.role=="vendor") {
+        setToken(response?.data?.data?.token);
+        Toastify.Success("Login successfully done");
         console.log("Login successful:", response.data);
          navigate(redirect ? redirect : "/dashboard");
       }
     } catch (error) {
-      console.error("Login error:", error);
+      Toastify.Error("Invalid user ");
     } finally {
       setLoading(false);
     }
