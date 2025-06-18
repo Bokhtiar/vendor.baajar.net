@@ -46,6 +46,7 @@ const ProductUpdate = () => {
         setValue("offerPrice", data.offer_price);
         setValue("sku", data.sku);
         setValue("shortDescription", data.description);
+        setValue("stockQuantity", data.stock);
 
         setSelectedCategory({
           label: data.product_name,
@@ -116,7 +117,7 @@ const ProductUpdate = () => {
       formData.append("sku", data.sku);
       formData.append("category_id", selectedCategory?.value);
       formData.append("purchase_price", "222.00");
-      formData.append("stock", "0");
+      formData.append("stock",data.stockQuantity);
       formData.append("status", "1");
 
       if (imageFiles.length > 0) {
@@ -260,6 +261,14 @@ const ProductUpdate = () => {
           label="SKU"
           control={control}
           error={errors.sku?.message}
+        />
+        <TextInput
+          name="stockQuantity"
+          label="Stock Quantity"
+          placeholder="Enter quantity"
+          type="number"
+          control={control}
+          error={errors.stockQuantity?.message}
         />
         <TextInput
           name="regularPrice"

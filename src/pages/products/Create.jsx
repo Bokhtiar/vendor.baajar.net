@@ -150,7 +150,7 @@ const ProductCreate = () => {
     formData.append("brand", data?.brand || ""); // if brand is null
     formData.append("reguler_price", data?.regularPrice);
     formData.append("offer_price", data?.offerPrice || "");
-    formData.append("stock", "0");
+    formData.append("stock", data.stockQuantity || "");
     formData.append("status", "1");
     formData.append("description", data?.shortDescription || "");
     formData.append("color", JSON.stringify(data.color || []));
