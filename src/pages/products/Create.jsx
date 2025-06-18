@@ -144,7 +144,7 @@ const ProductCreate = () => {
 
     const formData = new FormData();
     formData.append("product_name", data?.productName);
-    formData.append("shortName", data?.shortName);
+    formData.append("short_name", data?.shortName);
     formData.append("category_id", selectedCategory?.value);
     formData.append("slug", data?.slug);
     formData.append("brand", data?.brand || ""); // if brand is null
@@ -263,7 +263,7 @@ const ProductCreate = () => {
 
 
         <div className="mb-">
-          <label className="block text-sm  text-gray-500 mb-1">Category</label>
+          <label className="block text-sm  text-gray-500 mb-2">Category</label>
           <Select
             value={selectedCategory}
             onChange={handleChange}
@@ -277,7 +277,7 @@ const ProductCreate = () => {
           />
         </div>
         <div className="mb-">
-          <label className="block text-sm  text-gray-500 mb-1">
+          <label className="block text-sm  text-gray-500 mb-2">
             Subcategory
           </label>
           <Select

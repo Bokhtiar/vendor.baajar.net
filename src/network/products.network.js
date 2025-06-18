@@ -3,7 +3,7 @@ import { privateRequest, publicRequest } from "../config/axios.config";
 
 /* list of resource */
 export const index = async () => {
-    return await publicRequest.get(`/vendor/product`);
+    return await privateRequest.get(`/vendor/product`);
 };
 
 /* resource store */
@@ -18,7 +18,7 @@ export const show = async(id) => {
 
 /* reosurce update */
 export const update = async(id, data) => {
-    return await privateRequest.post(`/vendor/product/update/{id}`, data)
+    return await privateRequest.post(`/vendor/product/${id}`, data)
 }
 
 /* resource destory */
