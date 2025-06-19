@@ -1,7 +1,5 @@
 import { permittedRoutes } from "./routes";
-import { Navigate, useRoutes } from "react-router-dom";
-import "./App.css";  
-import { DashboardLayout } from "./layouts/dashboard.layout";
+import { Navigate, useRoutes } from "react-router-dom";  
 import { ToastContainer } from "react-toastify";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";

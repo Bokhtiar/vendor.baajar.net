@@ -47,7 +47,7 @@ export const DashboardLayout = () => {
          
          <main className="flex-1 overflow-y-auto">
   <div
-    className={`mx-auto w-full p-2 md:p-4 2xl:p-6 ${
+    className={`mx-auto w-full p-2 md:p-4 2xl:p-6  ${
       menuPosition === "fixed" ? "mt-20" : ""
     }`}
   >

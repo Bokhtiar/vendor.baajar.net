@@ -14,6 +14,7 @@ import ProcessedOrder from "../pages/order/processed-order";
 import ShippedOrder from "../pages/order/shipped-order";
 import Products from "../pages/products";
 import ProductCreate from "../pages/products/Create";
+import ProductUpdate from "../pages/products/edit";
 import StockOut from "../pages/products/StockOut";
 import Setting from "../pages/setting";  // Ensure this import is present
 
@@ -26,6 +27,7 @@ const appRoutes = [
       { path: "category", element: <CategoryShow /> },
       { path: "orders", element: <AllOrderList /> },
       { path: "products", element: <Products /> },
+      { path: "products/:id", element: <ProductUpdate /> },
       { path: "inventory", element: <Inventory /> },
       { path: "earnings", element: <Earning /> },
       { path: "setting", element: <Setting /> }, 

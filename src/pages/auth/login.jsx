@@ -5,6 +5,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PassworInput, TextInput } from "../../components/input";
 import { LuLockKeyhole } from "react-icons/lu";
 import { publicRequest } from "../../config/axios.config";
+import { setToken } from "../../utils/helpers";
+import { Toastify } from "../../components/toastify";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -22,6 +24,7 @@ const Login = () => {
   } = useForm({ mode: "onChange" });
 
   const onSubmit = async (data) => {
+    // navigate('/dashboard')
     // console.log("Form Data:", data);
     setLoading(true);
     const newData = {
@@ -31,12 +34,15 @@ const Login = () => {
     console.log("Submitted Data:", newData);
     try {
       const response = await publicRequest.post("vendor/login", newData);
-      if (response.data.data.token) {
+      console.log("response",response)
+      if (response?.data?.data?.vendor?.role=="vendor") {
+        setToken(response?.data?.data?.token);
+        Toastify.Success("Login successfully done");
         console.log("Login successful:", response.data);
          navigate(redirect ? redirect : "/dashboard");
       }
     } catch (error) {
-      console.error("Login error:", error);
+      Toastify.Error("Invalid user ");
     } finally {
       setLoading(false);
     }
@@ -119,7 +125,7 @@ const Login = () => {
             <div className="flex justify-center mt-4">
               <button
                 type="submit"
-                className={`mt-2 sm:mt-4 gap-2 text-primary flex justify-center items-center bg-white rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 hover:bg-gray-100 ${
+                className={`mt-2 sm:mt-4 gap-2 text-primary flex justify-center items-center bg-white rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 py-3 hover:bg-gray-100 ${
                   !isValid ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 disabled={!isValid || loading}
@@ -158,3 +164,9 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+
+
+

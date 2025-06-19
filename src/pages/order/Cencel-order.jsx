@@ -4,6 +4,7 @@ import Orders from '../../components/orders/Order';
 
 const CanceledOrder = () => {
    const location = useLocation();
+   console.log("location",location)
 
   // Parse query parameters
   const queryParams = new URLSearchParams(location.search);

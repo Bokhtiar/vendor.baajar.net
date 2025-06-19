@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useController } from "react-hook-form";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import ReactDatePicker from "react-datepicker"; 
+import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select/base";
 const customInputFieldDesign = (props, pos) => {
@@ -193,52 +193,52 @@ export const TextAreaInput = (props) => {
     customInputFieldDesign(props, props.pos);
   return (
     <div>
-        <div className={inputAreaPosition}>
-      <div className={labelPosition}>
-        <div className="flex items-center text-start h-full py-[10px]">
-          {props?.label} {props?.rules?.required ? "*" : ""}
+      <div className={inputAreaPosition}>
+        <div className={labelPosition}>
+          <div className="flex items-center text-start h-full py-[10px]">
+            {props?.label} {props?.rules?.required ? "*" : ""}
+          </div>
         </div>
-      </div>
 
-      <textarea
-        onChange={onChange} // send value to hook form
-        onBlur={onBlur} // notify when input is touched/blur
-        value={value} // input value
-        name={props.name} // send down the input name
-        placeholder={props.placeholder}
-        disabled={props.disabled}
-        rows={props.rows}
-        className={inputPosition}
-      />
-    </div>
-    {props?.error && (
+        <textarea
+          onChange={onChange} // send value to hook form
+          onBlur={onBlur} // notify when input is touched/blur
+          value={value} // input value
+          name={props.name} // send down the input name
+          placeholder={props.placeholder}
+          disabled={props.disabled}
+          rows={props.rows}
+          className={inputPosition}
+        />
+      </div>
+      {props?.error && (
         <p className="text-xs text-red-500 pl-3.5">{props?.error}</p>
       )}
     </div>
   );
 };
 
-// date picker 
+// date picker
 export const DateInput = (props) => {
-    const {
-      field: { onChange, onBlur, value, ref },
-    } = useController({
-      name: props.name,
-      control: props.control,
-      rules: { ...props.rules },
-      defaultValue: props.defaultvalue ? new Date(props.defaultvalue) : null,
-    });
-    const { inputAreaPosition, labelPosition, inputPosition } =
+  const {
+    field: { onChange, onBlur, value, ref },
+  } = useController({
+    name: props.name,
+    control: props.control,
+    rules: { ...props.rules },
+    defaultValue: props.defaultvalue ? new Date(props.defaultvalue) : null,
+  });
+  const { inputAreaPosition, labelPosition, inputPosition } =
     customInputFieldDesign(props, props.pos);
-    return (
-      <div className="  w-full">
-        <div className={inputAreaPosition}>
+  return (
+    <div className="  w-full">
+      <div className={inputAreaPosition}>
         <div className={labelPosition}>
           <div className="flex items-center text-start">
             {props?.label} {props?.rules?.required ? "*" : ""}
           </div>
         </div>
-  
+
         <div className="w-full">
           <ReactDatePicker
             onChange={onChange} // send value to hook form
@@ -250,21 +250,21 @@ export const DateInput = (props) => {
             selected={value ? new Date(value) : null}
             disabled={props.disabled}
             dateFormat="dd-MM-yyyy"
-              className={inputPosition}
-            style={{ 
-                width:'100%'
-             }}
+            className={inputPosition}
+            style={{
+              width: "100%",
+            }}
           />
         </div>
-        </div>
-        {props?.error && (
+      </div>
+      {props?.error && (
         <p className="text-xs text-red-500 pl-3.5">{props?.error}</p>
       )}
-      </div>
-    );
-  };
-  
-  /* ------------------------ Single Select field -------------------- */
+    </div>
+  );
+};
+
+/* ------------------------ Single Select field -------------------- */
 
 const customStyles = (error) => {
   const myStyles = {
@@ -283,8 +283,7 @@ const customStyles = (error) => {
   return myStyles;
 };
 
-
-
+/* Single select field */
 export const SingleSelect = (props) => {
   const {
     field: { onChange, onBlur, value },
@@ -294,40 +293,29 @@ export const SingleSelect = (props) => {
     rules: { ...props.rules },
     defaultValue: props.defaultvalue,
   });
-  // console.log("value",value)
+
   const handleSelect = (event) => {
     onChange(event);
     props.onSelected?.(event);
   };
-  // ||"light"
-  const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
-  // Optional: Listen for theme changes across tabs
-  useEffect(() => {
-    const handleStorageChange = (event) => {
-      setTheme(event.detail); // Update the state with the new theme from the event
-    };
+  console.log("value",value)
 
-    window.addEventListener("localStorageUpdated", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("localStorageUpdated", handleStorageChange);
-    };
-  }, []);
 
   return (
-    <div className="">
+    <div>
       {props.error ? (
-        <p className="text-sm mb-1 text-danger text-red-500">{props.error}</p>
+        <p className="text-sm mb-1 text-danger">{props.error}</p>
       ) : (
-        <p className="text-sm mb-1 text-gray-500 ">{props.label}</p>
+        <p className="text-sm mb-1 text-gray-500">{props.label}</p>
       )}
+
       <Select
-        classNamePrefix={`custom-select cursor-pointer`}
-        onBlur={onBlur} // notify when input is touched/blur
-        value={value} // input value
-        name={props.name} // send down the input name
-        styles={customStyles(props.error, theme)}
+        classNamePrefix="custom-select"
+        onBlur={onBlur}
+        value={value}
+        name={props.name}
+        styles={customStyles(props.error)}
         components={{
           DropdownIndicator: () => null,
           IndicatorSeparator: () => null,
@@ -335,16 +323,13 @@ export const SingleSelect = (props) => {
         options={props.options}
         onChange={handleSelect}
         isClearable={props.isClearable}
-        defaultValue={props.defaultvalue ? { ...props.defaultvalue } : null}
+        defaultValue={props.defaultvalue}
         placeholder={props.placeholder}
-        // disabled={props.disabled}
-        isDisabled={props.disabled}
+        onMenuOpen={props.onMenuOpen ?? (() => {console.log("Menu opened");})}
       />
     </div>
   );
 };
-
-
 /* ------------------------ Multi Select field -------------------- */
 export const MultiSelect = (props) => {
   const {
@@ -466,7 +451,9 @@ export const ImageUpload = (props) => {
       required: props.required ? "Image is required" : false,
       validate: (file) => {
         if (!file && props.required) return "Image is required";
-        return !file || file.size < 2 * 1024 * 1024 || "File must be less than 2MB";
+        return (
+          !file || file.size < 2 * 1024 * 1024 || "File must be less than 2MB"
+        );
       },
     },
     defaultValue: props.defaultValue || null,
@@ -483,11 +470,10 @@ export const ImageUpload = (props) => {
       setPreview(URL.createObjectURL(file)); // Show file preview
       props.onUpload?.(file); // Callback for additional handling
     }
-  }; 
+  };
   return (
     <div className="flex flex-col space-y-2">
-       
-       <span className="text-sm mb-1 text-gray-500 flex gap-1">
+      <span className="text-sm mb-1 text-gray-500 flex gap-1">
         {props?.label}{" "}
         <span className="text-white">{props?.rules?.required ? "*" : ""}</span>
       </span>
@@ -508,16 +494,19 @@ export const ImageUpload = (props) => {
             />
           ) : (
             <div className="h-12 w-12 flex items-center justify-center bg-gray-200 rounded-md cursor-pointer">
-         {
-          props?.imgUrl?  <img src={`${process.env.NEXT_PUBLIC_API_SERVER}${props?.imgUrl}`}alt="loading"  className="h-12 w-12 object-cover rounded-md cursor-pointer"/> : "📷"
-         }     
-               
-           
+              {props?.imgUrl ? (
+                <img
+                  src={`${process.env.NEXT_PUBLIC_API_SERVER}${props?.imgUrl}`}
+                  alt="loading"
+                  className="h-12 w-12 object-cover rounded-md cursor-pointer"
+                />
+              ) : (
+                "📷"
+              )}
             </div>
           )}
           <span className="text-gray-700">Click to upload</span>
         </div>
-        
       </div>
       {props?.error && (
         <p className="text-xs text-red-500 pl-3.5">{props?.error}</p>

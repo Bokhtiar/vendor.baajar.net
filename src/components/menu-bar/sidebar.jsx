@@ -6,6 +6,8 @@ import { RiGalleryFill, RiMenuFold4Fill } from "react-icons/ri";
 import { HiBars3 } from "react-icons/hi2";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { CiWallet } from "react-icons/ci";
+import { SingleSelect } from "../input";
+
 
 const Sidebar = ({
   toggleSidebar,
@@ -21,6 +23,8 @@ const Sidebar = ({
     setOpenMenu(openMenu === title ? null : title);
   };
 
+
+
   const menuData = [
     {
       title: "Dashboard",
@@ -33,11 +37,31 @@ const Sidebar = ({
       path: "/dashboard/orders",
       childrens: [
         { title: "All Orders", path: "/dashboard/orders" },
-        { title: "Pending Orders", path: "/dashboard/pending-orders", status: "pending" },
-        { title: "Processed Orders", path: "/dashboard/processed-orders", status: "processed" },
-        { title: "Shipped Orders", path: "/dashboard/shipped-orders", status: "shipped" },
-        { title: "Completed Orders", path: "/dashboard/completed-orders", status: "delivered" },
-        { title: "Canceled Orders", path: "/dashboard/canceled-orders", status: "cancelled" },
+        {
+          title: "Pending Orders",
+          path: "/dashboard/pending-orders",
+          status: "pending",
+        },
+        {
+          title: "Processed Orders",
+          path: "/dashboard/processed-orders",
+          status: "processed",
+        },
+        {
+          title: "Shipped Orders",
+          path: "/dashboard/shipped-orders",
+          status: "shipped",
+        },
+        {
+          title: "Completed Orders",
+          path: "/dashboard/completed-orders",
+          status: "delivered",
+        },
+        {
+          title: "Canceled Orders",
+          path: "/dashboard/canceled-orders",
+          status: "cancelled",
+        },
       ],
     },
     {
@@ -74,10 +98,14 @@ const Sidebar = ({
   return (
     <>
       {/* ======= Desktop Sidebar Hover Style ======= */}
+
+
       {menuStyle === "hover" && (
         <div className="hidden md:block md:w-24 md:hover:w-64 h-screen fixed bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 transition-all duration-300 overflow-hidden z-30 group">
           <div className="flex items-center space-x-2 pl-4">
-            <span className="text-primary text-lg font-bold left-5 p-5">Baajar</span>
+            <span className="text-primary text-lg font-bold left-5 p-5">
+              Baajar
+            </span>
           </div>
 
           <nav className="mt-4">
@@ -86,17 +114,25 @@ const Sidebar = ({
 
               return (
                 <div key={index} className="mb-2 relative ms-4">
-                  {isActive && <span className="absolute left-0 top-0 h-full w-1 bg-[#0d6efd] z-50"></span>}
+                  {isActive && (
+                    <span className="absolute left-0 top-0 h-full w-1 bg-[#0d6efd] z-50"></span>
+                  )}
 
                   <Link
                     to={item.path}
                     className={`flex items-center border border-[#F3F4F6] w-full text-left rounded-md transition-all duration-200 group ${
-                      isActive ? "bg-primary text-white" : "hover:text-black hover:bg-blue-100"
+                      isActive
+                        ? "bg-primary text-white"
+                        : "hover:text-black hover:bg-blue-100"
                     }`}
                     onClick={() => toggleMenu(item.title)}
                   >
-                    <span className="mr-3 flex-shrink-0 text-xl pl-6 p-2">{item.icon}</span>
-                    <div className="hidden group-hover:block truncate w-full">{item.title}</div>
+                    <span className="mr-3 flex-shrink-0 text-xl pl-6 p-2">
+                      {item.icon}
+                    </span>
+                    <div className="hidden group-hover:block truncate w-full">
+                      {item.title}
+                    </div>
                   </Link>
 
                   {item.childrens && openMenu === item.title && (
@@ -119,7 +155,9 @@ const Sidebar = ({
                           >
                             {/* If you want icons for submenu, add here */}
                             {/* <span className="mr-2 flex-shrink-0 text-lg p-2">{subItem.icon}</span> */}
-                            <div className="truncate hidden group-hover:block w-full">{subItem.title}</div>
+                            <div className="truncate hidden group-hover:block w-full">
+                              {subItem.title}
+                            </div>
                           </Link>
                         );
                       })}
@@ -142,7 +180,9 @@ const Sidebar = ({
           <div className="flex items-center justify-between p-4 border-b border-gray-300">
             <span className="text-lg font-semibold">Baajar</span>
             <button onClick={toggleSidebar}>
-              <RiMenuFold4Fill className={`text-xl transform ${menuOpen ? "rotate-180" : ""}`} />
+              <RiMenuFold4Fill
+                className={`text-xl transform ${menuOpen ? "rotate-180" : ""}`}
+              />
             </button>
           </div>
 
@@ -151,12 +191,16 @@ const Sidebar = ({
               const isActive = location.pathname === item.path;
               return (
                 <div key={index} className="mb-2 relative">
-                  {isActive && <span className="absolute left-0 top-0 h-full w-1 bg-primary z-50"></span>}
+                  {isActive && (
+                    <span className="absolute left-0 top-0 h-full w-1 bg-primary z-50"></span>
+                  )}
 
                   <Link
                     to={item.path}
                     className={`flex items-center p-2 rounded-md transition-all duration-200 ${
-                      isActive ? "bg-primary text-white" : "hover:bg-blue-100 hover:text-black"
+                      isActive
+                        ? "bg-primary text-white"
+                        : "hover:bg-blue-100 hover:text-black"
                     }`}
                     onClick={() => toggleMenu(item.title)}
                   >
@@ -178,7 +222,9 @@ const Sidebar = ({
                                 : "hover:bg-blue-100 hover:text-black"
                             }`}
                           >
-                            <div className="truncate w-full">{subItem.title}</div>
+                            <div className="truncate w-full">
+                              {subItem.title}
+                            </div>
                           </Link>
                         );
                       })}
@@ -221,7 +267,9 @@ const Sidebar = ({
                 <Link
                   to={item.path}
                   className={`flex items-center p-2 rounded-md transition ${
-                    isActive ? "bg-primary text-white" : "hover:bg-blue-100 hover:text-black"
+                    isActive
+                      ? "bg-primary text-white"
+                      : "hover:bg-blue-100 hover:text-black"
                   }`}
                   onClick={() => {
                     toggleMenu(item.title);
@@ -245,7 +293,9 @@ const Sidebar = ({
                               : subItem.path
                           }
                           className={`block px-4 py-1 rounded-md text-sm ${
-                            isSubActive ? "text-primary font-medium" : "hover:text-black"
+                            isSubActive
+                              ? "text-primary font-medium"
+                              : "hover:text-black"
                           }`}
                           onClick={() => setOpenMobileMenu(false)}
                         >
