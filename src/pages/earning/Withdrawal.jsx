@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 
 import { FaEye } from "react-icons/fa";
 import EarningStats from "../../components/earning-stats/earningStats";
+import { LuQrCode } from "react-icons/lu";
+import { MyWithDrawSkeleton } from "../../components/Skeleton/Skeleton";
 
 
 
@@ -100,25 +102,29 @@ const customStyles = {
 };
 
 const Earning = () => {
+    const [loading, setLoading] = useState(false);
     return (
-        <div classmethod="p-4 space-y-6">
+        <div classmethod="p-4 space-y-6  ">
             {/* Stats Summary */}
             <EarningStats />
 
             {/* Data Table */}
-            <div>
-               <h2 className="text-lg font-semibold text-[#8B8B8B] my-3">Earning Details</h2>
-                <DataTable
-                    columns={columns}
-                    data={earningDetails}
-                    customStyles={customStyles}
-                    pagination
-                    highlightOnHover
-                    responsive
-
-
-                />
-
+            <div className="font-poppins">
+               <h2 className="text-lg  font-semibold text-[#8B8B8B] my-3">Earning Details</h2>
+               {
+                loading ? (
+                   <MyWithDrawSkeleton/>
+                ) : (
+                    <DataTable
+                        columns={columns}
+                        data={earningDetails}
+                        customStyles={customStyles}
+                        pagination
+                        highlightOnHover
+                        pointerOnHover
+                    />
+                )
+               }
 
             </div>
         </div>

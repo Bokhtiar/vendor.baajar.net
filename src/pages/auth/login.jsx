@@ -7,6 +7,7 @@ import { LuLockKeyhole } from "react-icons/lu";
 import { publicRequest } from "../../config/axios.config";
 import { setToken } from "../../utils/helpers";
 import { Toastify } from "../../components/toastify";
+import Spinner from "../../utils/loading/spinner";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -34,12 +35,12 @@ const Login = () => {
     console.log("Submitted Data:", newData);
     try {
       const response = await publicRequest.post("vendor/login", newData);
-      console.log("response",response)
-      if (response?.data?.data?.vendor?.role=="vendor") {
+      console.log("response", response)
+      if (response?.data?.data?.vendor?.role == "vendor") {
         setToken(response?.data?.data?.token);
         Toastify.Success("Login successfully done");
         console.log("Login successful:", response.data);
-         navigate(redirect ? redirect : "/dashboard");
+        navigate(redirect ? redirect : "/dashboard");
       }
     } catch (error) {
       Toastify.Error("Invalid user ");
@@ -125,12 +126,11 @@ const Login = () => {
             <div className="flex justify-center mt-4">
               <button
                 type="submit"
-                className={`mt-2 sm:mt-4 gap-2 text-primary flex justify-center items-center bg-white rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 py-3 hover:bg-gray-100 ${
-                  !isValid ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`mt-2 w-44 h-10  sm:mt-4 gap-2 text-primary flex justify-center items-center bg-white rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 py-3 hover:bg-gray-100 ${!isValid ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 disabled={!isValid || loading}
               >
-                {loading ? "Running..." : "Login"}
+                {loading ?  <Spinner/> : "Login"}
               </button>
             </div>
           </form>

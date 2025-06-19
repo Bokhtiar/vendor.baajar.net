@@ -7,14 +7,16 @@ import { networkErrorHandeller } from "../../utils/helpers";
 import { NetworkServices } from "../../network";
 import { Toastify } from "../../components/toastify";
 import { Link } from "react-router-dom";
+import { TableSkeleton } from "../../components/Skeleton/Skeleton";
 
 const ProductTable = () => {
   const [productList, setProductList] = useState([]);
-
+  const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   // Fetch categories from API
   const fetchProduct = useCallback(async () => {
     try {
-      // setLoading(true);
+       setLoading(true);
       const response = await NetworkServices.Product.index();
       console.log("response", response);
 
@@ -24,19 +26,16 @@ const ProductTable = () => {
     } catch (error) {
       networkErrorHandeller(error);
     }
-    // setLoading(false);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     fetchProduct();
   }, []);
 
-  console.log("exam", productList);
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  console.log("selectedProduct",selectedProduct)
 
 const handleDelete = (product) => {
   setSelectedProduct(product);
@@ -44,17 +43,19 @@ const handleDelete = (product) => {
 };
 
   const handleDeleteClick = async (id) => {
+    setDeleteLoading(true);
     try {
       const response = await NetworkServices.Product.destroy(id);
       console.log("response",response)
       if (response?.status === 200) {
-        Toastify.Info("Exam deleted successfully.");
+        Toastify.Success(response?.data?.message || "Product deleted successfully");
         fetchProduct();
       }
     } catch (error) {
       networkErrorHandeller(error);
     }
     setIsOpen(false);
+    setDeleteLoading(false);
   };
 
   const handleCancel = () => {
@@ -77,20 +78,20 @@ const handleDelete = (product) => {
       name: "Photo",
       cell: (row) => (
         <img
-          src={`${import.meta.env.VITE_API_SERVER}${row?.product_image[0]}`}
-          alt={row.name}
+          src={`${import.meta.env.VITE_API_SERVER}${row?.product_image?.[0]}`}
+          alt={row.product_name}
           className="w-24 h-24 object-cover rounded-md shadow-sm"
         />
       ),
       width: "160px",
-      center: true,
+      // center: true,
     },
     {
       name: "Name of the Product",
       selector: (row) => row.product_name,
       width: "20%",
       cell: (row) => (
-        <div className="text-left font-medium text-black font-poppins text-base">
+        <div className="text-left font-medium text-black  text-base">
           {row.product_name}
         </div>
       ),
@@ -111,7 +112,7 @@ const handleDelete = (product) => {
       center: true,
       cell: (row) => (
         <div className="text-base font-medium text-gray-900">
-          {row.offer_price}
+          {row.offer_price}/-
         </div>
       ),
     },
@@ -129,7 +130,15 @@ const handleDelete = (product) => {
             onClick={() => handleDelete(row)}
             className="text-red-600 hover:text-red-800 cursor-pointer transition"
           >
-            <FaTrash />
+            <svg
+            className="w-5 h-6 text-red-500 "
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22m-5 0V4a1 1 0 00-1-1H7a1 1 0 00-1 1v3" />
+          </svg>
           </button>
         </div>
       ),
@@ -159,7 +168,10 @@ const handleDelete = (product) => {
   };
 
   return (
-    <div className="w-full p-4  relative">
+    <div className="w-full p-4 font-poppins relative">
+      {loading ? (
+      <TableSkeleton />
+    ) : (
       <DataTable
         columns={columns}
         data={productList}
@@ -169,11 +181,13 @@ const handleDelete = (product) => {
         paginationPerPage={10}
         paginationRowsPerPageOptions={[5, 10, 20]}
       />
+    )}
       {isOpen && selectedProduct && (
         <DeleteProductModal
           product={selectedProduct}
           onDelete={() => handleDeleteClick(selectedProduct.id)}
           onCancel={handleCancel}
+          deleteLoading={deleteLoading}
         />
       )}
     </div>

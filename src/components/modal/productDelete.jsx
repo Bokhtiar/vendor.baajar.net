@@ -1,6 +1,7 @@
 import React from 'react';
+import Spinner from '../../utils/loading/spinner';
 
-const DeleteProductModal = ({ product, onDelete, onCancel }) => {
+const DeleteProductModal = ({ product, onDelete,onCancel,deleteLoading }) => {
   return (
     <div  className="fixed inset-0 bg-black/80 bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg m-4 p-6 w-full max-w-xl shadow-lg text-center">
@@ -16,19 +17,29 @@ const DeleteProductModal = ({ product, onDelete, onCancel }) => {
           </svg>
           <h2 className="text-[#8B8B8B] mb-4">The Following Product will be deleted</h2>
           <div className="flex md:flex-row flex-col items-center font-medium justify-center gap-6 ">
-            <img src={product.image} alt={product.name} className="w-16 h-16 object-cover rounded" />
+         <img
+  src={
+    product?.product_image?.[0]
+      ? `${import.meta.env.VITE_API_SERVER}${product.product_image[0]}`
+      : "/placeholder.png"
+  }
+  alt={product?.product_name || "Product Image"}
+  className="w-16 h-16 object-cover rounded"
+/>
+
+
            
-              <p>{product.name}</p>
-              <p>SKU: {product.sku}</p>
-              <p>Price: {product.price}/-</p>
+              <p>{product?.product_name}</p>
+              <p>SKU: {product?.sku}</p>
+              <p>Price: {product?.offer_price}/-</p>
             
           </div>
           <p className="mt-6 text-sm text-[#8B8B8B]">Are you sure wish to continue ?</p>
           <button
             onClick={onDelete}
-            className="mt-4 bg-primary font-bold text-white px-10 py-2 rounded-full hover:bg-red-700"
+            className="mt-4 w-50 h-10 text-nowrap bg-primary font-bold text-white px-10 py-2 rounded-full hover:bg-red-700"
           >
-            Delete Product
+            {deleteLoading ? <Spinner name={"Deleting"}/> : "Delete Product"}
           </button>
           <button
             onClick={onCancel}

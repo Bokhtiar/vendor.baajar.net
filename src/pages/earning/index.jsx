@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 
 import { FaEye } from "react-icons/fa";
 import EarningStats from "../../components/earning-stats/earningStats";
+import { EarningsTableSkeleton } from "../../components/Skeleton/Skeleton";
 
 
 
@@ -76,24 +77,30 @@ const columns = [
     };
 
 const Earning = () => {
+  const [loading, setLoading] = useState(false);
   return (
     <div className="p-4 space-y-6">
       {/* Stats Summary */}
    <EarningStats/>
 
       {/* Data Table */}
-      <div>
-        <h2 className="text-lg font-semibold text-[#8B8B8B] mb-3">Earning Details</h2>
-        <DataTable
-          columns={columns}
-          data={earningDetails}
-          customStyles={customStyles}
-          pagination
-          highlightOnHover
-          responsive
-          dense
-          noHeader
-        />
+      <div className="font-poppins">
+        <h2 className="text-lg  font-semibold text-[#8B8B8B] mb-3">Earning Details</h2>
+       {loading ? (
+  <EarningsTableSkeleton />
+) : (
+  <DataTable
+    columns={columns}
+    data={earningDetails}
+    customStyles={customStyles}
+    pagination
+    highlightOnHover
+    responsive
+    dense
+    noHeader
+  />
+)}
+
       </div>
     </div>
   );

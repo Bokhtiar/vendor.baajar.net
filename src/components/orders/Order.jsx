@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { RiEditFill } from "react-icons/ri";
 import OrderModal from "../modal/orderStatus";
+import { OrderTableSkeleton } from "../Skeleton/Skeleton";
 
 const getStatusBadge = (status) => {
   const colorMap = {
@@ -12,7 +13,7 @@ const getStatusBadge = (status) => {
     processed: "bg-[#3ABFEF] text-white",
   };
   return (
-    <span className={`px-2 py-1 rounded-full text-xs ${colorMap[status] || "bg-gray-300 text-black"}`}>
+    <span className={`px-2 py-1 rounded-full text-xs w-24 h-6 text-center leading-4 ${colorMap[status] || "bg-gray-300 text-black"}`}>
       {status}
     </span>
   );
@@ -72,6 +73,7 @@ const allOrders = [
 ];
 
 const Orders = ({ status }) => {
+  const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
@@ -142,6 +144,7 @@ const Orders = ({ status }) => {
         fontWeight: "600",
         fontSize: "14px",
         color: "#6B7280",
+        
       },
     },
     rows: {
@@ -159,15 +162,19 @@ const Orders = ({ status }) => {
   };
 
   return (
-    <div className="w-full p-4  relative">
-      <DataTable
-        columns={columns}
-        data={filteredOrders}
-        customStyles={customStyles}
-        pagination
-        highlightOnHover
-        responsive
-      />
+    <div className="w-full p-4 font-poppins relative">
+      {loading ? (
+  <OrderTableSkeleton />
+) : (
+  <DataTable
+    columns={columns}
+    data={filteredOrders}
+    customStyles={customStyles}
+    pagination
+    highlightOnHover
+    responsive
+  />
+)}
 
       {isOpen && selectedOrder && (
         <OrderModal
