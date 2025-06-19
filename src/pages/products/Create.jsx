@@ -6,6 +6,7 @@ import { NetworkServices } from "../../network";
 import Select from "react-select";
 import { Toastify } from "../../components/toastify";
 import { Navigate, useNavigate } from "react-router-dom";
+import Spinner from "../../utils/loading/spinner";
 
 const ProductCreate = () => {
   const {
@@ -24,7 +25,7 @@ const ProductCreate = () => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubCategories] = useState([]);
   // const selectedCategoryId = watch("category_id");
-
+const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const navigate = useNavigate();
@@ -139,6 +140,7 @@ const ProductCreate = () => {
 
   const onSubmit = async (data) => {
   console.log("formData", data);
+  setLoading(true);
   try {
     // setBtnLoading(true);
 
@@ -184,6 +186,7 @@ const ProductCreate = () => {
     console.log(error)
   } finally {
     // setBtnLoading(false);
+    setLoading(false);
   }
 };
 
@@ -227,7 +230,7 @@ const ProductCreate = () => {
           ref={fileInputRef}
           onChange={handleImagesSelected}
         />
-      </div>
+      </div> 
 
       <input type="hidden" {...register("images")} />
 
@@ -361,9 +364,9 @@ const ProductCreate = () => {
 
       <button
         type="submit"
-        className="bg-red-600 text-white px-6 py-2 rounded-full"
+        className="bg-red-600 text-white px-6 h-10 w-50 py-2 rounded-full"
       >
-        Create Product
+        {loading ? <Spinner name={'creating'}/> : "Create Product"}
       </button>
     </form>
   );

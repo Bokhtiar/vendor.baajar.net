@@ -101,19 +101,19 @@ const Sidebar = ({
 
 
       {menuStyle === "hover" && (
-        <div className="hidden md:block md:w-24 md:hover:w-64 h-screen fixed bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 transition-all duration-300 overflow-hidden z-30 group">
+        <div className="hidden font-poppins md:block md:w-24 md:hover:w-64 h-screen fixed bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 transition-all duration-300 overflow-hidden z-30 group">
           <div className="flex items-center space-x-2 pl-4">
             <span className="text-primary text-lg font-bold left-5 p-5">
               Baajar
             </span>
           </div>
 
-          <nav className="mt-4">
+          <nav className="mt-4 ">
             {menuData.map((item, index) => {
               const isActive = location.pathname === item.path;
 
               return (
-                <div key={index} className="mb-2 relative ms-4">
+                <div key={index} className="mb-2  relative ms-4">
                   {isActive && (
                     <span className="absolute left-0 top-0 h-full w-1 bg-[#0d6efd] z-50"></span>
                   )}
@@ -173,7 +173,7 @@ const Sidebar = ({
       {/* ======= Desktop Sidebar Click Style ======= */}
       {menuStyle === "click" && (
         <div
-          className={`hidden md:block w-64 fixed top-0 left-0 h-screen z-50 bg-lightCard dark:bg-darkCard dark:text-darkTitle transition-all duration-300 ${
+          className={`hidden font-poppins md:block w-64 fixed top-0 left-0 h-screen z-50 bg-lightCard dark:bg-darkCard dark:text-darkTitle transition-all duration-300 ${
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >

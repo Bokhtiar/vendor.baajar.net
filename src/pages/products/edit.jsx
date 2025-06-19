@@ -6,10 +6,12 @@ import { SingleSelect, TextAreaInput, TextInput } from "../../components/input";
 import { NetworkServices } from "../../network";
 import Select from "react-select";
 import { Toastify } from "../../components/toastify";
+import Spinner from "../../utils/loading/spinner";
 
 const ProductUpdate = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -105,6 +107,7 @@ const ProductUpdate = () => {
   };
 
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       const formData = new FormData();
       formData.append("product_name", data.productName);
@@ -128,12 +131,13 @@ const ProductUpdate = () => {
       formData.append("_method", "PUT");
       const res = await NetworkServices.Product.update(id, formData);
       if (res?.status === 200) {
-        Toastify.Success("Product updated successfully");
+        Toastify.Success(res?.data?.message || "Product updated successfully");
         navigate("/dashboard/products");
       }
     } catch (err) {
       console.error("Update failed:", err);
     }
+    setLoading(false);
   };
   const customStyles = {
     control: (provided) => ({
@@ -295,7 +299,7 @@ const ProductUpdate = () => {
         type="submit"
         className="bg-red-600 text-white px-6 py-2 rounded-full"
       >
-        Update Product
+       {loading ? <Spinner name={'Updating'}/> : "Update Product"}
       </button>
     </form>
   );

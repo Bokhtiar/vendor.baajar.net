@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component';
 import { RiEditFill } from 'react-icons/ri';
 
 import InventorModal from '../modal/inventoryUpdate';
+import { InventoryTableSkeleton } from '../Skeleton/Skeleton';
 
 const products = [
     {
@@ -28,7 +29,7 @@ const products = [
 const Inventory = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
-
+const [loading, setLoading] = useState(false); 
     const columns = [
         {
             name: "SN",
@@ -108,14 +109,18 @@ const Inventory = () => {
 
     return (
         <div className="w-full p-4  relative">
-            <DataTable
-                columns={columns}
-                data={products}
-                customStyles={customStyles}
-                pagination
-                highlightOnHover
-                responsive
-            />
+             {loading ? (
+      <InventoryTableSkeleton/>
+    ) : (
+      <DataTable
+        columns={columns}
+        data={products}
+        customStyles={customStyles}
+        pagination
+        highlightOnHover
+        responsive
+      />
+    )}
 
             {isOpen && selectedProduct && (
                 <InventorModal

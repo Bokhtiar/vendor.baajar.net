@@ -93,7 +93,7 @@ export const TextInput = (props) => {
       <div className={inputAreaPosition}>
         <div className={labelPosition}>
           <div className="flex items-center text-start">
-            {props?.label} {props?.rules?.required ? "*" : ""}
+            {props?.label} {props?.rules?.required ? <span className="text-red-500">*</span> : ""}
           </div>
         </div>
 
@@ -140,7 +140,7 @@ export const PassworInput = (props) => {
       <div className={inputAreaPosition}>
         <div className={labelPosition}>
           <div className="flex items-center text-start">
-            {props?.label} {props?.rules?.required ? "*" : ""}
+            {props?.label} {props?.rules?.required ? <span className="text-red-500">*</span> : ""}
           </div>
         </div>
 
@@ -173,9 +173,9 @@ export const PassworInput = (props) => {
           )}
         </div>
       </div>
-      {props?.error && (
+      {/* {props?.error && (
         <p className="text-xs text-red-500 pl-3.5">{props?.error}</p>
-      )}
+      )} */}
     </div>
   );
 };
