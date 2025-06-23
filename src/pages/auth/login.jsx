@@ -130,7 +130,7 @@ const Login = () => {
                   }`}
                 disabled={!isValid || loading}
               >
-                {loading ?  <Spinner/> : "Login"}
+                {loading ?  <Spinner name={'Running'}/> : "Login"}
               </button>
             </div>
           </form>

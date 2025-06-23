@@ -19,7 +19,7 @@ const Spinner = ({name}) => {
         <line x1="60.1" y1="60.1" x2="82.7" y2="82.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="24">
         </line>
     </svg>
-    <span class=" font-medium ">{name}...</span>
+    <span class=" font-medium text-gray-700">{name}...</span>
 </div>
 
   );
