@@ -36,9 +36,9 @@ const Register = () => {
     try {
       const response = await publicRequest.post("vendor/register", formData);
       console.log("response",response)
-      const userId = response?.data?.data?.id;
+      
       Toastify.Success("Registration successful!");
-      navigate(`/verify-otp?id=${userId}`);
+      navigate(`/verify-otp?id=${response?.data?.data?.phone_number}`);
     } catch (error) {
       Toastify.Error("Registration failed",error);
     } finally {

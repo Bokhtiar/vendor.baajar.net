@@ -59,7 +59,7 @@ const PasswordSetup = () => {
     setLoading(true);
     const formData = new FormData();
 
-    formData.append("vendor_id", id);
+    formData.append("phone_number", id);
     formData.append("password", data.password);
     formData.append("password_confirmation", data.password_confirmation);
 
@@ -86,22 +86,7 @@ const PasswordSetup = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-4 text-white"
           >
-            <div className="mb-4">
-              <SingleSelect
-                name="singleSelect"
-                control={control}
-                // options={categories}
-                // rules={{ required: "Category selection is required" }}
-                onSelected={(selected) =>
-                  setValue("vendor_id", selected?.vendor_id)
-                }
-                placeholder="Select a Vendor "
-                error={errors.singleSelect?.message}
-                label="Choose Vendor "
-                isClearable={true}
-                // error={errors} // Pass an error message if validation fails
-              />
-            </div>
+            
             {/* Phone */}
             <div className="relative mt-5">
               <PassworInput

@@ -27,7 +27,7 @@ const VerifyOtp = () => {
     setLoading(true);
     const formData = new FormData();
 
-    formData.append("phone", data.phone_number);
+    formData.append("phone", id);
     formData.append("code", data.code);
 
     try {
@@ -55,17 +55,7 @@ const VerifyOtp = () => {
             className="space-y-4 text-white"
           >
             {/* Phone */}
-            <TextInput
-              name="phone_number"
-              className="rounded-lg"
-              control={control}
-              type="text"
-              label="Phone Number"
-              placeholder="Enter phone number"
-              rules={{ required: "Phone number is required" }}
-              trigger={trigger}
-              error={errors?.phone_number?.message}
-            />
+           
 
             {/* Company Name */}
             <TextInput
