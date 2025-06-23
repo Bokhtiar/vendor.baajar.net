@@ -8,6 +8,7 @@ import { publicRequest } from "../../config/axios.config";
 import { setToken } from "../../utils/helpers";
 import { Toastify } from "../../components/toastify";
 import Spinner from "../../utils/loading/spinner";
+import { FaPhone } from "react-icons/fa";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -43,7 +44,7 @@ const Login = () => {
         navigate(redirect ? redirect : "/dashboard");
       }
     } catch (error) {
-      Toastify.Error("Invalid user ");
+      Toastify.Error("Invalid user ",);
     } finally {
       setLoading(false);
     }
@@ -80,7 +81,7 @@ const Login = () => {
                 control={control}
                 label={
                   <div className="flex gap-2 pb-2 pl-3.5 text-white">
-                    <MdOutlineMailOutline className="h-5 w-5" />
+                    <FaPhone className="h-5 w-5" />
                     Phone
                   </div>
                 }
@@ -149,7 +150,7 @@ const Login = () => {
                 to={
                   redirect
                     ? `/auth/register?redirect=${redirect}`
-                    : "/auth/register"
+                    : "/register"
                 }
                 className="hover:underline"
               >

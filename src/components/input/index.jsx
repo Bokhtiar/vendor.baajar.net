@@ -111,7 +111,7 @@ export const TextInput = (props) => {
         />
       </div>
       {props?.error && (
-        <p className="text-xs text-red-500 pl-3.5">{props?.error}</p>
+        <p className="text-xs text-red-900 pl-3.5">{props?.error}</p>
       )}
     </div>
   );
@@ -173,9 +173,9 @@ export const PassworInput = (props) => {
           )}
         </div>
       </div>
-      {/* {props?.error && (
+      {props?.error && (
         <p className="text-xs text-red-500 pl-3.5">{props?.error}</p>
-      )} */}
+      )}
     </div>
   );
 };
@@ -307,7 +307,7 @@ export const SingleSelect = (props) => {
       {props.error ? (
         <p className="text-sm mb-1 text-danger">{props.error}</p>
       ) : (
-        <p className="text-sm mb-1 text-gray-500">{props.label}</p>
+        <p className="text-sm mb-1 text-gray-100">{props.label}</p>
       )}
 
       <Select
@@ -473,7 +473,7 @@ export const ImageUpload = (props) => {
   };
   return (
     <div className="flex flex-col space-y-2">
-      <span className="text-sm mb-1 text-gray-500 flex gap-1">
+      <span className="text-sm mb-1 text-gray-900 flex gap-1">
         {props?.label}{" "}
         <span className="text-white">{props?.rules?.required ? "*" : ""}</span>
       </span>
