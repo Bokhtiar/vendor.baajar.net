@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { MdOutlineMailOutline } from "react-icons/md";
+import React, {  useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PassworInput, TextInput } from "../../components/input";
 import { LuLockKeyhole } from "react-icons/lu";
 import { publicRequest } from "../../config/axios.config";
-import { setToken } from "../../utils/helpers";
+import { networkErrorHandeller, setToken } from "../../utils/helpers";
 import { Toastify } from "../../components/toastify";
 import Spinner from "../../utils/loading/spinner";
 import { FaPhone } from "react-icons/fa";
@@ -33,18 +32,17 @@ const Login = () => {
       phone_number: data.phone_number,
       password: data.password,
     };
-    console.log("Submitted Data:", newData);
+    
     try {
       const response = await publicRequest.post("vendor/login", newData);
-      console.log("response", response)
+      
       if (response?.data?.data?.vendor?.role == "vendor") {
         setToken(response?.data?.data?.token);
         Toastify.Success("Login successfully done");
-        console.log("Login successful:", response.data);
         navigate(redirect ? redirect : "/dashboard");
       }
     } catch (error) {
-      Toastify.Error("Invalid user ",);
+      networkErrorHandeller(error);
     } finally {
       setLoading(false);
     }
@@ -139,7 +137,7 @@ const Login = () => {
           {/* Forgot Password & Register */}
           <div className="mt-5 text-center">
             <Link
-              to="/auth/forget-pass"
+              to="/forgot-pass"
               className="text-white font-semibold text-sm sm:p-4 leading-6 hover:underline"
             >
               Forgot password?

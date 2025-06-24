@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Toastify } from "../../components/toastify";
 import { publicRequest } from "../../config/axios.config";
 import { ImageUpload, TextInput } from "../../components/input";
-import { MdOutlineMailOutline } from "react-icons/md";
-import { FaPhone } from "react-icons/fa";
+import { networkErrorHandeller } from "../../utils/helpers";
 
 const Register = () => {
   const {
@@ -20,7 +19,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    
     setLoading(true);
     const formData = new FormData();
 
@@ -35,12 +34,11 @@ const Register = () => {
 
     try {
       const response = await publicRequest.post("vendor/register", formData);
-      console.log("response",response)
       
       Toastify.Success("Registration successful!");
       navigate(`/verify-otp?id=${response?.data?.data?.phone_number}`);
     } catch (error) {
-      Toastify.Error("Registration failed",error);
+      networkErrorHandeller(error);
     } finally {
       setLoading(false);
     }
@@ -134,21 +132,6 @@ const Register = () => {
               trigger={trigger}
               error={errors?.company_location?.message}
             />
-
-            {/* Logo Upload */}
-            {/* <div className="flex flex-col">
-              <label className="text-sm font-semibold pb-1">Company Logo</label>
-              <input
-                type="file"
-                {...register("logo", { required: "Logo is required" })}
-                className="bg-white text-black rounded-md p-2"
-              />
-              {errors.logo && (
-                <span className="text-red-200 text-xs pt-1">
-                  {errors.logo.message}
-                </span>
-              )}
-            </div> */}
             {/* logo */}
             <div className="mt-4 cursor-pointer">
               <ImageUpload
