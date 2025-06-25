@@ -1,6 +1,4 @@
-// import React, {  useState } from "react";
-// import { useForm } from "react-hook-form";
-// import { useLocation, useNavigate } from "react-router-dom";
+
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,13 +9,7 @@ import { PassworInput } from "../../../components/input";
 import { LuLockKeyhole } from "react-icons/lu";
 import { networkErrorHandeller } from "../../../utils/helpers";
 
-// import { publicRequest } from "../../config/axios.config";
-// import { ImageUpload, PassworInput, SingleSelect, TextInput } from "../../components/input";
-// import { MdOutlineMailOutline } from "react-icons/md";
-// import { FaPhone } from "react-icons/fa";
-// import { NetworkServices } from "../../network";
-// import { LuLockKeyhole } from "react-icons/lu";
-// import { Toastify } from "../../components/toastify";
+
 
 const PassSetup = () => {
   const {
