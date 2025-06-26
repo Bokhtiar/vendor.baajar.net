@@ -1,22 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-
-import { publicRequest } from "../../config/axios.config";
-import {
-  ImageUpload,
-  PassworInput,
-  SingleSelect,
-  TextInput,
-} from "../../components/input";
-import { MdOutlineMailOutline } from "react-icons/md";
-import { FaPhone } from "react-icons/fa";
-import { NetworkServices } from "../../network";
+import { publicRequest } from "../../../config/axios.config";
+import { Toastify } from "../../../components/toastify";
+import { PassworInput } from "../../../components/input";
 import { LuLockKeyhole } from "react-icons/lu";
-import { Toastify } from "../../components/toastify";
-import { networkErrorHandeller } from "../../utils/helpers";
 
-const PasswordSetup = () => {
+
+const ReSetPass = () => {
   const {
     handleSubmit,
     control,
@@ -27,10 +18,11 @@ const PasswordSetup = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const location = useLocation();
+    const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
 
+  console.log("Received :", id);
   //   const [categories, setCategories] = useState([]);
 
   //   const [btnloading, setBtnLoading] = useState(false);
@@ -61,6 +53,7 @@ const PasswordSetup = () => {
   //   }, [fetchCategory]);
 
   const onSubmit = async (data) => {
+    console.log(data);
     setLoading(true);
     const formData = new FormData();
 
@@ -69,14 +62,11 @@ const PasswordSetup = () => {
     formData.append("password_confirmation", data.password_confirmation);
 
     try {
-      const response = await publicRequest.post(
-        "vendor/password-setup",
-        formData
-      );
-      Toastify.Success("Set password successful!");
+      const response = await publicRequest.post("vendor/password-setup", formData);
+      Toastify.Success("Registration successful!");
       navigate("/login");
     } catch (error) {
-      networkErrorHandeller(error);
+      Toastify.Error("Registration failed", error);
     } finally {
       setLoading(false);
     }
@@ -86,7 +76,7 @@ const PasswordSetup = () => {
     <div className="container mt-20 mx-auto py-10 flex justify-center">
       <div className="flex flex-col items-center text-gray-700">
         <span className="font-semibold text-xl sm:text-2xl text-center leading-4">
-          Set Password
+          Vendor Registration
         </span>
 
         <div className="w-full bg-[#8B70D1] my-5 sm:w-[600px] p-6 sm:p-10 rounded-xl">
@@ -94,6 +84,7 @@ const PasswordSetup = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-4 text-white"
           >
+            
             {/* Phone */}
             <div className="relative mt-5">
               <PassworInput
@@ -127,7 +118,7 @@ const PasswordSetup = () => {
                 label={
                   <div className="flex gap-2 pb-2 pl-3.5 text-white">
                     <LuLockKeyhole className="h-5 w-5" />
-                    Confirm Password
+                   Confirm Password
                   </div>
                 }
                 rules={{
@@ -149,7 +140,7 @@ const PasswordSetup = () => {
               disabled={loading}
               className="bg-white text-primary font-bold w-full py-3 rounded-md hover:bg-gray-100 mt-4"
             >
-              {loading ? "Submitting..." : "Set Password"}
+              {loading ? "Submitting..." : "Reset Password"}
             </button>
           </form>
         </div>
@@ -158,4 +149,4 @@ const PasswordSetup = () => {
   );
 };
 
-export default PasswordSetup;
+export default ReSetPass;

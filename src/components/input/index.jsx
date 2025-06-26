@@ -173,9 +173,7 @@ export const PassworInput = (props) => {
           )}
         </div>
       </div>
-      {props?.error && (
-        <p className="text-xs text-red-500 pl-3.5">{props?.error}</p>
-      )}
+
     </div>
   );
 };

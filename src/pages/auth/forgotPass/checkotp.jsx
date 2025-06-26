@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Toastify } from "../../components/toastify";
-import { publicRequest } from "../../config/axios.config";
-import { ImageUpload, TextInput } from "../../components/input";
-import { networkErrorHandeller } from "../../utils/helpers";
+import { Toastify } from "../../../components/toastify";
+import { publicRequest } from "../../../config/axios.config";
+import { FaPhone } from "react-icons/fa";
+import { TextInput } from "../../../components/input";
+import { networkErrorHandeller } from "../../../utils/helpers";
 
-const VerifyOtp = () => {
+const CheckOtp = () => {
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
     trigger,
   } = useForm({ mode: "onChange" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
@@ -22,6 +25,7 @@ const VerifyOtp = () => {
   
 
   const onSubmit = async (data) => {
+   
     setLoading(true);
     const formData = new FormData();
 
@@ -29,9 +33,14 @@ const VerifyOtp = () => {
     formData.append("code", data.code);
 
     try {
-      const response = await publicRequest.post("vendor/verify-otp", formData);
-      Toastify.Success("verify Otp Successfully");
-      navigate(`/setpassword?id=${id}`);
+      const response = await publicRequest.post(
+        "vendor/forgot-code-check",
+        formData
+      );
+        Toastify.Success("Code verified successfully.");
+      //   navigate("/login");
+      navigate(`/pass-setup?id=${response?.data?.data?.phone_number}&code=${response?.data?.data?.otp_code}`);
+
     } catch (error) {
       networkErrorHandeller(error);
     } finally {
@@ -51,9 +60,6 @@ const VerifyOtp = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-4 text-white"
           >
-            {/* Phone */}
-           
-
             {/* Company Name */}
             <TextInput
               name="code"
@@ -73,7 +79,7 @@ const VerifyOtp = () => {
               disabled={loading}
               className="bg-white text-primary font-bold w-full py-3 rounded-md hover:bg-gray-100 mt-4"
             >
-              {loading ? "Submitting..." : "Verify Otp"}
+              {loading ? "Submitting..." : "Send"}
             </button>
           </form>
         </div>
@@ -82,4 +88,4 @@ const VerifyOtp = () => {
   );
 };
 
-export default VerifyOtp;
+export default CheckOtp;

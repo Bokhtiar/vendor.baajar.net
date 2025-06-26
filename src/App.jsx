@@ -6,6 +6,13 @@ import Register from "./pages/auth/register";
 import Footer from "./components/footer/footer";
 import VerifyOtp from "./pages/auth/verifyOtp";
 import PasswordSetup from "./pages/auth/passwordSetup";
+import ForGotPassword from "./pages/auth/forgotPass/forGotPass";
+import CheckOtp from "./pages/auth/forgotPass/checkotp";
+import PassSetup from "./pages/auth/forgotPass/newPassUpdate";
+import ReSetPass from "./pages/auth/reSetPass/reSetPass";
+
+
+
 
 function App() {
   const mainRoutes = {
@@ -19,6 +26,12 @@ function App() {
       { path: "/register", element: <Register /> },
       { path: "/verify-otp", element: <VerifyOtp /> },
       { path: "/setpassword", element: <PasswordSetup /> },
+      // forget pass
+      { path: "/forgot-pass", element: <ForGotPassword /> },
+      { path: "/check-otp", element: <CheckOtp /> },
+      { path: "/pass-setup", element: <PassSetup /> },
+      // resetpass
+      { path: "/resetpass", element: <ReSetPass /> },
     ],
   };
 
