@@ -39,7 +39,7 @@ const Sidebar = ({
         { title: "All Orders", path: "/dashboard/orders" },
         {
           title: "Pending Orders",
-          path: "/dashboard/pending-orders",
+          path: "/dashboard/orders",
           status: "pending",
         },
         {

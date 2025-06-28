@@ -82,6 +82,7 @@ const ProductUpdate = () => {
         setValue("shortDescription", data.description);
         setValue("stockQuantity", data.stock);
 
+        // Build category option
         const categoryOption = {
           label: data.category?.category_name || "",
           value: data.category?.category_id || null,
@@ -89,6 +90,7 @@ const ProductUpdate = () => {
         };
         setSelectedCategory(categoryOption);
 
+        // Build subcategory option
         const subOption = data.subcategory
           ? {
               label: data.subcategory.category_name,
@@ -98,6 +100,7 @@ const ProductUpdate = () => {
           : null;
         setSelectedSubCategory(subOption);
 
+        // Build child category option
         const childOption = data.childcategory
           ? {
               label: data.childcategory.category_name,
@@ -106,6 +109,7 @@ const ProductUpdate = () => {
           : null;
         setSelectedChildCategory(childOption);
 
+        // Set subcategories from category children
         if (categoryOption?.children?.length) {
           const subcats = categoryOption.children.map((sub) => ({
             label: sub.category_name,
@@ -113,14 +117,20 @@ const ProductUpdate = () => {
             children: sub.children || [],
           }));
           setSubCategories(subcats);
+        } else {
+          setSubCategories([]);
         }
 
+        // Set child categories from subcategory children
         if (subOption?.children?.length) {
+          console.log("Setting child categories from subcategory children:", subOption.children);
           const childCats = subOption.children.map((child) => ({
             label: child.category_name,
             value: child.category_id,
           }));
           setChildCategories(childCats);
+        } else {
+          setChildCategories([]);
         }
 
         setDefaultImages(data.product_image || []);
@@ -161,7 +171,6 @@ const ProductUpdate = () => {
     } else {
       setSubCategories([]);
     }
-
     setChildCategories([]);
   };
 
@@ -235,7 +244,10 @@ const ProductUpdate = () => {
       {/* Image Section */}
       <div className="grid grid-cols-4 gap-4">
         {(images.some(Boolean) ? images : defaultImages).map((img, i) => (
-          <div key={i} className="h-32 bg-gray-100 rounded overflow-hidden flex justify-center items-center">
+          <div
+            key={i}
+            className="h-32 bg-gray-100 rounded overflow-hidden flex justify-center items-center"
+          >
             {img ? (
               <img
                 src={
@@ -247,57 +259,138 @@ const ProductUpdate = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <img src="/image-placeholder.svg" alt="Placeholder" className="w-12 h-12" />
+              <img
+                src="/image-placeholder.svg"
+                alt="Placeholder"
+                className="w-12 h-12"
+              />
             )}
           </div>
         ))}
       </div>
 
-      <div onClick={() => fileInputRef.current.click()} className="cursor-pointer text-sm text-gray-700 flex items-center gap-2 w-max">
+      <div
+        onClick={() => fileInputRef.current.click()}
+        className="cursor-pointer text-sm text-gray-700 flex items-center gap-2 w-max"
+      >
         <FiUpload className="text-3xl" />
         <span>Upload Photo</span>
-        <input type="file" multiple accept="image/*" className="hidden" ref={fileInputRef} onChange={handleImagesSelected} />
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleImagesSelected}
+        />
       </div>
 
       {/* Form Inputs */}
-      <TextInput name="productName" label="Product Name" control={control} error={errors.productName?.message} />
+      <TextInput
+        name="productName"
+        label="Product Name"
+        control={control}
+        error={errors.productName?.message}
+      />
       <div className="grid grid-cols-2 gap-4">
-        <TextInput name="short_description" label="Shor descriptin" control={control} error={errors.short_description?.message} />
-        <TextInput name="slug" label="Slug" control={control} error={errors.slug?.message} />
+        <TextInput
+          name="short_description"
+          label="Short Description"
+          control={control}
+          error={errors.short_description?.message}
+        />
+        <TextInput
+          name="slug"
+          label="Slug"
+          control={control}
+          error={errors.slug?.message}
+        />
       </div>
 
       {/* Category Selection */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="text-sm text-gray-500 mb-1">Category</label>
-          <Select value={selectedCategory} onChange={handleCategoryChange} options={categories} styles={customStyles} isClearable />
+          <Select
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            options={categories}
+            styles={customStyles}
+            isClearable
+          />
         </div>
         <div>
           <label className="text-sm text-gray-500 mb-1">Subcategory</label>
-          <Select value={selectedSubCategory} onChange={handleSubCateChange} options={subcategories} styles={customStyles} isClearable />
+          <Select
+            value={selectedSubCategory}
+            onChange={handleSubCateChange}
+            options={subcategories}
+            styles={customStyles}
+            isClearable
+          />
         </div>
       </div>
 
-      {/* ✅ Child Category (Conditional or Always Visible) */}
+      {/* Child Category (conditionally rendered) */}
       {childCategories.length > 0 && (
         <div>
           <label className="text-sm text-gray-500 mb-1">Child Category</label>
-          <Select value={selectedChildCategory} onChange={handleChildCateChange} options={childCategories} styles={customStyles} isClearable />
+          <Select
+            value={selectedChildCategory}
+            onChange={handleChildCateChange}
+            options={childCategories}
+            styles={customStyles}
+            isClearable
+          />
         </div>
       )}
 
       {/* Additional Info */}
       <div className="grid grid-cols-2 gap-4">
-        <TextInput name="brand" label="Brand" control={control} error={errors.brand?.message} />
-        <TextInput name="sku" label="SKU" control={control} error={errors.sku?.message} />
-        <TextInput name="stockQuantity" label="Stock Quantity" control={control} type="number" error={errors.stockQuantity?.message} />
-        <TextInput name="regularPrice" label="Regular Price" control={control} error={errors.regularPrice?.message} />
-        <TextInput name="offerPrice" label="Offer Price" control={control} error={errors.offerPrice?.message} />
+        <TextInput
+          name="brand"
+          label="Brand"
+          control={control}
+          error={errors.brand?.message}
+        />
+        <TextInput
+          name="sku"
+          label="SKU"
+          control={control}
+          error={errors.sku?.message}
+        />
+        <TextInput
+          name="stockQuantity"
+          label="Stock Quantity"
+          control={control}
+          type="number"
+          error={errors.stockQuantity?.message}
+        />
+        <TextInput
+          name="regularPrice"
+          label="Regular Price"
+          control={control}
+          error={errors.regularPrice?.message}
+        />
+        <TextInput
+          name="offerPrice"
+          label="Offer Price"
+          control={control}
+          error={errors.offerPrice?.message}
+        />
       </div>
 
-      <TextAreaInput name="shortDescription" label="Short Description" control={control} error={errors.shortDescription?.message} />
+      <TextAreaInput
+        name="shortDescription"
+        label="Description"
+        control={control}
+        error={errors.shortDescription?.message}
+      />
 
-      <button type="submit" className="bg-red-600 text-white px-6 py-2 rounded-full">
+      <button
+        type="submit"
+        className="bg-red-600 text-white px-6 py-2 rounded-full"
+      >
         {loading ? <Spinner name="Updating" /> : "Update Product"}
       </button>
     </form>

@@ -313,7 +313,7 @@ const ProductCreate = () => {
       <TextAreaInput
         name="shortDescription"
         placeholder="Enter short description"
-        label="Short Description"
+        label="Description"
         control={control}
         rules={{ required: "Short description is required" }}
         error={errors.shortDescription?.message}

@@ -3,12 +3,18 @@ import DataTable from "react-data-table-component";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { RiEditFill } from "react-icons/ri";
 import Orders from "../../components/orders/Order";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 
 // Main component
 const AllOrderList = () => {
-   const { status } = useParams();
+    const location = useLocation();
+   console.log("location",location)
+
+  // Parse query parameters
+  const queryParams = new URLSearchParams(location.search);
+  const status = queryParams.get("status"); 
+console.log(status);
   return (
    
      <Orders status={status}/>
