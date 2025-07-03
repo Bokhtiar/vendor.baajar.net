@@ -1,7 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiUpload } from "react-icons/fi";
-import { SingleSelect, TextAreaInput, TextInput } from "../../components/input";
+import {
+  ImageUpload,
+  SingleSelect,
+  TextAreaInput,
+  TextInput,
+} from "../../components/input";
 import { NetworkServices } from "../../network";
 import Select from "react-select";
 import { Toastify } from "../../components/toastify";
@@ -23,11 +28,18 @@ const ProductCreate = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const fileInputRef = useRef(null);
   const [categories, setCategories] = useState([]);
+  const [color, setColor] = useState([]);
+  const [unit, setunit] = useState([]);
+  const [attribute, setAttribute] = useState([]);
   const [subcategories, setSubCategories] = useState([]);
   // const selectedCategoryId = watch("category_id");
-const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  const [selectedUnit, setSelectedUnit] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedAttribute, setSelectedAttribute] = useState(null);
+
   const navigate = useNavigate();
 
   const handleChange = (option) => {
@@ -38,9 +50,26 @@ const [loading, setLoading] = useState(false);
     setSelectedSubCategory(option);
     console.log(option);
   };
+  const handleColorChange = (option) => {
+    setSelectedColor(option);
+    console.log(option);
+  };
+  const handleUnitChange = (option) => {
+    setSelectedUnit(option);
+    console.log(option);
+  };
+  const handleAttributeChange = (option) => {
+    setSelectedAttribute(option);
+    console.log(option);
+  };
 
-  console.log("categories", categories);
-  console.log("subcategories", subcategories);
+
+
+  console.log("selectedCategory", selectedCategory);
+  console.log("selectedSubCategory", selectedSubCategory);
+  console.log("selectedUnit", selectedUnit);
+  console.log("selectedColor", selectedColor);
+  console.log("selectedAttribute", selectedAttribute);
 
   // useEffect(() => {
   //   setValue("subCategory", null);
@@ -61,14 +90,12 @@ const [loading, setLoading] = useState(false);
   const fetchCategories = useCallback(async () => {
     try {
       const response = await NetworkServices.Category.index();
-      console.log("responsessss", response);
-      const formattedCategories = response?.data?.data?.parent_category?.map(
-        (item) => ({
-          value: item.category_id, // dropdown value
-          label: item.category_name, // dropdown label
-          ...item,
-        })
-      );
+      console.log("resqwwwwponsessss", response);
+      const formattedCategories = response?.data?.data?.map((item) => ({
+        value: item.category_id, // dropdown value
+        label: item.category_name, // dropdown label
+        ...item,
+      }));
 
       setCategories(formattedCategories); // <-- Create this state using useState
 
@@ -82,29 +109,73 @@ const [loading, setLoading] = useState(false);
     fetchCategories();
   }, [fetchCategories]);
 
-  const fetchSubCategories = useCallback(async () => {
+  useEffect(() => {
+    if (selectedCategory?.children) {
+      const mappedSubcategories = selectedCategory.children.map((child) => ({
+        value: child.category_id,
+        label: child.category_name,
+      }));
+      setSubCategories(mappedSubcategories);
+    } else {
+      setSubCategories([]);
+    }
+  }, [selectedCategory]);
+
+  const fetchColor = useCallback(async () => {
     try {
-      const response = await NetworkServices.Category.index();
-      console.log("responsessss", response);
-      const formattedCategories = response?.data?.data?.child_category?.map(
-        (item) => ({
-          value: item.category_id, // dropdown value
-          label: item.category_name, // dropdown label
-          ...item,
-        })
-      );
+      const response = await NetworkServices.Color.index();
+      console.log("rcolor", response);
+      const formattedColor = response?.data?.data?.map((item) => ({
+        value: item.id, // dropdown value
+        label: item.name, // dropdown label
+        ...item,
+      }));
 
-      setSubCategories(formattedCategories); // <-- Create this state using useState
+      setColor(formattedColor); // <-- Create this state using useState
 
-      console.log("Fetched formatted categories:", formattedCategories);
+      console.log("Fetched formatted categories:", formattedColor);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
   }, []);
 
   useEffect(() => {
-    fetchSubCategories();
-  }, [fetchSubCategories]);
+    fetchColor();
+  }, [fetchColor]);
+
+  const fetchUnit = useCallback(async () => {
+    try {
+      const response = await NetworkServices.Unit.index();
+      console.log("unit", response);
+      const formattedUnit = response?.data?.data?.map((item) => ({
+        value: item.id, // dropdown value
+        label: item.name, // dropdown label
+        ...item,
+      }));
+
+      setunit(formattedUnit); // <-- Create this state using useState
+
+      console.log("Fetched formatted categories:", formattedUnit);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUnit();
+  }, [fetchUnit]);
+
+  useEffect(() => {
+    if (selectedUnit?.attributes) {
+      const mappedSubcategories = selectedUnit.attributes.map((child) => ({
+        value: child.id,
+        label: child.name,
+      }));
+      setAttribute(mappedSubcategories);
+    } else {
+      setAttribute([]);
+    }
+  }, [selectedUnit]);
 
   const customStyles = {
     control: (provided) => ({
@@ -139,57 +210,60 @@ const [loading, setLoading] = useState(false);
   // };
 
   const onSubmit = async (data) => {
-  console.log("formData", data);
-  setLoading(true);
-  try {
-    // setBtnLoading(true);
+    console.log("formData", data);
+    setLoading(true);
+    try {
+      // setBtnLoading(true);
 
-    const formData = new FormData();
-    formData.append("product_name", data?.productName);
-    formData.append("short_name", data?.shortName);
-    formData.append("category_id", selectedCategory?.value);
-    formData.append("slug", data?.slug);
-    formData.append("brand", data?.brand || ""); // if brand is null
-    formData.append("reguler_price", data?.regularPrice);
-    formData.append("offer_price", data?.offerPrice || "");
-    formData.append("stock", data.stockQuantity || "");
-    formData.append("status", "1");
-    formData.append("description", data?.shortDescription || "");
-    formData.append("color", JSON.stringify(data.color || []));
-    formData.append("size", JSON.stringify(data.size || []));
-    formData.append("sku", data.sku || "");
-    formData.append("purchase_price","222.00" );
-    formData.append("lat", data.lat || "");
-    formData.append("long", data.long || "");
+      const formData = new FormData();
+      formData.append("product_name", data?.productName);
+      formData.append("short_name", data?.shortName);
+      formData.append("category_id", selectedCategory?.value);
+      formData.append("sub_category_id", selectedSubCategory?.value);
+      formData.append("color_id", JSON.stringify(selectedColor?.map(c => c.value) || []));
+      formData.append("attribute_id", JSON.stringify(selectedAttribute?.map(c => c.value) || []));
+      formData.append("unit_id", JSON.stringify(selectedUnit?.value || []));
+      formData.append("slug", data?.slug);
+      formData.append("brand", data?.brand || ""); // if brand is null
+      formData.append("reguler_price", data?.regularPrice);
+      formData.append("offer_price", data?.offerPrice || "");
+      formData.append("stock", data.stockQuantity || "");
+      formData.append("status", "1");
+      formData.append("description", data?.shortDescription || "");
+      formData.append("color", JSON.stringify(data.color || []));
+      formData.append("size", JSON.stringify(data.size || []));
+      formData.append("sku", data.sku || "");
+      formData.append("purchase_price", "222.00");
+      formData.append("lat", data.lat || "");
+      formData.append("long", data.long || "");
 
-    // Thumbnail single image
-    if (data.thumbnail) {
-      formData.append("thumbnail", data.thumbnail);
+      // Thumbnail single image
+      if (data.thumbnail) {
+        formData.append("thumbnail", data.thumbnail);
+      }
+
+      // product_image multiple images
+      if (imageFiles) {
+        imageFiles.forEach((file, index) => {
+          formData.append(`product_image[${index}]`, file);
+        });
+      }
+
+      const response = await NetworkServices.Product.store(formData); // <-- Update API service accordingly
+
+      console.log("response", response);
+      if (response && response.status === 200) {
+        Toastify.Success("Product created successfully");
+        navigate("/dashboard/products"); // Change to your route
+      }
+    } catch (error) {
+      // networkErrorHandeller(error);
+      console.log(error);
+    } finally {
+      // setBtnLoading(false);
+      setLoading(false);
     }
-
-    // product_image multiple images
-    if (imageFiles) {
-      imageFiles.forEach((file, index) => {
-        formData.append(`product_image[${index}]`, file);
-      });
-    }
-
-    const response = await NetworkServices.Product.store(formData); // <-- Update API service accordingly
-
-    console.log("response", response);
-    if (response && response.status === 200) {
-      Toastify.Success("Product created successfully");
-      navigate("/dashboard/products"); // Change to your route
-    }
-  } catch (error) {
-    // networkErrorHandeller(error);
-    console.log(error)
-  } finally {
-    // setBtnLoading(false);
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 ">
@@ -230,7 +304,7 @@ const [loading, setLoading] = useState(false);
           ref={fileInputRef}
           onChange={handleImagesSelected}
         />
-      </div> 
+      </div>
 
       <input type="hidden" {...register("images")} />
 
@@ -263,8 +337,6 @@ const [loading, setLoading] = useState(false);
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-
-
         <div className="mb-">
           <label className="block text-sm  text-gray-500 mb-2">Category</label>
           <Select
@@ -295,24 +367,61 @@ const [loading, setLoading] = useState(false);
             isClearable
           />
         </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <TextInput
-          name="childCategory"
-          label="Child Category"
-          placeholder="Enter child category"
-          control={control}
-          error={errors.childCategory?.message}
-        />
-        <TextInput
-          name="brand"
-          label="Brand"
-          placeholder="Enter brand"
-          control={control}
-          rules={{ required: "Brand is required" }}
-          error={errors.brand?.message}
-        />
+        <div className="mb-">
+          <label className="block text-sm  text-gray-500 mb-2">Color</label>
+          <Select
+          isMulti
+            // value={selectedCategory}
+            onChange={handleColorChange}
+            options={color}
+            onMenuOpen={() => {
+              console.log("Menu opened");
+            }}
+            placeholder="Select a color"
+            styles={customStyles}
+            isClearable
+          />
+        </div>
+        <div className="mb-">
+          <label className="block text-sm  text-gray-500 mb-2">Unit</label>
+          <Select
+            // value={selectedCategory}
+            onChange={handleUnitChange}
+            options={unit}
+            onMenuOpen={() => {
+              console.log("Menu opened");
+            }}
+            placeholder="Select a color"
+            styles={customStyles}
+            isClearable
+          />
+        </div>
+        <div className="mb-">
+          <label className="block text-sm  text-gray-500 mb-2">Attribute</label>
+          <Select
+          isMulti
+            // value={selectedCategory}
+            onChange={handleAttributeChange}
+            options={attribute}
+            onMenuOpen={() => {
+              console.log("Menu opened");
+            }}
+            placeholder="Select a category"
+            styles={customStyles}
+            isClearable
+          />
+        </div>
+        {/* Thumbnail Upload */}
+        <div className=" cursor-pointer">
+          <ImageUpload
+            name="thumbnail"
+            control={control}
+            label="Thumbnail"
+            // required
+            onUpload={(file) => setValue("thumbnail", file)}
+            error={errors.thumbnail?.message}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -331,6 +440,23 @@ const [loading, setLoading] = useState(false);
           type="number"
           control={control}
           error={errors.stockQuantity?.message}
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <TextInput
+          name="brand"
+          label="Brand"
+          placeholder="Enter brand"
+          control={control}
+          rules={{ required: "Brand is required" }}
+          error={errors.brand?.message}
+        />
+        <TextInput
+          name="purchase_price"
+          label="Purchase Price"
+          placeholder="Enter purchase price"
+          control={control}
+          error={errors.purchase_price?.message}
         />
       </div>
 
@@ -366,7 +492,7 @@ const [loading, setLoading] = useState(false);
         type="submit"
         className="bg-red-600 text-white px-6 h-10 w-50 py-2 rounded-full"
       >
-        {loading ? <Spinner name={'creating'}/> : "Create Product"}
+        {loading ? <Spinner name={"creating"} /> : "Create Product"}
       </button>
     </form>
   );

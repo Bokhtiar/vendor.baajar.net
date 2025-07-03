@@ -2,7 +2,13 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import { FiUpload } from "react-icons/fi";
-import { SingleSelect, TextAreaInput, TextInput } from "../../components/input";
+import {
+ 
+
+  ImageUpload,
+  TextAreaInput,
+  TextInput,
+} from "../../components/input";
 import { NetworkServices } from "../../network";
 import Select from "react-select";
 import { Toastify } from "../../components/toastify";
@@ -23,21 +29,45 @@ const ProductUpdate = () => {
   const [product, setProduct] = useState(null);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [imageFiles, setImageFiles] = useState([]);
   const [images, setImages] = useState([null, null, null, null]);
   const [defaultimages, setDefaultImages] = useState([null, null, null, null]);
   const fileInputRef = useRef(null);
+  const [color, setColor] = useState([]);
+  const [unit, setunit] = useState([]);
+  const [attribute, setAttribute] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  const [selectedUnit, setSelectedUnit] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedAttribute, setSelectedAttribute] = useState(null);
 
   console.log("images", images);
+  const handleColorChange = (option) => {
+    setSelectedColor(option);
+    console.log(option);
+  };
+  const handleUnitChange = (option) => {
+    setSelectedUnit(option);
+    console.log(option);
+  };
+  const handleAttributeChange = (option) => {
+    setSelectedAttribute(option);
+    console.log(option);
+  };
+
+  console.log("selectedCategory", selectedCategory);
+  console.log("selectedSubCategory", selectedSubCategory);
+  console.log("selectedUnit", selectedUnit);
+  console.log("selectedColor", selectedColor);
+  console.log("selectedAttribute", selectedAttribute);
 
   const fetchProduct = async () => {
     try {
       const res = await NetworkServices.Product.show(id);
-      console.log("res", res);
+      console.log("ressingle", res);
       if (res?.status === 200) {
-        const data = res?.data?.data;
+        const data = res?.data?.data?.product;
 
         setProduct(data);
         setValue("productName", data.product_name);
@@ -49,6 +79,7 @@ const ProductUpdate = () => {
         setValue("sku", data.sku);
         setValue("shortDescription", data.description);
         setValue("stockQuantity", data.stock);
+        // setValue("thumbnail", data.thumbnail);
 
         setSelectedCategory({
           label: data.product_name,
@@ -62,38 +93,99 @@ const ProductUpdate = () => {
       console.error("Failed to fetch product:", error);
     }
   };
+  useEffect(() => {
+    fetchProduct();
+  }, []);
 
   const fetchCategories = useCallback(async () => {
     try {
-      const res = await NetworkServices.Category.index();
-      const formatted = res?.data?.data?.parent_category?.map((item) => ({
-        label: item.category_name,
-        value: item.category_id,
+      const response = await NetworkServices.Category.index();
+      console.log("resqwwwwponsessss", response);
+      const formattedCategories = response?.data?.data?.map((item) => ({
+        value: item.category_id, // dropdown value
+        label: item.category_name, // dropdown label
+        ...item,
       }));
-      setCategories(formatted);
-    } catch (err) {
-      console.error("Error fetching categories:", err);
-    }
-  }, []);
 
-  const fetchSubCategories = useCallback(async () => {
-    try {
-      const res = await NetworkServices.Category.index();
-      const formatted = res?.data?.data?.child_category?.map((item) => ({
-        label: item.category_name,
-        value: item.category_id,
-      }));
-      setSubCategories(formatted);
-    } catch (err) {
-      console.error("Error fetching subcategories:", err);
+      setCategories(formattedCategories); // <-- Create this state using useState
+
+      console.log("Fetched formatted categories:", formattedCategories);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
     }
   }, []);
 
   useEffect(() => {
     fetchCategories();
-    fetchSubCategories();
-    fetchProduct();
-  }, [fetchCategories, fetchSubCategories]);
+  }, [fetchCategories]);
+
+  useEffect(() => {
+    if (selectedCategory?.children) {
+      const mappedSubcategories = selectedCategory.children.map((child) => ({
+        value: child.category_id,
+        label: child.category_name,
+      }));
+      setSubCategories(mappedSubcategories);
+    } else {
+      setSubCategories([]);
+    }
+  }, [selectedCategory]);
+
+  const fetchColor = useCallback(async () => {
+    try {
+      const response = await NetworkServices.Color.index();
+      console.log("rcolor", response);
+      const formattedColor = response?.data?.data?.map((item) => ({
+        value: item.id, // dropdown value
+        label: item.name, // dropdown label
+        ...item,
+      }));
+
+      setColor(formattedColor); // <-- Create this state using useState
+
+      console.log("Fetched formatted categories:", formattedColor);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchColor();
+  }, [fetchColor]);
+
+  const fetchUnit = useCallback(async () => {
+    try {
+      const response = await NetworkServices.Unit.index();
+      console.log("unit", response);
+      const formattedUnit = response?.data?.data?.map((item) => ({
+        value: item.id, // dropdown value
+        label: item.name, // dropdown label
+        ...item,
+      }));
+
+      setunit(formattedUnit); // <-- Create this state using useState
+
+      console.log("Fetched formatted categories:", formattedUnit);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUnit();
+  }, [fetchUnit]);
+
+  useEffect(() => {
+    if (selectedUnit?.attributes) {
+      const mappedSubcategories = selectedUnit.attributes.map((child) => ({
+        value: child.id,
+        label: child.name,
+      }));
+      setAttribute(mappedSubcategories);
+    } else {
+      setAttribute([]);
+    }
+  }, [selectedUnit]);
 
   const handleImagesSelected = (e) => {
     const files = Array.from(e.target.files).slice(0, 4);
@@ -120,7 +212,7 @@ const ProductUpdate = () => {
       formData.append("sku", data.sku);
       formData.append("category_id", selectedCategory?.value);
       formData.append("purchase_price", "222.00");
-      formData.append("stock",data.stockQuantity);
+      formData.append("stock", data.stockQuantity);
       formData.append("status", "1");
 
       if (imageFiles.length > 0) {
@@ -214,6 +306,24 @@ const ProductUpdate = () => {
         control={control}
         error={errors.productName?.message}
       />
+      <div className="grid grid-cols-2 gap-4">
+        <TextInput
+          name="shortName"
+          label="Short Name"
+          placeholder="Enter short name"
+          control={control}
+          rules={{ required: "Short name is required" }}
+          error={errors.shortName?.message}
+        />
+        <TextInput
+          name="slug"
+          label="Slug"
+          placeholder="Enter slug"
+          control={control}
+          rules={{ required: "Slug is required" }}
+          error={errors.slug?.message}
+        />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -242,24 +352,62 @@ const ProductUpdate = () => {
             isClearable
           />
         </div>
-        <TextInput
-          name="shortName"
-          label="Short Name"
-          control={control}
-          error={errors.shortName?.message}
-        />
-        <TextInput
-          name="slug"
-          label="Slug"
-          control={control}
-          error={errors.slug?.message}
-        />
-        <TextInput
-          name="brand"
-          label="Brand"
-          control={control}
-          error={errors.brand?.message}
-        />
+        <div className="mb-">
+          <label className="block text-sm  text-gray-500 mb-2">Color</label>
+          <Select
+            isMulti
+            // value={selectedCategory}
+            onChange={handleColorChange}
+            options={color}
+            onMenuOpen={() => {
+              console.log("Menu opened");
+            }}
+            placeholder="Select a color"
+            styles={customStyles}
+            isClearable
+          />
+        </div>
+        <div className="mb-">
+          <label className="block text-sm  text-gray-500 mb-2">Unit</label>
+          <Select
+            // value={selectedCategory}
+            onChange={handleUnitChange}
+            options={unit}
+            onMenuOpen={() => {
+              console.log("Menu opened");
+            }}
+            placeholder="Select a color"
+            styles={customStyles}
+            isClearable
+          />
+        </div>
+        <div className="mb-">
+          <label className="block text-sm  text-gray-500 mb-2">Attribute</label>
+          <Select
+            isMulti
+            // value={selectedCategory}
+            onChange={handleAttributeChange}
+            options={attribute}
+            onMenuOpen={() => {
+              console.log("Menu opened");
+            }}
+            placeholder="Select a category"
+            styles={customStyles}
+            isClearable
+          />
+        </div>
+        {/* Thumbnail Upload */}
+        <div className=" cursor-pointer">
+          <ImageUpload
+            name="thumbnail"
+            control={control}
+            label="Thumbnail"
+            // required
+            onUpload={(file) => setValue("thumbnail", file)}
+            error={errors.thumbnail?.message}
+          />
+        </div>
+
         <TextInput
           name="sku"
           label="SKU"
@@ -273,6 +421,19 @@ const ProductUpdate = () => {
           type="number"
           control={control}
           error={errors.stockQuantity?.message}
+        />
+        <TextInput
+          name="brand"
+          label="Brand"
+          control={control}
+          error={errors.brand?.message}
+        />
+        <TextInput
+          name="purchase_price"
+          label="Purchase Price"
+          placeholder="Enter purchase price"
+          control={control}
+          error={errors.purchase_price?.message}
         />
         <TextInput
           name="regularPrice"
@@ -299,7 +460,7 @@ const ProductUpdate = () => {
         type="submit"
         className="bg-red-600 text-white px-6 py-2 rounded-full"
       >
-       {loading ? <Spinner name={'Updating'}/> : "Update Product"}
+        {loading ? <Spinner name={"Updating"} /> : "Update Product"}
       </button>
     </form>
   );
