@@ -451,21 +451,27 @@ export const ImageUpload = (props) => {
       required: props.required ? "Image is required" : false,
       validate: (file) => {
         if (!file && props.required) return "Image is required";
-        return !file || file.size < 2 * 1024 * 1024 || "File must be less than 2MB";
+        return !file || file.size < 5 * 1024 * 1024 || "File must be less than 2MB";
       },
     },
     defaultValue: props.defaultValue || null,
   });
 
+  // const [preview, setPreview] = useState(
+  //   value ? URL.createObjectURL(value) : props.defaultValue || null
+  // );
   const [preview, setPreview] = useState(
-    value ? URL.createObjectURL(value) : props.defaultValue || null
-  );
+  value instanceof File
+    ? URL.createObjectURL(value)
+    : props.defaultValue || null
+);
+
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       onChange(file);
-      setPreview(URL.createObjectURl(file)); // Show file preview
+      setPreview(URL.createObjectURL(file)); // Show file preview
       props.onUpload?.(file); // Callback for additional handling
     }
   }; 

@@ -2,13 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import { FiUpload } from "react-icons/fi";
-import {
- 
-
-  ImageUpload,
-  TextAreaInput,
-  TextInput,
-} from "../../components/input";
+import { ImageUpload, TextAreaInput, TextInput } from "../../components/input";
 import { NetworkServices } from "../../network";
 import Select from "react-select";
 import { Toastify } from "../../components/toastify";
@@ -34,13 +28,17 @@ const ProductUpdate = () => {
   const [defaultimages, setDefaultImages] = useState([null, null, null, null]);
   const fileInputRef = useRef(null);
   const [color, setColor] = useState([]);
+  const [colorShow, setColorShow] = useState([]);
   const [unit, setunit] = useState([]);
+  const [brand, setBrand] = useState([]);
   const [attribute, setAttribute] = useState([]);
+  const [singleAttribute, setSingleAttribute] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedAttribute, setSelectedAttribute] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState(null);
 
   console.log("images", images);
   const handleColorChange = (option) => {
@@ -55,12 +53,14 @@ const ProductUpdate = () => {
     setSelectedAttribute(option);
     console.log(option);
   };
+  const handleBrandChange = (option) => {
+    setSelectedBrand(option);
+    console.log(option);
+  };
 
-  console.log("selectedCategory", selectedCategory);
-  console.log("selectedSubCategory", selectedSubCategory);
-  console.log("selectedUnit", selectedUnit);
-  console.log("selectedColor", selectedColor);
-  console.log("selectedAttribute", selectedAttribute);
+  console.log("selectedBrand", selectedBrand);
+
+  console.log("unit", unit);
 
   const fetchProduct = async () => {
     try {
@@ -68,10 +68,15 @@ const ProductUpdate = () => {
       console.log("ressingle", res);
       if (res?.status === 200) {
         const data = res?.data?.data?.product;
+        const colorData = res?.data?.data?.colors;
+        const attributeData = res?.data?.data?.attributes;
 
         setProduct(data);
+        setColorShow(colorData);
+        setSingleAttribute(attributeData);
+
         setValue("productName", data.product_name);
-        setValue("shortName", data.short_name);
+        setValue("shortName", data.short_description);
         setValue("slug", data.slug);
         setValue("brand", data.brand);
         setValue("regularPrice", data.reguler_price);
@@ -79,11 +84,12 @@ const ProductUpdate = () => {
         setValue("sku", data.sku);
         setValue("shortDescription", data.description);
         setValue("stockQuantity", data.stock);
-        // setValue("thumbnail", data.thumbnail);
+        setValue("purchase_price", data.purchase_price);
+        // setValue("sub_category", data.sub_category_id);
 
         setSelectedCategory({
-          label: data.product_name,
-          value: data.category_id,
+          label: data.category.category_name,
+          value: data.category.category_id,
         });
 
         // Optional: Set initial preview images if stored
@@ -187,6 +193,28 @@ const ProductUpdate = () => {
     }
   }, [selectedUnit]);
 
+  const fetchBrand = useCallback(async () => {
+    try {
+      const response = await NetworkServices.Brand.index();
+      console.log("brand", response);
+      const formattedUnit = response?.data?.data?.map((item) => ({
+        value: item.id, // dropdown value
+        label: item.name, // dropdown label
+        ...item,
+      }));
+
+      setBrand(formattedUnit); // <-- Create this state using useState
+
+      console.log("Fetched formatted categories:", formattedUnit);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBrand();
+  }, [fetchBrand]);
+
   const handleImagesSelected = (e) => {
     const files = Array.from(e.target.files).slice(0, 4);
     const previews = files.map((file) => URL.createObjectURL(file));
@@ -202,24 +230,63 @@ const ProductUpdate = () => {
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append("product_name", data.productName);
-      formData.append("short_name", data.shortName);
-      formData.append("slug", data.slug);
-      formData.append("brand", data.brand);
-      formData.append("reguler_price", data.regularPrice);
-      formData.append("offer_price", data.offerPrice);
-      formData.append("description", data.shortDescription);
-      formData.append("sku", data.sku);
-      formData.append("category_id", selectedCategory?.value);
-      formData.append("purchase_price", "222.00");
-      formData.append("stock", data.stockQuantity);
-      formData.append("status", "1");
+      // formData.append("product_name", data.productName);
+      // formData.append("short_name", data.shortName);
+      // formData.append("slug", data.slug);
+      // formData.append("brand", data.brand);
+      // formData.append("reguler_price", data.regularPrice);
+      // formData.append("offer_price", data.offerPrice);
+      // formData.append("description", data.shortDescription);
+      // formData.append("sku", data.sku);
+      // formData.append("category_id", selectedCategory?.value);
+      // formData.append("purchase_price", "222.00");
+      // formData.append("stock", data.stockQuantity);
+      // formData.append("status", "1");
 
-      if (imageFiles.length > 0) {
+      // if (imageFiles.length > 0) {
+      //   imageFiles.forEach((file, index) => {
+      //     formData.append(`product_image[${index}]`, file);
+      //   });
+      // }
+      formData.append("product_name", data?.productName || "");
+      formData.append("short_description", data?.shortName || "");
+      formData.append("category_id", selectedCategory?.value || "");
+      formData.append("brand_id", selectedBrand?.value || "");
+      formData.append("sub_category_id", selectedSubCategory?.value || "");
+      formData.append(
+        "color_id",
+        JSON.stringify(selectedColor?.map((c) => c.value) || [])
+      );
+      formData.append(
+        "attribute_id",
+        JSON.stringify(selectedAttribute?.map((c) => c.value) || [])
+      );
+      formData.append("unit_id", JSON.stringify(selectedUnit?.value || []));
+      formData.append("slug", data?.slug || "");
+      formData.append("reguler_price", data?.regularPrice || "");
+      formData.append("offer_price", data?.offerPrice || "");
+      formData.append("stock", data.stockQuantity || "");
+      formData.append("status", "1");
+      formData.append("description", data?.shortDescription || "");
+      formData.append("color", JSON.stringify(data.color || []));
+      formData.append("size", JSON.stringify(data.size || []));
+      formData.append("sku", data.sku || "");
+      formData.append("purchase_price", data.purchase_price || "");
+      formData.append("lat", data.lat || "");
+      formData.append("long", data.long || "");
+
+      // Thumbnail single image
+      if (data.thumbnail) {
+        formData.append("thumbnail", data.thumbnail);
+      }
+
+      // product_image multiple images
+      if (imageFiles) {
         imageFiles.forEach((file, index) => {
           formData.append(`product_image[${index}]`, file);
         });
       }
+
       formData.append("_method", "PUT");
       const res = await NetworkServices.Product.update(id, formData);
       if (res?.status === 200) {
@@ -333,7 +400,7 @@ const ProductUpdate = () => {
             onChange={setSelectedCategory}
             options={categories}
             styles={customStyles}
-            // placeholder="Select category"
+            placeholder="Select category"
             isClearable
             // placeholder={
             //   categories.find((item) => item?.category_id == product?.category_id)
@@ -344,10 +411,16 @@ const ProductUpdate = () => {
         <div>
           <label className="text-sm mb-2 text-gray-500">Subcategory</label>
           <Select
+            name="sub_category"
             value={selectedSubCategory}
             onChange={setSelectedSubCategory}
             options={subcategories}
-            placeholder="Select subcategory"
+            // placeholder={product?.product_name || "select sub categories"}
+            placeholder={
+              categories.find(
+                (item) => item?.category_id == product?.sub_category_id
+              )?.category_name ?? "select Sub Categories"
+            }
             styles={customStyles}
             isClearable
           />
@@ -362,7 +435,11 @@ const ProductUpdate = () => {
             onMenuOpen={() => {
               console.log("Menu opened");
             }}
-            placeholder="Select a color"
+            placeholder={
+              colorShow?.length > 0
+                ? colorShow.map((c) => c.name).join(" , ")
+                : "Select a color"
+            }
             styles={customStyles}
             isClearable
           />
@@ -370,13 +447,16 @@ const ProductUpdate = () => {
         <div className="mb-">
           <label className="block text-sm  text-gray-500 mb-2">Unit</label>
           <Select
-            // value={selectedCategory}
+            value={selectedUnit}
             onChange={handleUnitChange}
             options={unit}
             onMenuOpen={() => {
               console.log("Menu opened");
             }}
-            placeholder="Select a color"
+            placeholder={
+              unit?.find((c) => c?.value == product?.unit_id)?.label ||
+              "Select unit"
+            }
             styles={customStyles}
             isClearable
           />
@@ -391,7 +471,11 @@ const ProductUpdate = () => {
             onMenuOpen={() => {
               console.log("Menu opened");
             }}
-            placeholder="Select a category"
+            placeholder={
+              singleAttribute?.length > 0
+                ? singleAttribute.map((c) => c.name).join(" , ")
+                : "Select a color"
+            }
             styles={customStyles}
             isClearable
           />
@@ -404,6 +488,7 @@ const ProductUpdate = () => {
             label="Thumbnail"
             // required
             onUpload={(file) => setValue("thumbnail", file)}
+            imgUrl={product?.thumbnail}
             error={errors.thumbnail?.message}
           />
         </div>
@@ -422,12 +507,23 @@ const ProductUpdate = () => {
           control={control}
           error={errors.stockQuantity?.message}
         />
-        <TextInput
-          name="brand"
-          label="Brand"
-          control={control}
-          error={errors.brand?.message}
-        />
+        <div className="mb-">
+          <label className="block text-sm  text-gray-500 mb-2">Brand</label>
+          <Select
+            // value={selectedCategory}
+            onChange={handleBrandChange}
+            options={brand}
+            onMenuOpen={() => {
+              console.log("Menu opened");
+            }}
+            placeholder={
+              brand?.find((c) => c?.value == product?.brand_id)?.label ||
+              "Select unit"
+            }
+            styles={customStyles}
+            isClearable
+          />
+        </div>
         <TextInput
           name="purchase_price"
           label="Purchase Price"
@@ -438,12 +534,14 @@ const ProductUpdate = () => {
         <TextInput
           name="regularPrice"
           label="Regular Price"
+          placeholder="regular Price"
           control={control}
           error={errors.regularPrice?.message}
         />
         <TextInput
           name="offerPrice"
           label="Offer Price"
+            placeholder="offer Price"
           control={control}
           error={errors.offerPrice?.message}
         />
@@ -452,6 +550,7 @@ const ProductUpdate = () => {
       <TextAreaInput
         name="shortDescription"
         label="Short Description"
+        placeholder="short description"
         control={control}
         error={errors.shortDescription?.message}
       />

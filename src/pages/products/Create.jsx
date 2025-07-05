@@ -12,6 +12,7 @@ import Select from "react-select";
 import { Toastify } from "../../components/toastify";
 import { Navigate, useNavigate } from "react-router-dom";
 import Spinner from "../../utils/loading/spinner";
+import { networkErrorHandeller } from "../../utils/helpers";
 
 const ProductCreate = () => {
   const {
@@ -30,6 +31,7 @@ const ProductCreate = () => {
   const [categories, setCategories] = useState([]);
   const [color, setColor] = useState([]);
   const [unit, setunit] = useState([]);
+  const [brand, setBrand] = useState([]);
   const [attribute, setAttribute] = useState([]);
   const [subcategories, setSubCategories] = useState([]);
   // const selectedCategoryId = watch("category_id");
@@ -38,6 +40,7 @@ const ProductCreate = () => {
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState(null);
   const [selectedAttribute, setSelectedAttribute] = useState(null);
 
   const navigate = useNavigate();
@@ -54,6 +57,10 @@ const ProductCreate = () => {
     setSelectedColor(option);
     console.log(option);
   };
+  const handleBrandChange = (option) => {
+    setSelectedBrand(option);
+    console.log(option);
+  };
   const handleUnitChange = (option) => {
     setSelectedUnit(option);
     console.log(option);
@@ -64,12 +71,6 @@ const ProductCreate = () => {
   };
 
 
-
-  console.log("selectedCategory", selectedCategory);
-  console.log("selectedSubCategory", selectedSubCategory);
-  console.log("selectedUnit", selectedUnit);
-  console.log("selectedColor", selectedColor);
-  console.log("selectedAttribute", selectedAttribute);
 
   // useEffect(() => {
   //   setValue("subCategory", null);
@@ -177,6 +178,28 @@ const ProductCreate = () => {
     }
   }, [selectedUnit]);
 
+    const fetchBrand = useCallback(async () => {
+    try {
+      const response = await NetworkServices.Brand.index();
+      console.log("Brand", response);
+      const formattedUnit = response?.data?.data?.map((item) => ({
+        value: item.id, // dropdown value
+        label: item.name, // dropdown label
+        ...item,
+      }));
+
+      setBrand(formattedUnit); // <-- Create this state using useState
+
+      console.log("Fetched formatted categories:", formattedUnit);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBrand();
+  }, [fetchBrand]);
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -216,16 +239,22 @@ const ProductCreate = () => {
       // setBtnLoading(true);
 
       const formData = new FormData();
-      formData.append("product_name", data?.productName);
-      formData.append("short_name", data?.shortName);
-      formData.append("category_id", selectedCategory?.value);
-      formData.append("sub_category_id", selectedSubCategory?.value);
-      formData.append("color_id", JSON.stringify(selectedColor?.map(c => c.value) || []));
-      formData.append("attribute_id", JSON.stringify(selectedAttribute?.map(c => c.value) || []));
+      formData.append("product_name", data?.productName || "");
+      formData.append("short_description", data?.shortName || "");
+      formData.append("category_id", selectedCategory?.value || "");
+      formData.append("brand_id", selectedBrand?.value || "");
+      formData.append("sub_category_id", selectedSubCategory?.value || "");
+      formData.append(
+        "color_id",
+        JSON.stringify(selectedColor?.map((c) => c.value) || [])
+      );
+      formData.append(
+        "attribute_id",
+        JSON.stringify(selectedAttribute?.map((c) => c.value) || [])
+      );
       formData.append("unit_id", JSON.stringify(selectedUnit?.value || []));
-      formData.append("slug", data?.slug);
-      formData.append("brand", data?.brand || ""); // if brand is null
-      formData.append("reguler_price", data?.regularPrice);
+      formData.append("slug", data?.slug || "");
+      formData.append("reguler_price", data?.regularPrice || "");
       formData.append("offer_price", data?.offerPrice || "");
       formData.append("stock", data.stockQuantity || "");
       formData.append("status", "1");
@@ -233,7 +262,7 @@ const ProductCreate = () => {
       formData.append("color", JSON.stringify(data.color || []));
       formData.append("size", JSON.stringify(data.size || []));
       formData.append("sku", data.sku || "");
-      formData.append("purchase_price", "222.00");
+      formData.append("purchase_price", data.purchase_price || "");
       formData.append("lat", data.lat || "");
       formData.append("long", data.long || "");
 
@@ -257,7 +286,7 @@ const ProductCreate = () => {
         navigate("/dashboard/products"); // Change to your route
       }
     } catch (error) {
-      // networkErrorHandeller(error);
+      networkErrorHandeller(error);
       console.log(error);
     } finally {
       // setBtnLoading(false);
@@ -370,7 +399,7 @@ const ProductCreate = () => {
         <div className="mb-">
           <label className="block text-sm  text-gray-500 mb-2">Color</label>
           <Select
-          isMulti
+            isMulti
             // value={selectedCategory}
             onChange={handleColorChange}
             options={color}
@@ -399,7 +428,7 @@ const ProductCreate = () => {
         <div className="mb-">
           <label className="block text-sm  text-gray-500 mb-2">Attribute</label>
           <Select
-          isMulti
+            isMulti
             // value={selectedCategory}
             onChange={handleAttributeChange}
             options={attribute}
@@ -430,7 +459,7 @@ const ProductCreate = () => {
           label="SKU"
           placeholder="Enter SKU"
           control={control}
-          rules={{ required: "SKU is required" }}
+          // rules={{ required: "SKU is required" }}
           error={errors.sku?.message}
         />
         <TextInput
@@ -443,14 +472,28 @@ const ProductCreate = () => {
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <TextInput
+        {/* <TextInput
           name="brand"
           label="Brand"
           placeholder="Enter brand"
           control={control}
-          rules={{ required: "Brand is required" }}
+          // rules={{ required: "Brand is required" }}
           error={errors.brand?.message}
-        />
+        /> */}
+        <div className="mb-">
+          <label className="block text-sm  text-gray-500 mb-2">Brand</label>
+          <Select
+            // value={selectedCategory}
+            onChange={handleBrandChange}
+            options={brand}
+            onMenuOpen={() => {
+              console.log("Menu opened");
+            }}
+            placeholder="Select a Brand"
+            styles={customStyles}
+            isClearable
+          />
+        </div>
         <TextInput
           name="purchase_price"
           label="Purchase Price"
@@ -483,7 +526,7 @@ const ProductCreate = () => {
           placeholder="Enter short description"
           label="Short Description"
           control={control}
-          rules={{ required: "Short description is required" }}
+          // rules={{ required: "Short description is required" }}
           error={errors.shortDescription?.message}
         />
       </div>

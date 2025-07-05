@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { Toastify } from '../../components/toastify';
+import { Toastify } from "../../components/toastify";
 /* Set token */
 export const setToken = async (token) => {
   Cookies.set("bajjar-vendor", token, { expires: 7, path: "/" }); // Set token with expiration (7 days) and path
@@ -32,14 +32,29 @@ export const isValidEmail = () => {
 };
 
 /* Global network error handeller */
+// export const networkErrorHandeller = (error) => {
+//   if (
+//     error &&
+//     error.response &&
+//     error.response.data &&
+//     error.response.data.errors
+//   ) {
+//     return Toastify.Error(error.response.data.errors[0]);
+//   } else {
+//     return Toastify.Error("Something going wrong, Try again.");
+//   }
+// };
+
 export const networkErrorHandeller = (error) => {
   if (
-    error &&
-    error.response &&
-    error.response.data &&
+    error ||
+    error.response ||
+    error.response.data ||
     error.response.data.errors
   ) {
-    return Toastify.Error(error.response.data.errors[0]);
+    return Toastify.Error(
+      error.response.data.message || error.response.data.error[0]
+    );
   } else {
     return Toastify.Error("Something going wrong, Try again.");
   }
