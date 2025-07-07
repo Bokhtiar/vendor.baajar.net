@@ -6,6 +6,7 @@ const ProcessedOrder = () => {
   const location = useLocation();
 
   // Parse query parameters
+  // processing
   const queryParams = new URLSearchParams(location.search);
   const status = queryParams.get("status"); // ⬅️ get `status` from URL
 console.log(status);

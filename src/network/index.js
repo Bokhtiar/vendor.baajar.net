@@ -4,11 +4,15 @@ import * as Color from "../network/color.network";
 import * as Unit from "../network/unit.network";
 import * as Attribute from "../network/attribute.network";
 import * as Brand from "../network/brand.network"
+import * as Order from "../network/order.network"
+import * as Inventory from "../network/inventory.network"
 export const NetworkServices = {
  Category,
  Product,
  Color,
  Unit,
  Attribute,
- Brand
+ Brand,
+ Order,
+ Inventory
 };

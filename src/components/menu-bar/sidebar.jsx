@@ -45,7 +45,7 @@ const Sidebar = ({
         {
           title: "Processed Orders",
           path: "/dashboard/processed-orders",
-          status: "processed",
+          status: "processing",
         },
         {
           title: "Shipped Orders",

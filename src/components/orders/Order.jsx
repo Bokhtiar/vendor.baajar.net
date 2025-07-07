@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { RiEditFill } from "react-icons/ri";
 import OrderModal from "../modal/orderStatus";
 import { OrderTableSkeleton } from "../Skeleton/Skeleton";
+import { NetworkServices } from "../../network";
+import { networkErrorHandeller } from "../../utils/helpers";
 
 const getStatusBadge = (status) => {
   const colorMap = {
@@ -10,93 +12,117 @@ const getStatusBadge = (status) => {
     shipped: "bg-[#A600FF] text-white",
     delivered: "bg-[#13BF00] text-white",
     cancelled: "bg-[#DC2626] text-white",
-    processed: "bg-[#3ABFEF] text-white",
+    processing: "bg-[#3ABFEF] text-white",
   };
   return (
-    <span className={`px-2 py-1 rounded-full text-xs w-24 h-6 text-center leading-4 ${colorMap[status] || "bg-gray-300 text-black"}`}>
+    <span
+      className={`px-2 py-1 rounded-full text-xs w-24 h-6 text-center leading-4 ${
+        colorMap[status] || "bg-gray-300 text-black"
+      }`}
+    >
       {status}
     </span>
   );
 };
 
-const allOrders = [
-  {
-    date: "26 Apr 25",
-    time: "10.30 AM",
-    orderNo: "48956486",
-    customer: "Bakhtiar Tashar",
-    quantity: 2,
-    price: 960,
-    status: "pending",
-    payment: "Unpaid",
-  },
-  {
-    date: "24 Apr 25",
-    time: "12.15 PM",
-    orderNo: "48956487",
-    customer: "Samira Hossain",
-    quantity: 1,
-    price: 480,
-    status: "delivered",
-    payment: "Paid",
-  },
-  {
-    date: "23 Apr 25",
-    time: "09.45 AM",
-    orderNo: "48956488",
-    customer: "Rahim Uddin",
-    quantity: 3,
-    price: 1440,
-    status: "shipped",
-    payment: "Paid",
-  },
-  {
-    date: "23 Apr 25",
-    time: "09.45 AM",
-    orderNo: "48956488",
-    customer: "Rahim Uddin",
-    quantity: 3,
-    price: 1440,
-    status: "processed",
-    payment: "Paid",
-  },
-  {
-    date: "22 Apr 25",
-    time: "03.20 PM",
-    orderNo: "48956489",
-    customer: "Tania Akter",
-    quantity: 1,
-    price: 480,
-    status: "cancelled",
-    payment: "Refunded",
-  },
-];
+
 
 const Orders = ({ status }) => {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  const [totalRows, setTotalRows] = useState(0);
+  const [data, setData] = useState([]);
+
+  const handlePageChange = (page) => {
+    if (!loading) {
+      setCurrentPage(page);
+    }
+  };
+
+  const handleRowsPerPageChange = (newPerPage, page) => {
+    setPerPage(newPerPage);
+    setCurrentPage(page);
+  };
+
+  console.log("totalRows",totalRows)
+
+  // Fetch categories from API
+  const fetchOrder = useCallback(async () => {
+    setLoading(true);
+    try {
+      const queryParams = new URLSearchParams();
+      queryParams.append("page", currentPage);
+      queryParams.append("per_page", perPage);
+      // if (search) {
+      //   queryParams.append("search", search);
+      // }
+      const response = await NetworkServices.Order.index(
+        queryParams.toString()
+      );
+      console.log("response", response);
+
+      if (response?.status === 200) {
+        setData(response?.data?.data?.data || []);
+        setTotalRows(response?.data?.data?.total || 0);
+      }
+    } catch (error) {
+      console.log(error);
+      networkErrorHandeller(error);
+    }
+    setLoading(false);
+  }, [currentPage, perPage]);
+
+  useEffect(() => {
+    fetchOrder();
+  }, [fetchOrder]);
 
   const filteredOrders = status
-    ? allOrders.filter((order) => order.status === status)
-    : allOrders;
+    ? data.filter((order) => order.status === status)
+    : data;
 
   const columns = [
     {
       name: "SN",
       cell: (row, index) => (
-        <span className="font-medium">{String(index + 1).padStart(2, "0")}.</span>
+        <span className="font-medium">
+          {String(index + 1).padStart(2, "0")}.
+        </span>
       ),
       width: "70px",
       center: true,
     },
     {
-      name: "Date",
+      name: "Date & Time",
       sortable: true,
-      cell: (row) => <div>{row.date}</div>,
+      cell: (row) => {
+        const dateObj = new Date(row.created_at);
+
+        const date = dateObj.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+
+        const time = dateObj.toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+
+        return (
+          <div className="flex flex-col leading-tight">
+            <span>{date}</span>
+            <span className="text-sm text-gray-500">{time}</span>
+          </div>
+        );
+      },
     },
-    { name: "Customer", selector: (row) => row.customer },
-    { name: "Order No", selector: (row) => row.orderNo },
+
+    { name: "Customer", selector: (row) => row?.order?.user?.name },
+    { name: "Order No", selector: (row) => row.id },
     {
       name: "Quantity",
       cell: (row) => <div>{row.quantity} Pcs</div>,
@@ -104,7 +130,7 @@ const Orders = ({ status }) => {
     },
     {
       name: "Price",
-      selector: (row) => `${row.price}`,
+      selector: (row) => `${row.total}`,
       center: true,
     },
     {
@@ -114,7 +140,7 @@ const Orders = ({ status }) => {
     },
     {
       name: "Payment",
-      cell: (row) => row.payment,
+      cell: (row) => row.order.payment_method,
       center: true,
     },
     {
@@ -144,7 +170,6 @@ const Orders = ({ status }) => {
         fontWeight: "600",
         fontSize: "14px",
         color: "#6B7280",
-        
       },
     },
     rows: {
@@ -162,23 +187,30 @@ const Orders = ({ status }) => {
   };
 
   return (
-    <div className="w-full p-4 font-poppins relative">
+    <div className="w-full  font-poppins relative">
       {loading ? (
-  <OrderTableSkeleton />
-) : (
-  <DataTable
-    columns={columns}
-    data={filteredOrders}
-    customStyles={customStyles}
-    pagination
-    highlightOnHover
-    responsive
-  />
-)}
+        <OrderTableSkeleton />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={filteredOrders}
+          customStyles={customStyles}
+          pagination
+          highlightOnHover
+          responsive
+          paginationServer
+          paginationTotalRows={totalRows}
+          paginationPerPage={perPage}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowsPerPageChange}
+          paginationDefaultPage={currentPage}
+        />
+      )}
 
       {isOpen && selectedOrder && (
         <OrderModal
           isOpen={isOpen}
+          fetchOrder={fetchOrder}
           order={selectedOrder}
           onClose={() => {
             setIsOpen(false);
