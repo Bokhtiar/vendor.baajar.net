@@ -5,12 +5,12 @@ import { Toastify } from "../../components/toastify";
 import { publicRequest } from "../../config/axios.config";
 import { ImageUpload, TextInput } from "../../components/input";
 import { networkErrorHandeller } from "../../utils/helpers";
+import useCurrentLocation from "../../components/hook/useCurrentLocation ";
 
 const Register = () => {
   const {
     handleSubmit,
     control,
-    register,
     setValue,
     formState: { errors },
     trigger,
@@ -18,8 +18,10 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { latLng, error } = useCurrentLocation();
+  
+
   const onSubmit = async (data) => {
-    
     setLoading(true);
     const formData = new FormData();
 
@@ -32,9 +34,12 @@ const Register = () => {
     formData.append("logo", data.logo);
     formData.append("tread_licence", data.tread_licence);
 
+    formData.append("latitude", latLng.lat);
+    formData.append("longitude", latLng.lng);
+
     try {
       const response = await publicRequest.post("vendor/register", formData);
-      
+
       Toastify.Success("Registration successful!");
       navigate(`/verify-otp?id=${response?.data?.data?.phone_number}`);
     } catch (error) {
@@ -137,7 +142,7 @@ const Register = () => {
               <ImageUpload
                 name="logo"
                 control={control}
-                  label="Logo"
+                label="Logo"
                 // required
                 onUpload={(file) => setValue("logo", file)}
                 error={errors.logo?.message}
@@ -154,7 +159,6 @@ const Register = () => {
                 error={errors.logo?.message}
               />
             </div>
-
 
             {/* Submit */}
             <button

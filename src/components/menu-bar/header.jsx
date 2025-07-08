@@ -8,8 +8,18 @@ import { FaCheck } from "react-icons/fa6";
 import { RiMenuUnfold3Fill } from "react-icons/ri";
 import { FaFlag } from "react-icons/fa";
 import { HiBars3 } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
+import { removeToken } from "../../utils/helpers";
 
-const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuStyle,setMenuPosition,menuPosition }) => {
+const Header = ({
+  toggleSidebar,
+  menuOpen,
+  setMenuStyle,
+  setOpenMobileMenu,
+  menuStyle,
+  setMenuPosition,
+  menuPosition,
+}) => {
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
   // const [header, setHeader] = useState("fixed");
@@ -22,6 +32,12 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuS
   const [isOpen, setIsOpen] = useState(false);
   const [check, setCheck] = useState("");
   const [flagUrl, setFlagUrl] = useState("");
+  const navigate = useNavigate();
+
+  const logout = () => {
+    removeToken();
+    navigate(`/login?redirectFrom=${window.location.pathname}`);
+  };
 
   const [theme, setTheme] = useState(() => {
     return (
@@ -90,21 +106,19 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuS
   return (
     <div
       className={`bg-lightCard dark:bg-darkCard flex items-center justify-between  py-4 px-2 shadow-md dark:shadow-md w-full ${
-        menuPosition === "fixed"
-          ? "fixed top-0 right-0"
-          : "relative"
+        menuPosition === "fixed" ? "fixed top-0 right-0" : "relative"
       } z-10  `}
     >
       <div>
-  <button
-    onClick={() => setOpenMobileMenu(true)}
-    className="cursor-pointer text-2xl p-2 hover:text-primary"
-    aria-label="Open menu"
-  >
-    <HiBars3 />
-  </button>
-</div>
-      
+        <button
+          onClick={() => setOpenMobileMenu(true)}
+          className="cursor-pointer text-2xl p-2 hover:text-primary"
+          aria-label="Open menu"
+        >
+          <HiBars3 />
+        </button>
+      </div>
+
       {menuStyle == "click" && !menuOpen && (
         <RiMenuUnfold3Fill
           onClick={() => toggleSidebar()}
@@ -152,7 +166,11 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuS
             className="flex gap-3 items-center border-r-2 pr-5 border-lightBorder cursor-pointer"
             onClick={() => setShowPopup(!showPopup)}
           >
-            <img src={'image/login-profile.svg'} alt="User" className="w-9 h-9 bg-gray-200 rounded-full" />
+            <img
+              src={"image/login-profile.svg"}
+              alt="User"
+              className="w-9 h-9 bg-gray-200 rounded-full"
+            />
             <div className="flex items-center flex-col dark:text-darkTitle">
               <span className="font-bold text-[14px] text-left block">
                 Jone
@@ -162,7 +180,33 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuS
           </div>
 
           {/* Popup Dropdown with Animation */}
+                      {showPopup && (
+              <div
+                className={`absolute right-0 mt-2 w-48 bg-light shadow-lg rounded-lg py-2 dark:bg-darkCard dark:text-darkTitle 
+   transition-all duration-300 z-50 `}
+              >
+                <ul>
+                  <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
+                    <FiUser className="text-lg" />
+                    <span>Profile</span>
+                    {/* Hover underline */}
+                    <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
+                  </li>
 
+                  <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
+                    <FiSettings className="text-lg" />
+                    <span>Settings</span>
+                    <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
+                  </li>
+
+                  <li onClick={() => logout()} className="flex items-center gap-3 px-4 py-2 cursor-pointer text-red-500 group relative">
+                    <FiLogOut className="text-lg" />
+                    <span>Logout</span>
+                    <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-red-500 transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
+                  </li>
+                </ul>
+              </div>
+            )}
         </div>
 
         <CiSettings

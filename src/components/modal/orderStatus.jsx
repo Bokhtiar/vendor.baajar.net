@@ -6,6 +6,8 @@ import { Toastify } from "../toastify";
 const OrderModal = ({ isOpen, onClose, order,fetchOrder }) => {
   if (!isOpen) return null;
 
+  console.log("order",order)
+
   const orderStates = [
     "pending",
     "processing",
@@ -78,22 +80,22 @@ const OrderModal = ({ isOpen, onClose, order,fetchOrder }) => {
               </h3>
               <div className="flex flex-col sm:flex-row gap-4 items-center p-4 border border-gray-200 rounded-lg">
                 <img
-                  src="/image/products/image.svg"
+                  src={`${import.meta.env.VITE_API_SERVER}${order?.items[0]?.product?.thumbnail}`}
                   alt="product"
                   className="w-20 h-24 object-cover rounded"
                 />
                 <div className="text-sm flex flex-col sm:flex-row justify-between w-full gap-4">
                   <div>
                     <p>Product Name:</p>
-                    <p className="font-semibold">MB Undershirt For Men</p>
+                    <p className="font-semibold">{order?.items[0]?.product?.product_name}</p>
                   </div>
                   <div>
                     <p>Quantity:</p>
-                    <p className="text-center font-semibold">2</p>
+                    <p className="text-center font-semibold">{order?.items[0]?.quantity}</p>
                   </div>
                   <div>
                     <p>Total Price:</p>
-                    <p className="text-center font-semibold">480</p>
+                    <p className="text-center font-semibold">{order?.total}</p>
                   </div>
                 </div>
               </div>
