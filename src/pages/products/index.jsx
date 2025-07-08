@@ -100,7 +100,7 @@ const ProductTable = () => {
       name: "Photo",
       cell: (row) => (
         <img
-          src={`${import.meta.env.VITE_API_SERVER}${row?.product_image?.[0]}`}
+          src={`${import.meta.env.VITE_API_SERVER}${row?.thumbnail}`}
           alt={row.product_name}
           className="w-24 h-24 object-cover rounded-md shadow-sm"
         />
