@@ -466,20 +466,14 @@ const ProductCreate = () => {
           name="stockQuantity"
           label="Stock Quantity"
           placeholder="Enter quantity"
+          rules={{ required: "stock quantity is required" }}
           type="number"
           control={control}
           error={errors.stockQuantity?.message}
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
-        {/* <TextInput
-          name="brand"
-          label="Brand"
-          placeholder="Enter brand"
-          control={control}
-          // rules={{ required: "Brand is required" }}
-          error={errors.brand?.message}
-        /> */}
+
         <div className="mb-">
           <label className="block text-sm  text-gray-500 mb-2">Brand</label>
           <Select
@@ -499,6 +493,7 @@ const ProductCreate = () => {
           label="Purchase Price"
           placeholder="Enter purchase price"
           control={control}
+          rules={{ required: "purchase price is required" }}
           error={errors.purchase_price?.message}
         />
       </div>
@@ -509,6 +504,7 @@ const ProductCreate = () => {
           label="Regular Price"
           placeholder="Enter price"
           control={control}
+          rules={{ required: "regular price is required" }}
           error={errors.regularPrice?.message}
         />
         <TextInput
