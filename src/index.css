@@ -27,6 +27,9 @@ body {
   background-color: #FFFFFF; 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+button {
+  cursor: pointer;
+}
 
 .rdt_Table {
   @apply bg-light text-dark border-lightBorder;  
