@@ -360,7 +360,7 @@ const ProductCreate = () => {
           label="Slug"
           placeholder="Enter slug"
           control={control}
-          rules={{ required: "Slug is required" }}
+          // rules={{ required: "Slug is required" }}
           error={errors.slug?.message}
         />
       </div>
