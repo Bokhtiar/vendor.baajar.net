@@ -25,8 +25,6 @@ const getStatusBadge = (status) => {
   );
 };
 
-
-
 const Orders = ({ status }) => {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +45,7 @@ const Orders = ({ status }) => {
     setCurrentPage(page);
   };
 
-  console.log("totalRows",totalRows)
+  console.log("status", status);
 
   // Fetch categories from API
   const fetchOrder = useCallback(async () => {
@@ -56,6 +54,9 @@ const Orders = ({ status }) => {
       const queryParams = new URLSearchParams();
       queryParams.append("page", currentPage);
       queryParams.append("per_page", perPage);
+      if (status) {
+        queryParams.append("order_status", status);
+      }
       // if (search) {
       //   queryParams.append("search", search);
       // }
@@ -79,9 +80,9 @@ const Orders = ({ status }) => {
     fetchOrder();
   }, [fetchOrder]);
 
-  const filteredOrders = status
-    ? data.filter((order) => order.status === status)
-    : data;
+  // const filteredOrders = status
+  //   ? data.filter((order) => order.status === status)
+  //   : data;
 
   const columns = [
     {
@@ -193,7 +194,7 @@ const Orders = ({ status }) => {
       ) : (
         <DataTable
           columns={columns}
-          data={filteredOrders}
+          data={data}
           customStyles={customStyles}
           pagination
           highlightOnHover
