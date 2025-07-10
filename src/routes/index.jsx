@@ -3,7 +3,8 @@ import CategoryShow from "../pages/category";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Earning from "../pages/earning";
 import Withdrawal from "../pages/earning/Withdrawal";
-import Inventory from "../pages/inventory/inex";
+import Inventory from "../pages/inventory";
+
 import AllOrderList from "../pages/order";
 import Orders from "../pages/order";
 import CanceledOrder from "../pages/order/Cencel-order";

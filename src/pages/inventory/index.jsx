@@ -12,7 +12,7 @@ const Inventory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
-  console.log("data",data)
+  console.log("data", data);
 
   const handlePageChange = (page) => {
     if (!loading) {
@@ -36,7 +36,7 @@ const Inventory = () => {
       //   queryParams.append("search", search);
       // }
       const response = await NetworkServices.Inventory.index(
-        // queryParams.toString()
+        queryParams.toString()
       );
       console.log("response", response);
 
@@ -65,6 +65,7 @@ const Inventory = () => {
         loading={loading}
         perPage={perPage}
         currentPage={currentPage}
+        fetchInventory={fetchInventory}
       />
     </div>
   );

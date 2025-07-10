@@ -7,8 +7,8 @@ export const index = async () => {
 };
 
 /* resource store */
-export const store = async(data) => {
-    return await privateRequest.post('/vendor/inventory', data)
+export const store = async(id,data) => {
+    return await privateRequest.post(`/vendor/inventory/${id}`, data)
 }
 
 /* resource show */

@@ -5,26 +5,6 @@ import { RiEditFill } from "react-icons/ri";
 import InventorModal from "../modal/inventoryUpdate";
 import { InventoryTableSkeleton } from "../Skeleton/Skeleton";
 
-const products = [
-  {
-    orderNo: "48956486",
-    customer: "Bakhtiar Tashar",
-    stock: 2,
-    sold: 960,
-  },
-  {
-    orderNo: "48956487",
-    customer: "Samira Hossain",
-    stock: 1,
-    sold: 480,
-  },
-  {
-    orderNo: "48956488",
-    customer: "Rahim Uddin",
-    stock: 3,
-    sold: 1440,
-  },
-];
 
 const Inventory = ({
   handlePageChange,
@@ -34,6 +14,7 @@ const Inventory = ({
   loading,
   perPage,
   currentPage,
+  fetchInventory
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -51,12 +32,12 @@ const Inventory = ({
     },
     {
       name: "Name",
-      selector: (row) => row.customer,
+      selector: (row) => row.product_name,
       sortable: true,
     },
     {
       name: "SKU",
-      selector: (row) => row.orderNo,
+      selector: (row) => row.sku,
       sortable: true,
     },
     {
@@ -121,13 +102,13 @@ const Inventory = ({
       ) : (
         <DataTable
           columns={columns}
-          data={products}
+          data={data}
           customStyles={customStyles}
           pagination
           highlightOnHover
           responsive
           paginationServer
-            paginationTotalRows={totalRows}
+          paginationTotalRows={totalRows}
           paginationPerPage={perPage}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handleRowsPerPageChange}
@@ -138,6 +119,7 @@ const Inventory = ({
       {isOpen && selectedProduct && (
         <InventorModal
           isOpen={isOpen}
+          fetchInventory={fetchInventory }
           product={selectedProduct}
           onClose={() => {
             setIsOpen(false);

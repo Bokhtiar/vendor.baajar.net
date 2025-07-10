@@ -74,7 +74,7 @@ const Orders = ({ status }) => {
       networkErrorHandeller(error);
     }
     setLoading(false);
-  }, [currentPage, perPage]);
+  }, [currentPage,perPage,status]);
 
   useEffect(() => {
     fetchOrder();
