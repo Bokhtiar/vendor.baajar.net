@@ -10,6 +10,7 @@ import { FaFlag } from "react-icons/fa";
 import { HiBars3 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import { removeToken } from "../../utils/helpers";
+import { MdOutlineMailOutline } from "react-icons/md";
 
 const Header = ({
   toggleSidebar,
@@ -19,6 +20,7 @@ const Header = ({
   menuStyle,
   setMenuPosition,
   menuPosition,
+  profail
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
@@ -27,7 +29,7 @@ const Header = ({
 
   // const [layoutStyle, setLayoutStyle] = useState("fullWidth");
 
-  // console.log("header",header)
+  console.log("profail",profail)
 
   const [isOpen, setIsOpen] = useState(false);
   const [check, setCheck] = useState("");
@@ -38,6 +40,12 @@ const Header = ({
     removeToken();
     navigate(`/login?redirectFrom=${window.location.pathname}`);
   };
+
+const limitChars = (text, limit = 20) => {
+  if (text.length <= limit) return text;
+  return text.slice(0, limit) + " ...";
+};
+
 
   const [theme, setTheme] = useState(() => {
     return (
@@ -137,22 +145,22 @@ const Header = ({
           </div> */}
         </div>
 
-        <div className="relative">
+        {/* <div className="relative">
           <IoNotificationsOutline className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer  " />
 
-          {/* Badge with blinking and solid center */}
+          
           <div className="absolute -top-1 -right-1">
             <div className="relative h-5 w-5">
-              {/* Blinking Ping */}
+              
               <span className="absolute top-0 left-0 h-full w-full rounded-full bg-red-400 opacity-75 animate-ping"></span>
 
-              {/* Solid badge with text */}
+              
               <span className="absolute top-0 left-0 h-full w-full rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">
                 9+
               </span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* <RiFullscreenFill className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" /> */}
         <div className="hidden lg:flex" onClick={handleFullscreen}>
@@ -173,40 +181,45 @@ const Header = ({
             />
             <div className="flex items-center flex-col dark:text-darkTitle">
               <span className="font-bold text-[14px] text-left block">
-                Jone
+                {profail?.company_name}
               </span>
-              <span className="text-[12px]">Admin</span>
+              <span className="text-[12px]">{profail?.role}</span>
             </div>
           </div>
 
           {/* Popup Dropdown with Animation */}
-                      {showPopup && (
-              <div
-                className={`absolute right-0 mt-2 w-48 bg-light shadow-lg rounded-lg py-2 dark:bg-darkCard dark:text-darkTitle 
+          {showPopup && (
+            <div
+              className={`absolute right-0 mt-2 w-72 bg-light shadow-lg rounded-lg py-2 dark:bg-darkCard dark:text-darkTitle 
    transition-all duration-300 z-50 `}
-              >
-                <ul>
-                  <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
-                    <FiUser className="text-lg" />
-                    <span>Profile</span>
-                    {/* Hover underline */}
-                    <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
-                  </li>
+            >
+              <ul>
+                <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
+                  <FiUser className="text-lg" />
+                  <span>Vendor : {profail?.company_name}</span>
+                  {/* Hover underline */}
+                  <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
+                </li>
 
-                  <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
-                    <FiSettings className="text-lg" />
-                    <span>Settings</span>
-                    <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
-                  </li>
+                <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative " title={profail.email}>
+                  <MdOutlineMailOutline className="text-lg" />
+                  <span> Email : {limitChars(profail.email)}</span>
+                  
+               
+                  <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
+                </li>
 
-                  <li onClick={() => logout()} className="flex items-center gap-3 px-4 py-2 cursor-pointer text-red-500 group relative">
-                    <FiLogOut className="text-lg" />
-                    <span>Logout</span>
-                    <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-red-500 transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
-                  </li>
-                </ul>
-              </div>
-            )}
+                <li
+                  onClick={() => logout()}
+                  className="flex items-center gap-3 px-4 py-2 cursor-pointer text-red-500 group relative"
+                >
+                  <FiLogOut className="text-lg" />
+                  <span>Logout</span>
+                  <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-red-500 transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
 
         <CiSettings
