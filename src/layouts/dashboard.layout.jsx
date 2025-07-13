@@ -63,9 +63,9 @@ export const DashboardLayout = () => {
             setOpenMobileMenu={setOpenMobileMenu}
             profail={profail}
           />
-          <main className="flex-1 ">
+          <main className=" ">
             <div
-              className={`mx-auto w-full p-2 md:p-4 2xl:p-6 bg-light dark:bg-dark  ${
+              className={`mx-auto w-full p-2  bg-light dark:bg-dark  ${
                 menuPosition === "fixed" ? "mt-20" : ""
               }`}
             >

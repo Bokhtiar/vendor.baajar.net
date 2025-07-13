@@ -96,7 +96,7 @@ const Inventory = ({
   };
 
   return (
-    <div className="w-full p-4  relative">
+    <div className="w-full  relative">
       {loading ? (
         <InventoryTableSkeleton />
       ) : (

@@ -195,7 +195,7 @@ const ProductTable = () => {
   };
 
   return (
-    <div className="w-full p-4 font-poppins relative">
+    <div className="w-full  font-poppins relative">
       {loading ? (
         <TableSkeleton />
       ) : (

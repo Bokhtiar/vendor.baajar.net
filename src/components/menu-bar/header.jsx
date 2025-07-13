@@ -20,7 +20,7 @@ const Header = ({
   menuStyle,
   setMenuPosition,
   menuPosition,
-  profail
+  profail,
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
@@ -29,7 +29,7 @@ const Header = ({
 
   // const [layoutStyle, setLayoutStyle] = useState("fullWidth");
 
-  console.log("profail",profail)
+  console.log("profail", profail);
 
   const [isOpen, setIsOpen] = useState(false);
   const [check, setCheck] = useState("");
@@ -41,11 +41,10 @@ const Header = ({
     navigate(`/login?redirectFrom=${window.location.pathname}`);
   };
 
-const limitChars = (text, limit = 20) => {
-  if (text.length <= limit) return text;
-  return text.slice(0, limit) + " ...";
-};
-
+  const limitChars = (text, limit = 20) => {
+    if (text.length <= limit) return text;
+    return text.slice(0, limit) + " ...";
+  };
 
   const [theme, setTheme] = useState(() => {
     return (
@@ -117,7 +116,7 @@ const limitChars = (text, limit = 20) => {
         menuPosition === "fixed" ? "fixed top-0 right-0" : "relative"
       } z-10  `}
     >
-      <div>
+      {/* <div>
         <button
           onClick={() => setOpenMobileMenu(true)}
           className="cursor-pointer text-2xl p-2 hover:text-primary"
@@ -125,7 +124,7 @@ const limitChars = (text, limit = 20) => {
         >
           <HiBars3 />
         </button>
-      </div>
+      </div> */}
 
       {menuStyle == "click" && !menuOpen && (
         <RiMenuUnfold3Fill
@@ -133,37 +132,9 @@ const limitChars = (text, limit = 20) => {
           className="absolute left-5 top-6 text-2xl z-10 cursor-pointer text-lightTitle dark:text-darkTitle"
         />
       )}
-      <div className="flex justify-end md:gap-5 gap-2 items-center relative">
-        {/* <div className="text-4xl  rounded-full cursor-pointer hidden md:block">
-          {flagUrl && (
-            <img src={flagUrl} alt="Country Flag" className=" w-8 h-6 " />
-          )}
-        </div> */}
-        <div>
-          {/* <div className="hidden md:block">
-            <ThemeColor toggleTheme={toggleTheme} theme={theme} />
-          </div> */}
-        </div>
-
-        {/* <div className="relative">
-          <IoNotificationsOutline className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer  " />
-
-          
-          <div className="absolute -top-1 -right-1">
-            <div className="relative h-5 w-5">
-              
-              <span className="absolute top-0 left-0 h-full w-full rounded-full bg-red-400 opacity-75 animate-ping"></span>
-
-              
-              <span className="absolute top-0 left-0 h-full w-full rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">
-                9+
-              </span>
-            </div>
-          </div>
-        </div> */}
-
+      <div className="flex w-full justify-end  md:gap-5 gap-2 items-center relative ">
         {/* <RiFullscreenFill className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" /> */}
-        <div className="hidden lg:flex" onClick={handleFullscreen}>
+        <div className="hidden lg:flex " onClick={handleFullscreen}>
           <RiFullscreenFill className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" />
         </div>
         {/* <FiGrid className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" /> */}
@@ -175,7 +146,8 @@ const limitChars = (text, limit = 20) => {
             onClick={() => setShowPopup(!showPopup)}
           >
             <img
-              src={"image/login-profile.svg"}
+              // src={"image/login-profile.svg"}
+              src={`${import.meta.env.VITE_API_SERVER}${profail?.logo}`}
               alt="User"
               className="w-9 h-9 bg-gray-200 rounded-full"
             />
@@ -201,11 +173,13 @@ const limitChars = (text, limit = 20) => {
                   <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
                 </li>
 
-                <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative " title={profail.email}>
+                <li
+                  className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative "
+                  title={profail.email}
+                >
                   <MdOutlineMailOutline className="text-lg" />
                   <span> Email : {limitChars(profail.email)}</span>
-                  
-               
+
                   <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
                 </li>
 

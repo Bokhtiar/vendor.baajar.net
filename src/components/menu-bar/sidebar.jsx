@@ -101,14 +101,14 @@ const Sidebar = ({
 
 
       {menuStyle === "hover" && (
-        <div className="hidden font-poppins md:block md:w-24 md:hover:w-64 h-screen fixed bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 transition-all duration-300 overflow-hidden z-30 group">
+        <div className=" w-24 hover:w-52 h-screen bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 group  transition-all duration-300 ease-in-out overflow-hidden  z-50">
           <div className="flex items-center space-x-2 pl-4">
-            <span className="text-primary text-lg font-bold left-5 p-5">
+            <span className="text-primary text-lg font-bold left-5 pt-2 ">
               Baajar
             </span>
           </div>
 
-          <nav className="mt-4 ">
+          <nav className="mt-10 ">
             {menuData.map((item, index) => {
               const isActive = location.pathname === item.path;
 
