@@ -88,11 +88,7 @@ const Sidebar = ({
         { title: "Withdrawal", path: "/dashboard/Withdrawal" },
       ],
     },
-    {
-      title: "Setting",
-      icon: <IoSettingsOutline />,
-      path: "/dashboard/setting",
-    },
+
   ];
 
   return (
@@ -101,7 +97,7 @@ const Sidebar = ({
 
 
       {menuStyle === "hover" && (
-        <div className=" w-24 hover:w-52 h-screen bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 group  transition-all duration-300 ease-in-out overflow-hidden  z-50">
+        <div className="hidden md:block w-24 hover:w-52 h-screen bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 group  transition-all duration-300 ease-in-out overflow-hidden  ">
           <div className="flex items-center space-x-2 pl-4">
             <span className="text-primary text-lg font-bold left-5 pt-2 ">
               Baajar
@@ -173,7 +169,7 @@ const Sidebar = ({
       {/* ======= Desktop Sidebar Click Style ======= */}
       {menuStyle === "click" && (
         <div
-          className={`hidden font-poppins md:block w-64 fixed top-0 left-0 h-screen z-50 bg-lightCard dark:bg-darkCard dark:text-darkTitle transition-all duration-300 ${
+          className={` font-poppins md:block w-64 fixed top-0 left-0 h-screen z-50 bg-lightCard dark:bg-darkCard dark:text-darkTitle transition-all duration-300 ${
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >

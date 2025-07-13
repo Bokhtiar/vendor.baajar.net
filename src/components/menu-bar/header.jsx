@@ -132,6 +132,9 @@ const Header = ({
           className="absolute left-5 top-6 text-2xl z-10 cursor-pointer text-lightTitle dark:text-darkTitle"
         />
       )}
+      <h1 className="text-2xl text-red-600 font-bold  hidden lg:block pl-16">
+        Bajjar
+      </h1>
       <div className="flex w-full justify-end  md:gap-5 gap-2 items-center relative ">
         {/* <RiFullscreenFill className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" /> */}
         <div className="hidden lg:flex " onClick={handleFullscreen}>
@@ -202,8 +205,8 @@ const Header = ({
         />
 
         <div
-          className={`fixed top-0 right-0 md:w-[600px] h-full w-full  bg-light dark:bg-dark p-5 shadow-lg dark:text-darkTitle transform transition-transform duration-700 z-50 ${
-            isOpen ? "translate-x-0" : "translate-x-full"
+          className={`fixed top-0 right-0 md:w-[600px] h-full w-full  bg-light dark:bg-dark p-5 shadow-lg dark:text-darkTitle transform transition-transform duration-700 z-[9999] ${
+            isOpen ? "translate-x-0 " : "translate-x-full"
           }`}
         >
           {/* Close Button */}

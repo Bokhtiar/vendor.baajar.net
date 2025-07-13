@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/menu-bar/sidebar";
 import Header from "../components/menu-bar/header";
-import {  useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { NetworkServices } from "../network";
 
 export const DashboardLayout = () => {
@@ -18,11 +18,28 @@ export const DashboardLayout = () => {
     setMenuOpen(!menuOpen);
   };
 
-    const fetchUser = useCallback(async () => {
-    // setLoading(true); 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setMenuStyle("click");
+      } else {
+        setMenuStyle("hover");
+      }
+    };
+
+    // Initial call
+    handleResize();
+
+    // Optional: dynamically update on resize
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const fetchUser = useCallback(async () => {
+    // setLoading(true);
     try {
       const response = await NetworkServices.Profile.index();
-           if (response && response.status === 200) {
+      if (response && response.status === 200) {
         setProfail(response?.data.data);
       }
     } catch (error) {
@@ -36,7 +53,6 @@ export const DashboardLayout = () => {
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
-
 
   return (
     // <div className="dark:bg-boxdark-2 dark:text-bodydark">

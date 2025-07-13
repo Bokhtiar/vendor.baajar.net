@@ -41,7 +41,7 @@ function App() {
     <div className=" ">
       {routing} 
       <ToastContainer />
-      <Footer/>
+      {/* <Footer/> */}
     </div>
   );
 }

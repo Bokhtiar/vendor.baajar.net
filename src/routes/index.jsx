@@ -18,6 +18,7 @@ import ProductCreate from "../pages/products/Create";
 import ProductUpdate from "../pages/products/edit";
 import StockOut from "../pages/products/StockOut";
 import Setting from "../pages/setting";  // Ensure this import is present
+import { getToken } from "../utils/helpers";
 
 const appRoutes = [
   {
@@ -31,7 +32,6 @@ const appRoutes = [
       { path: "products/:id", element: <ProductUpdate /> },
       { path: "inventory", element: <Inventory /> },
       { path: "earnings", element: <Earning /> },
-      { path: "setting", element: <Setting /> }, 
       { path: "create-product", element: <ProductCreate/> },  
       { path: "stock-out", element: <StockOut/> },  
       { path: "pending-orders", element: <PendingOrders/> }, 
@@ -45,9 +45,9 @@ const appRoutes = [
 ];
 
 export const permittedRoutes = () => {
-  // const token = getToken();
-  // if (token) {
+  const token = getToken();
+  if (token) {
     return appRoutes;
-  // }
-  // return [];
+  }
+  return [];
 };
