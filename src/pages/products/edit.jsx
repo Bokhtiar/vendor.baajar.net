@@ -7,6 +7,7 @@ import { NetworkServices } from "../../network";
 import Select from "react-select";
 import { Toastify } from "../../components/toastify";
 import Spinner from "../../utils/loading/spinner";
+import { networkErrorHandeller } from "../../utils/helpers";
 
 const ProductUpdate = () => {
   const { id } = useParams();
@@ -33,14 +34,14 @@ const ProductUpdate = () => {
   const [brand, setBrand] = useState([]);
   const [attribute, setAttribute] = useState([]);
   const [singleAttribute, setSingleAttribute] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
-  const [selectedUnit, setSelectedUnit] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [selectedAttribute, setSelectedAttribute] = useState(null);
-  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedSubCategory, setSelectedSubCategory] = useState([]);
+  const [selectedUnit, setSelectedUnit] = useState([]);
+  const [selectedColor, setSelectedColor] = useState([]);
+  const [selectedAttribute, setSelectedAttribute] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState([]);
 
-  console.log("images", images);
+  console.log("product", product);
   const handleColorChange = (option) => {
     setSelectedColor(option);
     console.log(option);
@@ -85,6 +86,8 @@ const ProductUpdate = () => {
         setValue("shortDescription", data.description);
         setValue("stockQuantity", data.stock);
         setValue("purchase_price", data.purchase_price);
+        // setValue("unit_id", JSON.parse(data.color_id));
+        // setValue("thumbnail", data?.thumbnail);
         // setValue("sub_category", data.sub_category_id);
 
         setSelectedCategory({
@@ -230,46 +233,52 @@ const ProductUpdate = () => {
     setLoading(true);
     try {
       const formData = new FormData();
-      // formData.append("product_name", data.productName);
-      // formData.append("short_name", data.shortName);
-      // formData.append("slug", data.slug);
-      // formData.append("brand", data.brand);
-      // formData.append("reguler_price", data.regularPrice);
-      // formData.append("offer_price", data.offerPrice);
-      // formData.append("description", data.shortDescription);
-      // formData.append("sku", data.sku);
-      // formData.append("category_id", selectedCategory?.value);
-      // formData.append("purchase_price", "222.00");
-      // formData.append("stock", data.stockQuantity);
-      // formData.append("status", "1");
 
-      // if (imageFiles.length > 0) {
-      //   imageFiles.forEach((file, index) => {
-      //     formData.append(`product_image[${index}]`, file);
-      //   });
-      // }
       formData.append("product_name", data?.productName || "");
       formData.append("short_description", data?.shortName || "");
       formData.append("category_id", selectedCategory?.value || "");
-      formData.append("brand_id", selectedBrand?.value || "");
-      formData.append("sub_category_id", selectedSubCategory?.value || "");
+      formData.append("brand_id", selectedBrand?.value || product?.brand_id || "");
+      formData.append(
+        "sub_category_id",
+        selectedSubCategory?.value || product?.sub_category_id || ""
+      );
       formData.append(
         "color_id",
-        JSON.stringify(selectedColor?.map((c) => c.value) || [])
+        JSON.stringify(
+          selectedColor?.length
+            ? selectedColor.map((c) => c.value)
+            : product?.color_id
+            ? JSON.parse(product.color_id)
+            : []
+        )
       );
+
       formData.append(
         "attribute_id",
-        JSON.stringify(selectedAttribute?.map((c) => c.value) || [])
+
+        JSON.stringify(
+          selectedAttribute?.length
+            ? selectedAttribute.map((c) => c.value)
+            : product?.attribute_id
+            ? JSON.parse(product.attribute_id)
+            : []
+        )
       );
-      formData.append("unit_id", JSON.stringify(selectedUnit?.value || []));
+      // formData.append(
+      //   "unit_id",
+      //   JSON.stringify(
+
+      //      selectedUnit.map((c) => c.value)
+      //       || JSON.parse(product?.unit_id )
+      //   )
+      // );
+      formData.append("unit_id", selectedUnit?.value || product?.unit_id || "");
       formData.append("slug", data?.slug || "");
       formData.append("reguler_price", data?.regularPrice || "");
       formData.append("offer_price", data?.offerPrice || "");
       formData.append("stock", data.stockQuantity || "");
       formData.append("status", "1");
       formData.append("description", data?.shortDescription || "");
-      formData.append("color", JSON.stringify(data.color || []));
-      formData.append("size", JSON.stringify(data.size || []));
       formData.append("sku", data.sku || "");
       formData.append("purchase_price", data.purchase_price || "");
       formData.append("lat", data.lat || "");
@@ -278,6 +287,8 @@ const ProductUpdate = () => {
       // Thumbnail single image
       if (data.thumbnail) {
         formData.append("thumbnail", data.thumbnail);
+      }else{
+        formData.append("thumbnail", product?.thumbnail);
       }
 
       // product_image multiple images
@@ -295,6 +306,7 @@ const ProductUpdate = () => {
       }
     } catch (err) {
       console.error("Update failed:", err);
+      networkErrorHandeller(err);
     }
     setLoading(false);
   };
@@ -319,9 +331,9 @@ const ProductUpdate = () => {
       zIndex: 9999,
     }),
   };
-    useEffect(() => {
-      document.title = "Vendor | Update-Product ";
-    }, []);
+  useEffect(() => {
+    document.title = "Vendor | Update-Product ";
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -513,7 +525,6 @@ const ProductUpdate = () => {
         <div className="mb-">
           <label className="block text-sm  text-gray-500 mb-2">Brand</label>
           <Select
-            // value={selectedCategory}
             onChange={handleBrandChange}
             options={brand}
             onMenuOpen={() => {
@@ -521,7 +532,7 @@ const ProductUpdate = () => {
             }}
             placeholder={
               brand?.find((c) => c?.value == product?.brand_id)?.label ||
-              "Select unit"
+              "Select Brand"
             }
             styles={customStyles}
             isClearable
@@ -544,7 +555,7 @@ const ProductUpdate = () => {
         <TextInput
           name="offerPrice"
           label="Offer Price"
-            placeholder="offer Price"
+          placeholder="offer Price"
           control={control}
           error={errors.offerPrice?.message}
         />

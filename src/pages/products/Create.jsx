@@ -257,8 +257,6 @@ const ProductCreate = () => {
       formData.append("stock", data.stockQuantity || "");
       formData.append("status", "1");
       formData.append("description", data?.shortDescription || "");
-      formData.append("color", JSON.stringify(data.color || []));
-      formData.append("size", JSON.stringify(data.size || []));
       formData.append("sku", data.sku || "");
       formData.append("purchase_price", data.purchase_price || "");
       formData.append("lat", data.lat || "");
