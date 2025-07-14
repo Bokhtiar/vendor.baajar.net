@@ -16,8 +16,6 @@ import ShippedOrder from "../pages/order/shipped-order";
 import Products from "../pages/products";
 import ProductCreate from "../pages/products/Create";
 import ProductUpdate from "../pages/products/edit";
-import StockOut from "../pages/products/StockOut";
-import Setting from "../pages/setting";  // Ensure this import is present
 import { getToken } from "../utils/helpers";
 
 const appRoutes = [
@@ -33,7 +31,7 @@ const appRoutes = [
       { path: "inventory", element: <Inventory /> },
       { path: "earnings", element: <Earning /> },
       { path: "create-product", element: <ProductCreate/> },  
-      { path: "stock-out", element: <StockOut/> },  
+      // { path: "stock-out", element: <StockOut/> },  
       { path: "pending-orders", element: <PendingOrders/> }, 
       { path: "processed-orders", element: <ProcessedOrder/> }, 
       { path: "shipped-orders", element: <ShippedOrder/> }, 

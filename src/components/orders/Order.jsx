@@ -25,7 +25,7 @@ const getStatusBadge = (status) => {
   );
 };
 
-const Orders = ({ status }) => {
+const Orders = ({ status, title }) => {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -74,7 +74,7 @@ const Orders = ({ status }) => {
       networkErrorHandeller(error);
     }
     setLoading(false);
-  }, [currentPage,perPage,status]);
+  }, [currentPage, perPage, status]);
 
   useEffect(() => {
     fetchOrder();
@@ -186,6 +186,10 @@ const Orders = ({ status }) => {
       },
     },
   };
+
+  useEffect(() => {
+    document.title = title;
+  }, []);
 
   return (
     <div className="w-full  font-poppins relative">

@@ -55,6 +55,10 @@ const Inventory = () => {
     fetchInventory();
   }, [fetchInventory]);
 
+  useEffect(() => {
+    document.title = "Vendor | Inventory ";
+  }, []);
+
   return (
     <div>
       <InventoryComponent

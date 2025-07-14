@@ -71,7 +71,7 @@ const Sidebar = ({
       childrens: [
         { title: "All Product", path: "/dashboard/products" },
         { title: "Create Product", path: "/dashboard/create-product" },
-        { title: "Stock Out", path: "/dashboard/stock-out" },
+        
       ],
     },
     {

@@ -319,6 +319,9 @@ const ProductUpdate = () => {
       zIndex: 9999,
     }),
   };
+    useEffect(() => {
+      document.title = "Vendor | Update-Product ";
+    }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

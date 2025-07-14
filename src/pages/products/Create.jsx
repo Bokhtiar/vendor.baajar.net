@@ -70,8 +70,6 @@ const ProductCreate = () => {
     console.log(option);
   };
 
-
-
   // useEffect(() => {
   //   setValue("subCategory", null);
   // }, [selectedCategoryId, setValue]);
@@ -178,7 +176,7 @@ const ProductCreate = () => {
     }
   }, [selectedUnit]);
 
-    const fetchBrand = useCallback(async () => {
+  const fetchBrand = useCallback(async () => {
     try {
       const response = await NetworkServices.Brand.index();
       console.log("Brand", response);
@@ -293,6 +291,10 @@ const ProductCreate = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    document.title = "Vendor | Create-Product ";
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 ">
@@ -473,7 +475,6 @@ const ProductCreate = () => {
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
-
         <div className="mb-">
           <label className="block text-sm  text-gray-500 mb-2">Brand</label>
           <Select

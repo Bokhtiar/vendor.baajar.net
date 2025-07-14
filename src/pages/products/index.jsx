@@ -37,7 +37,9 @@ const ProductTable = () => {
       const queryParams = new URLSearchParams();
       queryParams.append("page", currentPage);
       queryParams.append("per_page", perPage);
-      const response = await NetworkServices.Product.index(queryParams.toString());
+      const response = await NetworkServices.Product.index(
+        queryParams.toString()
+      );
       console.log("response", response);
 
       if (response?.status === 200) {
@@ -48,7 +50,7 @@ const ProductTable = () => {
       networkErrorHandeller(error);
     }
     setLoading(false);
-  }, [currentPage,perPage]);
+  }, [currentPage, perPage]);
 
   useEffect(() => {
     fetchProduct();
@@ -193,6 +195,9 @@ const ProductTable = () => {
       },
     },
   };
+  useEffect(() => {
+    document.title = "Vendor | Product ";
+  }, []);
 
   return (
     <div className="w-full  font-poppins relative">

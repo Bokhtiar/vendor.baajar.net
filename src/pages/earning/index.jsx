@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 
 import { FaEye } from "react-icons/fa";
@@ -77,6 +77,10 @@ const customStyles = {
 
 const Earning = () => {
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    document.title = "Admin | Earning ";
+  }, []);
   return (
     <div className="">
       {/* Stats Summary */}
