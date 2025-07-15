@@ -9,9 +9,10 @@ const ShippedOrder = () => {
   const queryParams = new URLSearchParams(location.search);
   const status = queryParams.get("status"); // ⬅️ get `status` from URL
 console.log(status);
+const title="Vendor | Shiped-Order"
   return (
     <div>
-      <Orders status={status} />
+      <Orders status={status} title={title} />
     </div>
   );
 };

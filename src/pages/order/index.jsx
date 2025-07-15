@@ -9,9 +9,10 @@ import { useParams } from "react-router-dom";
 // Main component
 const AllOrderList = () => {
    const { status } = useParams();
+   const title="Vendor | All-Order"
   return (
    
-     <Orders status={status}/>
+      <Orders status={status} title={title}/>
 
   );
 };

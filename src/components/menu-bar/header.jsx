@@ -8,8 +8,20 @@ import { FaCheck } from "react-icons/fa6";
 import { RiMenuUnfold3Fill } from "react-icons/ri";
 import { FaFlag } from "react-icons/fa";
 import { HiBars3 } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
+import { removeToken } from "../../utils/helpers";
+import { MdOutlineMailOutline } from "react-icons/md";
 
-const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuStyle,setMenuPosition,menuPosition }) => {
+const Header = ({
+  toggleSidebar,
+  menuOpen,
+  setMenuStyle,
+  setOpenMobileMenu,
+  menuStyle,
+  setMenuPosition,
+  menuPosition,
+  profail,
+}) => {
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
   // const [header, setHeader] = useState("fixed");
@@ -17,11 +29,22 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuS
 
   // const [layoutStyle, setLayoutStyle] = useState("fullWidth");
 
-  // console.log("header",header)
+  console.log("profail", profail);
 
   const [isOpen, setIsOpen] = useState(false);
   const [check, setCheck] = useState("");
   const [flagUrl, setFlagUrl] = useState("");
+  const navigate = useNavigate();
+
+  const logout = () => {
+    removeToken();
+    navigate(`/login?redirectFrom=${window.location.pathname}`);
+  };
+
+  const limitChars = (text, limit = 20) => {
+    if (text.length <= limit) return text;
+    return text.slice(0, limit) + " ...";
+  };
 
   const [theme, setTheme] = useState(() => {
     return (
@@ -90,58 +113,31 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuS
   return (
     <div
       className={`bg-lightCard dark:bg-darkCard flex items-center justify-between  py-4 px-2 shadow-md dark:shadow-md w-full ${
-        menuPosition === "fixed"
-          ? "fixed top-0 right-0"
-          : "relative"
+        menuPosition === "fixed" ? "fixed top-0 right-0" : "relative"
       } z-10  `}
     >
-      <div>
-  <button
-    onClick={() => setOpenMobileMenu(true)}
-    className="cursor-pointer text-2xl p-2 hover:text-primary"
-    aria-label="Open menu"
-  >
-    <HiBars3 />
-  </button>
-</div>
-      
+      {/* <div>
+        <button
+          onClick={() => setOpenMobileMenu(true)}
+          className="cursor-pointer text-2xl p-2 hover:text-primary"
+          aria-label="Open menu"
+        >
+          <HiBars3 />
+        </button>
+      </div> */}
+
       {menuStyle == "click" && !menuOpen && (
         <RiMenuUnfold3Fill
           onClick={() => toggleSidebar()}
           className="absolute left-5 top-6 text-2xl z-10 cursor-pointer text-lightTitle dark:text-darkTitle"
         />
       )}
-      <div className="flex justify-end md:gap-5 gap-2 items-center relative">
-        {/* <div className="text-4xl  rounded-full cursor-pointer hidden md:block">
-          {flagUrl && (
-            <img src={flagUrl} alt="Country Flag" className=" w-8 h-6 " />
-          )}
-        </div> */}
-        <div>
-          {/* <div className="hidden md:block">
-            <ThemeColor toggleTheme={toggleTheme} theme={theme} />
-          </div> */}
-        </div>
-
-        <div className="relative">
-          <IoNotificationsOutline className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer  " />
-
-          {/* Badge with blinking and solid center */}
-          <div className="absolute -top-1 -right-1">
-            <div className="relative h-5 w-5">
-              {/* Blinking Ping */}
-              <span className="absolute top-0 left-0 h-full w-full rounded-full bg-red-400 opacity-75 animate-ping"></span>
-
-              {/* Solid badge with text */}
-              <span className="absolute top-0 left-0 h-full w-full rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">
-                9+
-              </span>
-            </div>
-          </div>
-        </div>
-
+      <h1 className="text-2xl text-red-600 font-bold  hidden lg:block pl-16">
+        Bajjar
+      </h1>
+      <div className="flex w-full justify-end  md:gap-5 gap-2 items-center relative ">
         {/* <RiFullscreenFill className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" /> */}
-        <div className="hidden lg:flex" onClick={handleFullscreen}>
+        <div className="hidden lg:flex " onClick={handleFullscreen}>
           <RiFullscreenFill className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" />
         </div>
         {/* <FiGrid className="text-4xl bg-gray-200 p-2 rounded-full cursor-pointer hidden md:block" /> */}
@@ -152,17 +148,55 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuS
             className="flex gap-3 items-center border-r-2 pr-5 border-lightBorder cursor-pointer"
             onClick={() => setShowPopup(!showPopup)}
           >
-            <img src={'image/login-profile.svg'} alt="User" className="w-9 h-9 bg-gray-200 rounded-full" />
+            <img
+              // src={"image/login-profile.svg"}
+              src={`${import.meta.env.VITE_API_SERVER}${profail?.logo}`}
+              alt="User"
+              className="w-9 h-9 bg-gray-200 rounded-full"
+            />
             <div className="flex items-center flex-col dark:text-darkTitle">
               <span className="font-bold text-[14px] text-left block">
-                Jone
+                {profail?.company_name}
               </span>
-              <span className="text-[12px]">Admin</span>
+              <span className="text-[12px]">{profail?.role}</span>
             </div>
           </div>
 
           {/* Popup Dropdown with Animation */}
+          {showPopup && (
+            <div
+              className={`absolute right-0 mt-2 w-72 bg-light shadow-lg rounded-lg py-2 dark:bg-darkCard dark:text-darkTitle 
+   transition-all duration-300 z-50 `}
+            >
+              <ul>
+                <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
+                  <FiUser className="text-lg" />
+                  <span>Vendor : {profail?.company_name}</span>
+                  {/* Hover underline */}
+                  <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
+                </li>
 
+                <li
+                  className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative "
+                  title={profail.email}
+                >
+                  <MdOutlineMailOutline className="text-lg" />
+                  <span> Email : {limitChars(profail.email)}</span>
+
+                  <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
+                </li>
+
+                <li
+                  onClick={() => logout()}
+                  className="flex items-center gap-3 px-4 py-2 cursor-pointer text-red-500 group relative"
+                >
+                  <FiLogOut className="text-lg" />
+                  <span>Logout</span>
+                  <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-red-500 transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
 
         <CiSettings
@@ -171,8 +205,8 @@ const Header = ({ toggleSidebar, menuOpen, setMenuStyle,setOpenMobileMenu, menuS
         />
 
         <div
-          className={`fixed top-0 right-0 md:w-[600px] h-full w-full  bg-light dark:bg-dark p-5 shadow-lg dark:text-darkTitle transform transition-transform duration-700 z-50 ${
-            isOpen ? "translate-x-0" : "translate-x-full"
+          className={`fixed top-0 right-0 md:w-[600px] h-full w-full  bg-light dark:bg-dark p-5 shadow-lg dark:text-darkTitle transform transition-transform duration-700 z-[9999] ${
+            isOpen ? "translate-x-0 " : "translate-x-full"
           }`}
         >
           {/* Close Button */}

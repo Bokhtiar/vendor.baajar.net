@@ -1,16 +1,21 @@
 import axios from "axios";
 import { getToken } from "../utils/helpers";
 
-// const VITE_API_ENDPOINT = "http://127.0.0.1:8000/api/";
-const VITE_API_ENDPOINT = "http://192.168.68.101:8000/api/";
- 
 const publicRequest = axios.create({
-    baseURL: VITE_API_ENDPOINT,
+    baseURL: import.meta.env.VITE_API_URL+"api",
 });
 
 const privateRequest = axios.create({
-    baseURL: VITE_API_ENDPOINT,
+    baseURL: import.meta.env.VITE_API_URL+"api",
 }); 
+ 
+// const publicRequest = axios.create({
+//     baseURL: VITE_API_ENDPOINT,
+// });
+
+// const privateRequest = axios.create({
+//     baseURL: VITE_API_ENDPOINT,
+// }); 
 
 /* Public request config */
 publicRequest.interceptors.request.use(
