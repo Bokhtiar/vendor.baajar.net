@@ -16,6 +16,7 @@ import ShippedOrder from "../pages/order/shipped-order";
 import Products from "../pages/products";
 import ProductCreate from "../pages/products/Create";
 import ProductUpdate from "../pages/products/edit";
+import Profile from "../pages/Profile";
 
 import { getToken } from "../utils/helpers";
 
@@ -39,6 +40,7 @@ const appRoutes = [
       { path: "completed-orders", element: <CompletedOrder/> },  
       { path: "canceled-orders", element: <CanceledOrder/> },  
       { path: "withdrawal", element: <Withdrawal/> },  
+      { path: "profile", element: <Profile/> },  
     ],
   },
 ];

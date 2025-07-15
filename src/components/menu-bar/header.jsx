@@ -8,7 +8,7 @@ import { FaCheck } from "react-icons/fa6";
 import { RiMenuUnfold3Fill } from "react-icons/ri";
 import { FaFlag } from "react-icons/fa";
 import { HiBars3 } from "react-icons/hi2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { removeToken } from "../../utils/helpers";
 import { MdOutlineMailOutline } from "react-icons/md";
 
@@ -171,8 +171,9 @@ const Header = ({
               <ul>
                 <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
                   <FiUser className="text-lg" />
-                  <span>Vendor : {profail?.company_name}</span>
-                  {/* Hover underline */}
+                  <Link
+                    to="/dashboard/profile"
+                  ><span>Profile</span></Link>
                   <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
                 </li>
 
