@@ -40,7 +40,7 @@ const Dashboard = () => {
       <DashboardChart />
       <div className="flex flex-col md:flex-row gap-5 my-5">
         <div className="md:w-1/2">
-          <BestSellers />
+          <BestSellers data={data?.best_selling_products}/>
         </div>
         <div className="md:w-1/2">
           <TrafficCard />
