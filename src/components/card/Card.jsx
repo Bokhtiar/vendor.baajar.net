@@ -33,7 +33,6 @@ const Card = ({data}) => {
           <p className="text-lg font-semibold">{d.title}</p>
 
           <div className="flex justify-between">
-            {" "}
             <img src={d?.img} alt="" />{" "}
             <p className="text-5xl font-bold mt-2">{d.value}</p>
           </div>

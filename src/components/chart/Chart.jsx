@@ -31,7 +31,7 @@ const DashboardChart = () => {
   return (
     <div className="w-full h-80 bg-white md:px-10 py-10 rounded-lg shadow">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-gray-800">Dashboard</h2>
+        <h2 className="text-xl font-semibold text-gray-800">Sale By Date</h2>
         <a href="#" className="text-sm flex items-center gap-5 text-gray-500 hover:underline">
           Advanced Report<FaArrowRight />
 
