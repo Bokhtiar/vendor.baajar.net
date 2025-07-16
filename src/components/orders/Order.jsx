@@ -5,6 +5,8 @@ import OrderModal from "../modal/orderStatus";
 import { OrderTableSkeleton } from "../Skeleton/Skeleton";
 import { NetworkServices } from "../../network";
 import { networkErrorHandeller } from "../../utils/helpers";
+import { Link } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
 
 const getStatusBadge = (status) => {
   const colorMap = {
@@ -148,7 +150,7 @@ const Orders = ({ status, title }) => {
       name: "Action",
       cell: (row) => (
         <div className="flex space-x-2">
-          <button
+          {/* <button
             className="cursor-pointer"
             onClick={() => {
               setSelectedOrder(row);
@@ -156,10 +158,20 @@ const Orders = ({ status, title }) => {
             }}
           >
             <RiEditFill className="h-5 w-5" />
-          </button>
-          <button className="cursor-pointer">
+          </button> */}
+          <div className="flex space-x-2">
+            <Link
+              to={`/dashboard/orders/${row.id}`}
+              title="Show Details"
+            >
+              <button className="text-blue-600 text-xl cursor-pointer">
+                <FaEye />
+              </button>
+            </Link>
+          </div>
+          {/* <button className="cursor-pointer">
             <img className="h-5" src="/image/Vector.svg" alt="delete" />
-          </button>
+          </button> */}
         </div>
       ),
     },

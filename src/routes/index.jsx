@@ -1,3 +1,4 @@
+import Details from "../components/orders/details";
 import { DashboardLayout } from "../layouts/dashboard.layout";
 import CategoryShow from "../pages/category";
 import Dashboard from "../pages/Dashboard/Dashboard";
@@ -40,6 +41,7 @@ const appRoutes = [
       { path: "shipped-orders", element: <ShippedOrder/> }, 
       { path: "completed-orders", element: <CompletedOrder/> },  
       { path: "canceled-orders", element: <CanceledOrder/> },  
+      { path: "orders/:id", element: <Details/> },  
       { path: "withdrawal", element: <Withdrawal/> },  
       { path: "profile", element: <Profile/> },  
       { path: "reset-password", element: <ResetPassword/> },
