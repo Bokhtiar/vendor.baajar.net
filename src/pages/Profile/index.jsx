@@ -3,6 +3,7 @@ import { NetworkServices } from '../../network';
 import { networkErrorHandeller } from '../../utils/helpers';
 import { ImageUpload, TextInput } from '../../components/input';
 import { useForm } from 'react-hook-form';
+import { ProfileSkeleton } from '../../components/Skeleton/Skeleton';
 
 const Profile = () => {
   const [loading, setLoading] = useState(false);
@@ -89,7 +90,7 @@ const handleUpdate = async (formData) => {
 
 
 
-  if (loading) return <div className="text-center mt-10">Loading...</div>;
+  if (loading) return <div className="text-center mt-10"><ProfileSkeleton/></div>;
   if (!data) return <div className="text-center mt-10 text-red-500">No profile data found.</div>;
 
   return (

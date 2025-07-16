@@ -17,6 +17,7 @@ import Products from "../pages/products";
 import ProductCreate from "../pages/products/Create";
 import ProductUpdate from "../pages/products/edit";
 import Profile from "../pages/Profile";
+import ResetPassword from "../pages/ResetPassword";
 
 import { getToken } from "../utils/helpers";
 
@@ -41,6 +42,7 @@ const appRoutes = [
       { path: "canceled-orders", element: <CanceledOrder/> },  
       { path: "withdrawal", element: <Withdrawal/> },  
       { path: "profile", element: <Profile/> },  
+      { path: "reset-password", element: <ResetPassword/> },
     ],
   },
 ];

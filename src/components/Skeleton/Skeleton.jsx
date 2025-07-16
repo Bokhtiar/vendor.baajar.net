@@ -279,3 +279,42 @@ export const MyWithDrawSkeleton = () => {
 };
 
 
+export const ProfileSkeleton = () => (
+  <div className="max-w-5xl mx-auto mt-10 p-6 border border-gray-200 rounded-xl animate-pulse">
+    <div className="flex justify-between items-center mb-6">
+      <div className="h-8 w-48 bg-gray-200 rounded" />
+      <div className="h-8 w-24 bg-gray-300 rounded" />
+    </div>
+
+    <div className="flex flex-col md:flex-row gap-6 items-start">
+      <div className="w-32 h-32 bg-gray-200 rounded-full" />
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i}>
+            <div className="h-4 w-32 bg-gray-300 mb-2 rounded" />
+            <div className="h-5 w-full bg-gray-200 rounded" />
+          </div>
+        ))}
+        <div>
+          <div className="h-4 w-20 bg-gray-300 mb-2 rounded" />
+          <div className="h-6 w-24 bg-gray-200 rounded-full" />
+        </div>
+      </div>
+    </div>
+
+    <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <div className="h-4 w-40 bg-gray-300 mb-2 rounded" />
+        <div className="h-32 bg-gray-200 rounded" />
+      </div>
+      <div>
+        <div className="h-4 w-40 bg-gray-300 mb-2 rounded" />
+        <div className="space-y-2">
+          <div className="h-4 w-3/4 bg-gray-200 rounded" />
+          <div className="h-4 w-2/3 bg-gray-200 rounded" />
+          <div className="h-4 w-1/2 bg-gray-200 rounded" />
+        </div>
+      </div>
+    </div>
+  </div>
+);

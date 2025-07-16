@@ -7,6 +7,7 @@ import * as Brand from "../network/brand.network"
 import * as Order from "../network/order.network"
 import * as Inventory from "../network/inventory.network"
 import * as Profile from "../network/profile.network"
+import * as Dashboard from "../network/dashboard.network"
 export const NetworkServices = {
  Category,
  Product,
@@ -17,4 +18,5 @@ export const NetworkServices = {
  Order,
  Inventory,
  Profile,
+ Dashboard
 };
