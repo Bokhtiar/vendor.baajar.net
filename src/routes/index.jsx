@@ -16,6 +16,7 @@ import ProcessedOrder from "../pages/order/processed-order";
 import ShippedOrder from "../pages/order/shipped-order";
 import Products from "../pages/products";
 import ProductCreate from "../pages/products/Create";
+import ProductDetails from "../pages/products/details";
 import ProductUpdate from "../pages/products/edit";
 import Profile from "../pages/Profile";
 import ResetPassword from "../pages/ResetPassword";
@@ -32,6 +33,7 @@ const appRoutes = [
       { path: "orders", element: <AllOrderList /> },
       { path: "products", element: <Products /> },
       { path: "products/:id", element: <ProductUpdate /> },
+      { path: "products-details/:id", element: <ProductDetails /> },
       { path: "inventory", element: <Inventory /> },
       { path: "earnings", element: <Earning /> },
       { path: "create-product", element: <ProductCreate/> },  

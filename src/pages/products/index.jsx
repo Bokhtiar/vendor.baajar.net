@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { FaTrash } from "react-icons/fa";
+import { FaEye, FaTrash } from "react-icons/fa";
 import { RiEditFill } from "react-icons/ri";
 import DeleteProductModal from "../../components/modal/productDelete";
 import { networkErrorHandeller } from "../../utils/helpers";
@@ -150,6 +150,13 @@ const ProductTable = () => {
               <RiEditFill />
             </Link>
           </button>
+          <div className="mt-2">
+            <Link to={`/dashboard/products-details/${row.id}`} title="Show Details">
+              <button className="text-blue-600 text-xl cursor-pointer">
+                <FaEye />
+              </button>
+            </Link>
+          </div>
           <button
             onClick={() => handleDelete(row)}
             className="text-red-600 hover:text-red-800 cursor-pointer transition"
