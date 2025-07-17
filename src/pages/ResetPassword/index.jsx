@@ -26,7 +26,7 @@ const ResetPassword = () => {
 
     try {
       const response = await privateRequest.post(
-        "admin/reset-password",
+        "vendor/reset-password",
         formData
       );
       Toastify.Success(" password Reset successful!");

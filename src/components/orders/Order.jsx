@@ -126,11 +126,11 @@ const Orders = ({ status, title }) => {
 
     { name: "Customer", selector: (row) => row?.order?.user?.name },
     { name: "Order No", selector: (row) => row.id },
-    {
-      name: "Quantity",
-      cell: (row) => <div>{row.quantity} Pcs</div>,
-      center: true,
-    },
+    // {
+    //   name: "Quantity",
+    //   cell: (row) => <div>{row.qty} Pcs</div>,
+    //   center: true,
+    // },
     {
       name: "Price",
       selector: (row) => `${row.total}`,
