@@ -37,15 +37,16 @@ const Dashboard = () => {
   return (
     <div>
       <Card data={data}/>
-      <DashboardChart />
-      <div className="flex flex-col md:flex-row gap-5 my-5">
+      <BestSellers data={data?.best_selling_products}/>
+      {/* <DashboardChart /> */}
+      {/* <div className="flex flex-col md:flex-row gap-5 my-5">
         <div className="md:w-1/2">
           <BestSellers data={data?.best_selling_products}/>
         </div>
         <div className="md:w-1/2">
           <TrafficCard />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
