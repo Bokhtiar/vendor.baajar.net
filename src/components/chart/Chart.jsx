@@ -14,12 +14,12 @@ const data = [
   { name: '20', pv: 240, uv: 1100 },
   { name: '22', pv: 460, uv: 3600 },
   { name: '24', pv: 300, uv: 2200 },
-  { name: '26', pv: 290, uv: 2400 },
+  { name: '26', pv: 2900, uv: 2400 },
   { name: '28', pv: 210, uv: 1800 },
-  { name: '30', pv: 2500, uv: 2200 },
-  { name: '02', pv: 200, uv: 1300 },
-  { name: '04', pv: 320, uv: 2800 },
-  { name: '06', pv: 230, uv: 1700 },
+  { name: '30', pv: 2500, uv: 220 },
+  { name: '02', pv: 2000, uv: 1300 },
+  { name: '04', pv: 3200, uv: 2800 },
+  { name: '06', pv: 2300, uv: 1700 },
   { name: '08', pv: 1200, uv: 1000 },
   { name: '10', pv: 450, uv: 3500 },
   { name: '12', pv: 2700, uv: 2400 },
@@ -53,8 +53,8 @@ const DashboardChart = () => {
           <YAxis tickFormatter={(v) => `$${v}`} />
           <Tooltip formatter={(value) => `$${value}`} />
 
-          <Bar dataKey="pv" stackId="a" fill="#CDD1DE" barSize={10} />
-          <Bar dataKey="uv" stackId="a" fill="#FF8901" barSize={10} />
+          <Bar dataKey="pv" stackId="a" fill="#CDD1DE" barSize={8} />
+          <Bar dataKey="uv" stackId="a" fill="#FF8901" barSize={8} />
         </BarChart>
       </ResponsiveContainer>
     </div>
