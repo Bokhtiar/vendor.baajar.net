@@ -43,6 +43,7 @@ const Profile = () => {
       setValue("phone_number", data?.phone_number);
       setValue("email", data?.email);
       setValue("company_location", data?.company_location);
+      setValue("logo", data?.logo);
       setValue("nid", data?.nid);
       setValue("date_of_birth", data?.date_of_birth);
       setValue("shoptype", data?.shoptype);
@@ -116,7 +117,7 @@ const Profile = () => {
       {/* Profile Content */}
       <div className="flex flex-col md:flex-row gap-6 items-start md:items-start">
         <img
-          src={`${import.meta.env.VITE_API_SERVER}${data?.logo}`}
+           src={`${import.meta.env.VITE_API_SERVER}${data?.logo}`}
           alt="Vendor Logo"
           className="w-32 h-32 rounded-full object-cover border border-gray-300 shadow"
         />
