@@ -55,10 +55,8 @@ const BestSellersTable = ({data}) => {
     <div className="bg-white p-6 rounded-xl shadow-md mt-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-gray-800">Best Sale Products</h2>
-        <a href="#" className="text-sm  text-gray-500 hover:underline flex items-center gap-5">
-          More <span className="text-lg"> <FaArrowRight />
-          </span>
-        </a>
+
+      
       </div>
 
       <DataTable
@@ -66,7 +64,7 @@ const BestSellersTable = ({data}) => {
         data={data}
         highlightOnHover
         responsive
-        customStyles={customStyles} // ← add this line
+        customStyles={customStyles} 
       />
     </div>
   );
