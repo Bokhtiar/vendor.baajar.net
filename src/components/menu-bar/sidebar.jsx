@@ -7,6 +7,7 @@ import { HiBars3 } from "react-icons/hi2";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { CiWallet } from "react-icons/ci";
 import { SingleSelect } from "../input";
+import { BsArrowReturnRight } from "react-icons/bs";
 
 
 const Sidebar = ({
@@ -87,6 +88,12 @@ const Sidebar = ({
         { title: "My Earnings", path: "/dashboard/earnings" },
         { title: "Withdrawal", path: "/dashboard/Withdrawal" },
       ],
+    },
+    {
+      title: "Returning",
+      icon: <BsArrowReturnRight/>,
+      path: "/dashboard/return",
+
     },
 
   ];

@@ -8,6 +8,8 @@ import * as Order from "../network/order.network"
 import * as Inventory from "../network/inventory.network"
 import * as Profile from "../network/profile.network"
 import * as Dashboard from "../network/dashboard.network"
+import * as Earning from "../network/earning.network"
+import * as Return from "../network/return.network"
 export const NetworkServices = {
  Category,
  Product,
@@ -18,5 +20,7 @@ export const NetworkServices = {
  Order,
  Inventory,
  Profile,
- Dashboard
+ Dashboard,
+ Earning,
+ Return,
 };

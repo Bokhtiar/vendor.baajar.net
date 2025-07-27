@@ -1,52 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 
 import { FaEye } from "react-icons/fa";
 import EarningStats from "../../components/earning-stats/earningStats";
 import { EarningsTableSkeleton } from "../../components/Skeleton/Skeleton";
+import { NetworkServices } from "../../network";
+import { networkErrorHandeller } from "../../utils/helpers";
 
-const earningDetails = [
-  { id: 1, name: "Men's Tshirt Sky Blue", orderId: "MTLV68454", amount: 450 },
-  {
-    id: 2,
-    name: "Men's Tshirt Premium Blue",
-    orderId: "MTLV35975",
-    amount: 450,
-  },
-];
-
-const columns = [
-  {
-    name: "SN",
-    selector: (row, index) => `0${index + 1}.`,
-    width: "100px",
-  },
-  {
-    name: "Name",
-    selector: (row) => row.name,
-    sortable: true,
-  },
-  {
-    name: "Order ID",
-    selector: (row) => row.orderId,
-    sortable: true,
-  },
-  {
-    name: "Amount",
-    selector: (row) => row.amount,
-    sortable: true,
-    right: true,
-  },
-  {
-    name: "Action",
-    cell: (row) => (
-      <button className="text-gray-600 hover:text-black">
-        <FaEye size={16} />
-      </button>
-    ),
-    center: true,
-  },
-];
 const customStyles = {
   header: {
     style: {
@@ -77,10 +37,83 @@ const customStyles = {
 
 const Earning = () => {
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  const [totalRows, setTotalRows] = useState(0);
+
+  console.log("totalRows", totalRows);
+
+  const handlePageChange = (page) => {
+    if (!loading) {
+      setCurrentPage(page);
+    }
+  };
+
+  const handleRowsPerPageChange = (newPerPage, page) => {
+    setPerPage(newPerPage);
+    setCurrentPage(page);
+  };
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const queryParams = new URLSearchParams();
+      queryParams.append("page", currentPage);
+      queryParams.append("per_page", perPage);
+      const response = await NetworkServices.Earning.history(
+        queryParams.toString()
+      );
+      console.log("rda", response);
+      if (response?.status === 200) {
+        setData(response?.data?.data?.data);
+        setTotalRows(response?.data?.data?.total || 0);
+      }
+    } catch (error) {
+      networkErrorHandeller(error);
+    }
+    setLoading(false);
+  }, [currentPage, perPage]);
 
   useEffect(() => {
-    document.title = "Admin | Earning ";
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    document.title = "Vendor | Earning ";
   }, []);
+  const columns = [
+    {
+      name: "SN",
+      selector: (row, index) => `0${index + 1}.`,
+      width: "100px",
+    },
+    {
+      name: "Method",
+      selector: (row) => row.withdraw_method,
+      sortable: true,
+    },
+    {
+      name: "Account Number",
+      selector: (row) => row.account_number,
+      sortable: true,
+    },
+    {
+      name: "Amount",
+      selector: (row) => row.amount,
+      sortable: true,
+      // right: true,
+    },
+    // {
+    //   name: "Action",
+    //   cell: (row) => (
+    //     <button className="text-gray-600 hover:text-black">
+    //       <FaEye size={16} />
+    //     </button>
+    //   ),
+    //   center: true,
+    // },
+  ];
   return (
     <div className="">
       {/* Stats Summary */}
@@ -96,13 +129,19 @@ const Earning = () => {
         ) : (
           <DataTable
             columns={columns}
-            data={earningDetails}
+            data={data}
             customStyles={customStyles}
             pagination
             highlightOnHover
             responsive
             dense
             noHeader
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={perPage}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handleRowsPerPageChange}
+            paginationDefaultPage={currentPage}
           />
         )}
       </div>

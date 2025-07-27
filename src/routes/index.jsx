@@ -20,6 +20,8 @@ import ProductDetails from "../pages/products/details";
 import ProductUpdate from "../pages/products/edit";
 import Profile from "../pages/Profile";
 import ResetPassword from "../pages/ResetPassword";
+import ReturningTable from "../pages/return";
+import ReturnDetails from "../pages/return/details";
 
 import { getToken } from "../utils/helpers";
 
@@ -47,6 +49,8 @@ const appRoutes = [
       { path: "withdrawal", element: <Withdrawal/> },  
       { path: "profile", element: <Profile/> },  
       { path: "reset-password", element: <ResetPassword/> },
+      { path: "return", element: <ReturningTable/> },
+      { path: "return/:id", element: <ReturnDetails /> },
     ],
   },
 ];

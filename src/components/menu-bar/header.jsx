@@ -34,7 +34,7 @@ const Header = ({
   console.log("profail", profail);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [check, setCheck] = useState("");
+  // const [check, setCheck] = useState("");
   const [flagUrl, setFlagUrl] = useState("");
   const navigate = useNavigate();
 
@@ -48,33 +48,33 @@ const Header = ({
     return text.slice(0, limit) + " ...";
   };
 
-  const [theme, setTheme] = useState(() => {
-    return (
-      localStorage.getItem("theme") ||
-      (window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light")
-    );
-  });
+  // const [theme, setTheme] = useState(() => {
+  //   return (
+  //     localStorage.getItem("theme") ||
+  //     (window.matchMedia("(prefers-color-scheme: dark)").matches
+  //       ? "dark"
+  //       : "light")
+  //   );
+  // });
 
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+  // useEffect(() => {
+  //   if (theme === "dark") {
+  //     document.documentElement.classList.add("dark");
+  //   } else {
+  //     document.documentElement.classList.remove("dark");
+  //   }
+  //   localStorage.setItem("theme", theme);
+  // }, [theme]);
 
   // const toggleTheme = () => {
   //   setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   // };
-  const toggleTheme = (selectedTheme) => {
-    if (theme !== selectedTheme) {
-      setTheme(selectedTheme);
-      setCheck(selectedTheme);
-    }
-  };
+  // const toggleTheme = (selectedTheme) => {
+  //   if (theme !== selectedTheme) {
+  //     setTheme(selectedTheme);
+  //     setCheck(selectedTheme);
+  //   }
+  // };
   // ✅ Click Outside to Close
   useEffect(() => {
     function handleClickOutside(event) {
@@ -235,7 +235,7 @@ const Header = ({
 
           {/* Theme Color Mode */}
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <h3 className="text-xl font-medium mb-2 text-left pt-2">
               Theme color mode:
             </h3>
@@ -280,7 +280,7 @@ const Header = ({
                 <span>dark</span>
               </button>
             </div>
-          </div>
+          </div> */}
 
           <hr className="text-lightCard dark:darkCard" />
 
