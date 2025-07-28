@@ -6,6 +6,7 @@ import EarningStats from "../../components/earning-stats/earningStats";
 import { EarningsTableSkeleton } from "../../components/Skeleton/Skeleton";
 import { NetworkServices } from "../../network";
 import { networkErrorHandeller } from "../../utils/helpers";
+import WithdrowModal from "./withdrawPopup";
 
 const customStyles = {
   header: {
@@ -41,6 +42,7 @@ const Earning = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [totalRows, setTotalRows] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   console.log("totalRows", totalRows);
 
@@ -117,7 +119,9 @@ const Earning = () => {
   return (
     <div className="">
       {/* Stats Summary */}
-      <EarningStats />
+      <EarningStats setShowModal={setShowModal} />
+
+
 
       {/* Data Table */}
       <div className="font-poppins pt-5">
@@ -145,6 +149,13 @@ const Earning = () => {
           />
         )}
       </div>
+      {showModal && (
+        <WithdrowModal
+          onClose={() => setShowModal(false)}
+          // onSubmit={handleAddCategory}
+          // fetchColor={fetchColor}
+        />
+      )}
     </div>
   );
 };

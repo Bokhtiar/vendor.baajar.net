@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NetworkServices } from "../../network";
 import { networkErrorHandeller } from "../../utils/helpers";
 import DetailsSkeleton from "../../components/Skeleton/DetailsSkeleton";
+import { Toastify } from "../../components/toastify";
 
 const ReturnDetails = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
+  const [statusLoading, setStatusLoading] = useState(false);
   const [returnData, setReturnData] = useState(null);
+
+  const navigate = useNavigate();
 
   const fetchProduct = async () => {
     setLoading(true);
@@ -36,9 +40,31 @@ const ReturnDetails = () => {
   const { order_item, user, status, reason, notes, created_at } = returnData;
   const { product } = order_item;
 
+  const handleToggleStatus = async (Id, currentStatus) => {
+  try {
+    setStatusLoading(true);
+    const formData = new FormData();
+    formData.append("status", currentStatus === "approved" ? "rejected" : "approved");
+    formData.append("_method", "PUT");
+
+    const response = await NetworkServices.Return.update(Id, formData);
+    if (response && response.status === 200) {
+      Toastify.Success("Product Return status updated!");
+      navigate("/dashboard/return");
+    }
+  } catch (error) {
+    networkErrorHandeller(error);
+  } finally {
+    setStatusLoading(false);
+  }
+};
+
+
   return (
     <div className="max-w-full mx-auto p-6 space-y-6">
-      <h2 className="text-2xl font-semibold text-[#8B8B8B]">Return Request Details</h2>
+      <h2 className="text-2xl font-semibold text-[#8B8B8B]">
+        Return Request Details
+      </h2>
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Product Info */}
@@ -46,16 +72,21 @@ const ReturnDetails = () => {
           <h3 className="text-lg font-semibold text-[#8B8B8B]">Product Info</h3>
 
           <p>
-            <span className="text-[#8B8B8B] font-medium">Name:</span> {product?.product_name}
+            <span className="text-[#8B8B8B] font-medium">Name:</span>{" "}
+            {product?.product_name}
           </p>
           <p>
-            <span className="text-[#8B8B8B] font-medium">Price:</span> ৳{order_item?.price}
+            <span className="text-[#8B8B8B] font-medium">Price:</span> ৳
+            {order_item?.price}
           </p>
           <p>
-            <span className="text-[#8B8B8B] font-medium">Total:</span> ৳{order_item?.total}
+            <span className="text-[#8B8B8B] font-medium">Total:</span> ৳
+            {order_item?.total}
           </p>
           <p>
-            <span className="text-[#8B8B8B] font-medium">Short Description:</span>{" "}
+            <span className="text-[#8B8B8B] font-medium">
+              Short Description:
+            </span>{" "}
             {product?.short_description}
           </p>
 
@@ -67,7 +98,7 @@ const ReturnDetails = () => {
                   key={i}
                   src={`${import.meta.env.VITE_API_SERVER}${img}`}
                   alt={`product-${i}`}
-                  className="w-20 h-20 object-cover rounded border"
+                  className="w-20 h-20 object-cover rounded "
                 />
               ))}
             </div>
@@ -76,16 +107,21 @@ const ReturnDetails = () => {
 
         {/* Customer Info */}
         <div className="space-y-4 shadow p-4 rounded-md">
-          <h3 className="text-lg font-semibold text-[#8B8B8B]">Customer Info</h3>
+          <h3 className="text-lg font-semibold text-[#8B8B8B]">
+            Customer Info
+          </h3>
 
           <p>
-            <span className="text-[#8B8B8B] font-medium">Name:</span> {user?.name}
+            <span className="text-[#8B8B8B] font-medium">Name:</span>{" "}
+            {user?.name}
           </p>
           <p>
-            <span className="text-[#8B8B8B] font-medium">Phone:</span> {user?.phone}
+            <span className="text-[#8B8B8B] font-medium">Phone:</span>{" "}
+            {user?.phone}
           </p>
           <p>
-            <span className="text-[#8B8B8B] font-medium">Role:</span> {user?.role}
+            <span className="text-[#8B8B8B] font-medium">Role:</span>{" "}
+            {user?.role}
           </p>
           <p>
             <span className="text-[#8B8B8B] font-medium">Status:</span> {status}
@@ -110,30 +146,45 @@ const ReturnDetails = () => {
 
       {/* Reason & Notes */}
       <div className="shadow rounded-md p-4 space-y-2">
-        <h3 className="text-lg font-semibold text-[#8B8B8B]">Return Reason & Notes</h3>
+        <h3 className="text-lg font-semibold text-[#8B8B8B]">
+          Return Reason & Notes
+        </h3>
         <p>
-          <span className="text-[#8B8B8B] font-medium">Reason:</span> {reason || "N/A"}
+          <span className="text-[#8B8B8B] font-medium">Reason:</span>{" "}
+          {reason || "N/A"}
         </p>
         <p>
-          <span className="text-[#8B8B8B] font-medium">Notes:</span> {notes || "N/A"}
+          <span className="text-[#8B8B8B] font-medium">Notes:</span>{" "}
+          {notes || "N/A"}
         </p>
       </div>
 
       {/* Return Photos */}
       {photos.length > 0 && (
         <div className="shadow rounded-md p-4">
-          <h3 className="text-lg font-semibold text-[#8B8B8B]">Return Photos</h3>
+          <h3 className="text-lg font-semibold text-[#8B8B8B]">
+            Return Photos
+          </h3>
           <div className="flex gap-3 mt-2 flex-wrap">
             {photos.map((img, idx) => (
               <img
                 key={idx}
                 src={`${import.meta.env.VITE_API_SERVER}${img}`}
                 alt={`return-${idx}`}
-                className="w-24 h-24 object-cover border rounded"
+                className="w-24 h-24 object-cover  rounded"
               />
             ))}
           </div>
         </div>
+      )}
+      {returnData.status === "rejected" && (
+        <button
+          onClick={() => handleToggleStatus(returnData.id, returnData.status)}
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          disabled={statusLoading}
+        >
+          {statusLoading ? "Updating..." : "Approve"}
+        </button>
       )}
     </div>
   );

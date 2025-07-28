@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { networkErrorHandeller } from "../../utils/helpers";
 import { NetworkServices } from "../../network";
 
-const EarningStats = () => {
+const EarningStats = ({ setShowModal }) => {
   const [data, setData] = useState([]);
 
   const stats = [
@@ -20,6 +20,7 @@ const EarningStats = () => {
       label: "Available Withdrawal",
       value: data?.available_to_withdraw,
       color: "bg-gradient-to-r from-[#6BAAFC] to-[#305FEC]",
+      hasWithdrawButton: true,
     },
   ];
 
@@ -47,8 +48,22 @@ const EarningStats = () => {
           key={index}
           className={`rounded-xl text-white  p-5 shadow-md ${stat?.color}`}
         >
-          <p className="text-sm font-medium">{stat.label}</p>
-          <p className="text-5xl font-semibold">{stat.value}</p>
+          <div className="flex justify-between">
+            <div>
+              <p className="text-sm font-medium">{stat.label}</p>
+              <p className="text-5xl font-semibold">{stat.value}</p>
+            </div>
+            {stat.hasWithdrawButton && (
+              <div className="mt-4">
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="bg-white text-blue-700 font-semibold px-4 py-2 rounded hover:bg-gray-200"
+                >
+                  Withdraw
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       ))}
     </div>

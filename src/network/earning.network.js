@@ -11,7 +11,7 @@ export const history = async (queryParams) => {
 
 /* resource store */
 export const store = async(data) => {
-    return await privateRequest.post('/vendor/color', data)
+    return await privateRequest.post('/vendor/withdraw', data)
 }
 
 /* resource show */
