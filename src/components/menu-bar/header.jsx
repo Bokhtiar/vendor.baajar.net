@@ -114,7 +114,7 @@ const Header = ({
 
   return (
     <div
-      className={`bg-lightCard dark:bg-darkCard flex items-center justify-between  py-4 px-2 shadow-md dark:shadow-md w-full ${
+      className={`bg-[#DC2626] dark:bg-darkCard flex items-center justify-between  py-4 px-2 shadow-md dark:shadow-md w-full ${
         menuPosition === "fixed" ? "fixed top-0 right-0" : "relative"
       } z-10  `}
     >
@@ -131,10 +131,10 @@ const Header = ({
       {menuStyle == "click" && !menuOpen && (
         <RiMenuUnfold3Fill
           onClick={() => toggleSidebar()}
-          className="absolute left-5 top-6 text-2xl z-10 cursor-pointer text-lightTitle dark:text-darkTitle"
+          className="absolute left-5 top-6 text-2xl z-10 cursor-pointer text-white dark:text-darkTitle"
         />
       )}
-      <h1 className="text-2xl text-red-600 font-bold  hidden lg:block pl-16">
+      <h1 className="text-2xl text-white font-bold  hidden lg:block pl-16">
         Bajjar
       </h1>
       <div className="flex w-full justify-end  md:gap-5 gap-2 items-center relative ">
@@ -173,9 +173,9 @@ const Header = ({
               <ul>
                 <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
                   <FiUser className="text-lg" />
-                  <Link
-                    to="/dashboard/profile"
-                  ><span>Profile</span></Link>
+                  <Link to="/dashboard/profile">
+                    <span>Profile</span>
+                  </Link>
                   <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
                 </li>
 
@@ -189,11 +189,11 @@ const Header = ({
                   <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
                 </li>
 
-                      <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
+                <li className="flex items-center gap-3 px-4 py-2 cursor-pointer group relative">
                   <MdVpnKey className="text-lg" />
-                  <Link
-                    to="/dashboard/reset-password"
-                  ><span>Reset Password</span></Link>
+                  <Link to="/dashboard/reset-password">
+                    <span>Reset Password</span>
+                  </Link>
                   <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-current transition-all duration-700 group-hover:w-[80%] group-hover:left-[10%]"></span>
                 </li>
 
@@ -212,7 +212,7 @@ const Header = ({
 
         <CiSettings
           onClick={() => setIsOpen(true)}
-          className="text-3xl rounded-full animate-[spin_2s_linear_infinite] dark:text-darkTitle cursor-pointer"
+          className="text-3xl rounded-full animate-[spin_2s_linear_infinite] text-white dark:text-darkTitle cursor-pointer"
         />
 
         <div
@@ -292,8 +292,8 @@ const Header = ({
             <div className="flex gap-3">
               <button
                 onClick={() => setMenuStyle("click")}
-                className={`w-full rounded-full p-2 md:p-3 flex items-center space-x-2 ${
-                  menuStyle == "click" ? "bg-blue-500" : "bg-gray-200"
+                className={`w-full rounded-full p-2 md:p-3 flex items-center space-x-2  ${
+                  menuStyle == "click" ? "bg-[#DC2626]" : "bg-gray-200"
                 }`}
               >
                 <div
@@ -304,17 +304,24 @@ const Header = ({
                   }`}
                 >
                   {menuStyle == "click" ? (
-                    <FaCheck className="text-blue-600" />
+                    <FaCheck className="text-[#DC2626]" />
                   ) : (
                     ""
                   )}
                 </div>
-                <span className="text-dark">Menu click</span>
+
+                <span
+                  className={`${
+                    menuStyle === "click" ? "text-white" : "text-black"
+                  }`}
+                >
+                  Menu click
+                </span>
               </button>
               <button
                 onClick={() => setMenuStyle("hover")}
                 className={`w-full rounded-full p-2 md:p-3 flex items-center space-x-2 ${
-                  menuStyle == "hover" ? "bg-blue-500" : "bg-gray-200"
+                  menuStyle == "hover" ? "bg-[#DC2626]" : "bg-gray-200"
                 }`}
               >
                 <div
@@ -325,12 +332,18 @@ const Header = ({
                   }`}
                 >
                   {menuStyle == "hover" ? (
-                    <FaCheck className="text-blue-600" />
+                    <FaCheck className="text-[#DC2626]" />
                   ) : (
                     ""
                   )}
                 </div>
-                <span className="text-dark">Icon hover</span>
+                <span
+                  className={`${
+                    menuStyle === "hover" ? "text-white" : "text-black"
+                  }`}
+                >
+                  Icon hover
+                </span>
               </button>
             </div>
           </div>
@@ -343,7 +356,7 @@ const Header = ({
               <button
                 onClick={() => setMenuPosition("fixed")}
                 className={`w-full rounded-full p-2 md:p-3 flex items-center space-x-2 ${
-                  menuPosition == "fixed" ? "bg-blue-500" : "bg-gray-200"
+                  menuPosition == "fixed" ? "bg-[#DC2626]" : "bg-gray-200"
                 }`}
               >
                 <div
@@ -354,17 +367,23 @@ const Header = ({
                   }`}
                 >
                   {menuPosition == "fixed" ? (
-                    <FaCheck className="text-blue-600" />
+                    <FaCheck className="text-[#DC2626]" />
                   ) : (
                     ""
                   )}
                 </div>
-                <span className="text-dark">Fixed</span>
+                <span
+                  className={`${
+                    menuPosition === "fixed" ? "text-white" : "text-black"
+                  }`}
+                >
+                  Fixed
+                </span>
               </button>
               <button
                 onClick={() => setMenuPosition("scrollable")}
                 className={`w-full rounded-full p-2 md:p-3 flex items-center space-x-2 ${
-                  menuPosition == "scrollable" ? "bg-blue-500" : "bg-gray-200"
+                  menuPosition == "scrollable" ? "bg-[#DC2626]" : "bg-gray-200"
                 }`}
               >
                 <div
@@ -375,12 +394,18 @@ const Header = ({
                   }`}
                 >
                   {menuPosition == "scrollable" ? (
-                    <FaCheck className="text-blue-600" />
+                    <FaCheck className="text-[#DC2626]" />
                   ) : (
                     ""
                   )}
                 </div>
-                <span className="text-dark">Scrollable</span>
+                <span
+                  className={`${
+                    menuPosition === "scrollable" ? "text-white" : "text-black"
+                  }`}
+                >
+                  Scrollable
+                </span>
               </button>
             </div>
           </div>

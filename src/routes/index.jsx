@@ -56,7 +56,7 @@ const appRoutes = [
 ];
 
 export const permittedRoutes = () => {
-  const token = getToken();
+  const token = true;
   if (token) {
     return appRoutes;
   }

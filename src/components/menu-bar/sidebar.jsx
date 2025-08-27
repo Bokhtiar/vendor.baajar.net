@@ -104,28 +104,28 @@ const Sidebar = ({
 
 
       {menuStyle === "hover" && (
-        <div className="hidden md:block w-24 hover:w-52 h-screen bg-lightCard dark:bg-darkCard dark:text-darkTitle py-4 group  transition-all duration-300 ease-in-out overflow-hidden  ">
-          <div className="flex items-center space-x-2 pl-4">
-            <span className="text-primary text-lg font-bold left-5 pt-2 ">
+        <div className="hidden md:block w-28 hover:w-56 h-screen bg-[#DC2626] dark:bg-darkCard dark:text-darkTitle py-4 group  transition-all duration-300 ease-in-out overflow-hidden  pr-3 ">
+          <div className="flex items-center space-x-2 pl-4 ">
+            <span className="text-primary text-lg font-bold left-5 pt-2  ">
               Baajar
             </span>
           </div>
 
-          <nav className="mt-10 ">
+          <nav className="mt-10  ">
             {menuData.map((item, index) => {
               const isActive = location.pathname === item.path;
 
               return (
-                <div key={index} className="mb-2  relative ms-4">
-                  {isActive && (
+                <div key={index} className="mb-2  relative ms-4 ">
+                  {/* {isActive && (
                     <span className="absolute left-0 top-0 h-full w-1 bg-[#0d6efd] z-50"></span>
-                  )}
+                  )} */}
 
                   <Link
                     to={item.path}
-                    className={`flex items-center border border-[#F3F4F6] w-full text-left rounded-md transition-all duration-200 group ${
+                    className={`flex items-center border border-[#F3F4F6] w-full text-left rounded-md transition-all duration-200 group text-white  ${
                       isActive
-                        ? "bg-primary text-white"
+                        ? "bg-white text-black! "
                         : "hover:text-black hover:bg-blue-100"
                     }`}
                     onClick={() => toggleMenu(item.title)}
@@ -152,13 +152,17 @@ const Sidebar = ({
                             }
                             className={`flex rounded-md pl-4 transition-all duration-200 relative ${
                               isSubActive
-                                ? "text-primary font-semibold hover:bg-blue-100"
-                                : "hover:text-black hover:bg-blue-100"
+                                ? "text-primary font-semibold "
+                                : "hover:text-black "
                             }`}
                           >
                             {/* If you want icons for submenu, add here */}
                             {/* <span className="mr-2 flex-shrink-0 text-lg p-2">{subItem.icon}</span> */}
-                            <div className="truncate hidden group-hover:block w-full">
+                            <div className={`truncate hidden group-hover:block w-full text-white ${
+                              isSubActive
+                                ? " text-black!"
+                                : " hover:text-black"
+                            }`}>
                               {subItem.title}
                             </div>
                           </Link>
@@ -176,15 +180,15 @@ const Sidebar = ({
       {/* ======= Desktop Sidebar Click Style ======= */}
       {menuStyle === "click" && (
         <div
-          className={` font-poppins md:block w-64 fixed top-0 left-0 h-screen z-50 bg-lightCard dark:bg-darkCard dark:text-darkTitle transition-all duration-300 ${
+          className={` font-poppins md:block w-64 fixed top-0 left-0 h-screen z-50 bg-[#DC2626] dark:bg-darkCard dark:text-darkTitle transition-all duration-300 ${
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <div className="flex items-center justify-between p-4 border-b border-gray-300">
-            <span className="text-lg font-semibold">Baajar</span>
+            <span className="text-lg font-semibold text-white">Baajar</span>
             <button onClick={toggleSidebar}>
               <RiMenuFold4Fill
-                className={`text-xl transform ${menuOpen ? "rotate-180" : ""}`}
+                className={`text-xl transform text-white ${menuOpen ? "rotate-180" : ""}`}
               />
             </button>
           </div>
@@ -194,16 +198,16 @@ const Sidebar = ({
               const isActive = location.pathname === item.path;
               return (
                 <div key={index} className="mb-2 relative">
-                  {isActive && (
-                    <span className="absolute left-0 top-0 h-full w-1 bg-primary z-50"></span>
-                  )}
+                  {/* {isActive && (
+                    <span className="absolute left-0 top-0 h-full w-1 bg-white z-50"></span>
+                  )} */}
 
                   <Link
                     to={item.path}
-                    className={`flex items-center p-2 rounded-md transition-all duration-200 ${
+                    className={`flex items-center p-2 rounded-md transition-all duration-200 border text-white ${
                       isActive
-                        ? "bg-primary text-white"
-                        : "hover:bg-blue-100 hover:text-black"
+                        ? "bg-[#ffff] text-black! border-white "
+                        : "hover:text-black hover:bg-white "
                     }`}
                     onClick={() => toggleMenu(item.title)}
                   >
@@ -219,10 +223,10 @@ const Sidebar = ({
                           <Link
                             key={subIndex}
                             to={subItem.path}
-                            className={`text-sm rounded-md p-2 pl-4 transition-all duration-200 ${
+                            className={`text-sm rounded-md p-2 pl-4 transition-all duration-200 text-white ${
                               isSubActive
-                                ? "bg-blue-200 text-blue-900"
-                                : "hover:bg-blue-100 hover:text-black"
+                                ? " text-black!"
+                                : " hover:text-black"
                             }`}
                           >
                             <div className="truncate w-full">
@@ -266,10 +270,10 @@ const Sidebar = ({
             const isActive = location.pathname === item.path;
 
             return (
-              <div key={index} className="mb-2">
+              <div key={index} className="mb-2 ">
                 <Link
                   to={item.path}
-                  className={`flex items-center p-2 rounded-md transition ${
+                  className={`flex items-center p-2 rounded-md transition  ${
                     isActive
                       ? "bg-primary text-white"
                       : "hover:bg-blue-100 hover:text-black"
