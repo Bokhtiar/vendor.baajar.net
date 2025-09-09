@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PassworInput, TextInput } from "../../components/input";
@@ -32,10 +32,10 @@ const Login = () => {
       phone_number: data.phone_number,
       password: data.password,
     };
-    
+
     try {
       const response = await publicRequest.post("vendor/login", newData);
-      
+
       if (response?.data?.data?.vendor?.role == "vendor") {
         setToken(response?.data?.data?.token);
         Toastify.Success("Login successfully done");
@@ -55,14 +55,14 @@ const Login = () => {
           Welcome vendor. Login Here
         </span>
 
-        <div className="w-full bg-[#8B70D1] my-5 sm:w-[550px] p-6 sm:p-10 rounded-xl flex flex-col items-center justify-center">
+        <div className="w-full bg-[#DC2626] my-5 sm:w-[550px] p-6 sm:p-10 rounded-xl flex flex-col items-center justify-center">
           <div className="w-[80px] h-[80px] sm:w-[110px] sm:h-[110px] rounded-full bg-white overflow-hidden">
             <img
               src="/image/login-profile.svg"
               height={80}
               width={80}
               alt="Logo"
-              className="w-full h-full bg-[#8B70D1] object-contain"
+              className="w-full h-full bg-[#DC2626] object-contain"
             />
           </div>
 
@@ -122,16 +122,21 @@ const Login = () => {
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-center mt-4">
-              <button
-                type="submit"
-                className={`mt-2 w-44 h-10  sm:mt-4 gap-2 text-primary flex justify-center items-center bg-white rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 py-3 hover:bg-gray-100 ${!isValid ? "opacity-50 cursor-not-allowed" : ""
+            <div className="flex items-center justify-center ">
+              <div className=" bg-white h-10 mt-4 rounded-md ">
+                <button
+                  type="submit"
+                  className={`text-black flex justify-center items-center  rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 py-3  ${
+                    !isValid ? "opacity-50 cursor-not-allowed" : ""
                   }`}
-                disabled={!isValid || loading}
-              >
-                {loading ?  <Spinner name={'Running'}/> : "Login"}
-              </button>
+                  disabled={!isValid || loading}
+                >
+                  {loading ? <Spinner name={"Running"} /> : "Login"}
+                </button>
+              </div>
             </div>
+
+ 
           </form>
 
           {/* Forgot Password & Register */}
@@ -146,9 +151,7 @@ const Login = () => {
               Don&apos;t have an account?{" "}
               <Link
                 to={
-                  redirect
-                    ? `/auth/register?redirect=${redirect}`
-                    : "/register"
+                  redirect ? `/auth/register?redirect=${redirect}` : "/register"
                 }
                 className="hover:underline"
               >
@@ -163,9 +166,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
-
-
-
