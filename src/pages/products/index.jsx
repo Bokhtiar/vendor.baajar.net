@@ -111,9 +111,9 @@ const ProductTable = () => {
       // center: true,
     },
     {
-      name: "Name of the Product",
+      name: "Name ",
       selector: (row) => row.product_name,
-      width: "20%",
+      // width: "20%",
       cell: (row) => (
         <div className="text-left font-medium text-black  text-base">
           {row.product_name}
@@ -131,7 +131,37 @@ const ProductTable = () => {
       ),
     },
     {
-      name: "Price",
+      name: "Stock",
+      selector: (row) => row.stock,
+      center: true,
+      cell: (row) => (
+        <div className="text-base font-medium text-gray-900">
+          {row.stock}/-
+        </div>
+      ),
+    },
+    {
+      name: "Purchase Price",
+      selector: (row) => row.purchase_price,
+      center: true,
+      cell: (row) => (
+        <div className="text-base font-medium text-gray-900">
+          {row.purchase_price}/-
+        </div>
+      ),
+    },
+    {
+      name: "Reguler Price",
+      selector: (row) => row.reguler_price,
+      center: true,
+      cell: (row) => (
+        <div className="text-base font-medium text-gray-900">
+          {row.reguler_price}/-
+        </div>
+      ),
+    },
+    {
+      name: "Offer Price",
       selector: (row) => row.offer_price,
       center: true,
       cell: (row) => (
@@ -140,6 +170,7 @@ const ProductTable = () => {
         </div>
       ),
     },
+
     {
       name: "Action",
       button: true,
@@ -151,7 +182,10 @@ const ProductTable = () => {
             </Link>
           </button>
           <div className="mt-2">
-            <Link to={`/dashboard/products-details/${row.id}`} title="Show Details">
+            <Link
+              to={`/dashboard/products-details/${row.id}`}
+              title="Show Details"
+            >
               <button className="text-blue-600 text-xl cursor-pointer">
                 <FaEye />
               </button>

@@ -28,7 +28,6 @@ const Header = ({
   const popupRef = useRef(null);
   // const [header, setHeader] = useState("fixed");
   // const [menuStyle, setMenuStyle] = useState("click");
-
   // const [layoutStyle, setLayoutStyle] = useState("fullWidth");
 
   console.log("profail", profail);
@@ -43,7 +42,7 @@ const Header = ({
     navigate(`/login?redirectFrom=${window.location.pathname}`);
   };
 
-  const limitChars = (text, limit = 20) => {
+  const limitChars = (text, limit = 16) => {
     if (text.length <= limit) return text;
     return text.slice(0, limit) + " ...";
   };
@@ -114,7 +113,7 @@ const Header = ({
 
   return (
     <div
-      className={`bg-[#DC2626] dark:bg-darkCard flex items-center justify-between  py-4 px-2 shadow-md dark:shadow-md w-full ${
+      className={`bg-[#DC2626] dark:bg-darkCard flex items-center justify-between  py-4 px-2  w-full ${
         menuPosition === "fixed" ? "fixed top-0 right-0" : "relative"
       } z-10  `}
     >
@@ -157,10 +156,10 @@ const Header = ({
               className="w-9 h-9 bg-gray-200 rounded-full"
             />
             <div className="flex items-center flex-col dark:text-darkTitle">
-              <span className="font-bold text-[14px] text-left block">
+              <span className="font-bold text-[14px] text-left block text-white">
                 {profail?.company_name}
               </span>
-              <span className="text-[12px]">{profail?.role}</span>
+              <span className="text-[12px] text-white">{profail?.role}</span>
             </div>
           </div>
 

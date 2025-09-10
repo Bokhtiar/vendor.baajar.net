@@ -123,10 +123,10 @@ const Login = () => {
 
             {/* Submit Button */}
             <div className="flex items-center justify-center ">
-              <div className=" bg-white h-10 mt-4 rounded-md ">
+              <div className=" bg-white h-10 mt-4 rounded-md flex justify-center items-center ">
                 <button
                   type="submit"
-                  className={`text-black flex justify-center items-center  rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 py-3  ${
+                  className={` text-primary   rounded-lg text-xs font-bold sm:py-3.5 px-16 sm:px-20 py-3  ${
                     !isValid ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                   disabled={!isValid || loading}

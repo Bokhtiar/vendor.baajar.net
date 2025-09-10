@@ -82,7 +82,7 @@ export const DashboardLayout = () => {
           <main className=" ">
             <div
               className={`mx-auto w-full p-2  bg-light dark:bg-dark  ${
-                menuPosition === "fixed" ? "mt-20" : ""
+                menuPosition === "fixed" ? "mt-[70px]" : ""
               }`}
             >
               <Outlet />

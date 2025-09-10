@@ -6,6 +6,7 @@ import { publicRequest } from "../../config/axios.config";
 import { ImageUpload, TextInput } from "../../components/input";
 import { networkErrorHandeller } from "../../utils/helpers";
 import useCurrentLocation from "../../components/hook/useCurrentLocation ";
+import { FaPhone } from "react-icons/fa";
 
 const Register = () => {
   const {
@@ -19,7 +20,6 @@ const Register = () => {
   const navigate = useNavigate();
 
   const { latLng, error } = useCurrentLocation();
-  
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -56,7 +56,7 @@ const Register = () => {
           Vendor Registration
         </span>
 
-        <div className="w-full bg-[#8B70D1] my-5 sm:w-[600px] p-6 sm:p-10 rounded-xl">
+        <div className="w-full bg-[#DC2626] my-5 sm:w-[600px] p-6 sm:p-10 rounded-xl">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-4 text-white"
@@ -67,7 +67,11 @@ const Register = () => {
               className="rounded-lg"
               control={control}
               type="text"
-              label="Phone Number"
+              label={
+                <div className="flex gap-2 pb-2 pl-3.5 text-white">
+                  Phone number
+                </div>
+              }
               placeholder="Enter phone number"
               rules={{ required: "Phone number is required" }}
               trigger={trigger}
@@ -80,7 +84,11 @@ const Register = () => {
               className="rounded-lg"
               control={control}
               type="text"
-              label="Company Name"
+              label={
+                <div className="flex gap-2 pb-2 pl-3.5 text-white">
+                  Company Name
+                </div>
+              }
               placeholder="Enter company name"
               rules={{ required: "Company name is required" }}
               trigger={trigger}
@@ -93,7 +101,9 @@ const Register = () => {
               className="rounded-lg"
               control={control}
               type="email"
-              label="Email"
+              label={
+                <div className="flex gap-2 pb-2 pl-3.5 text-white">Email</div>
+              }
               placeholder="Enter email"
               rules={{ required: "Email is required" }}
               trigger={trigger}
@@ -106,7 +116,11 @@ const Register = () => {
               className="rounded-lg"
               control={control}
               type="date"
-              label="Date of Birth"
+              label={
+                <div className="flex gap-2 pb-2 pl-3.5 text-white">
+                  Date of Birth
+                </div>
+              }
               rules={{ required: "Date of birth is required" }}
               trigger={trigger}
               error={errors?.date_of_birth?.message}
@@ -118,7 +132,9 @@ const Register = () => {
               className="rounded-lg"
               control={control}
               type="text"
-              label="NID"
+              label={
+                <div className="flex gap-2 pb-2 pl-3.5 text-white">NID</div>
+              }
               placeholder="Enter NID"
               rules={{ required: "NID is required" }}
               trigger={trigger}
@@ -131,7 +147,11 @@ const Register = () => {
               className="rounded-lg"
               control={control}
               type="text"
-              label="Company Location"
+              label={
+                <div className="flex gap-2 pb-2 pl-3.5 text-white">
+                  Company Location
+                </div>
+              }
               placeholder="Enter location"
               rules={{ required: "Location is required" }}
               trigger={trigger}
@@ -142,7 +162,9 @@ const Register = () => {
               <ImageUpload
                 name="logo"
                 control={control}
-                label="Logo"
+                label={
+                  <div className="flex gap-2 pb-2 pl-3.5 text-white">Logo</div>
+                }
                 // required
                 onUpload={(file) => setValue("logo", file)}
                 error={errors.logo?.message}
@@ -153,7 +175,10 @@ const Register = () => {
               <ImageUpload
                 name="tread_licence"
                 control={control}
-                label="Tread Licence"
+                
+                label={
+                  <div className="flex gap-2 pb-2 pl-3.5 text-white">Tread Licence</div>
+                }
                 // required
                 onUpload={(file) => setValue("tread_licence", file)}
                 error={errors.logo?.message}

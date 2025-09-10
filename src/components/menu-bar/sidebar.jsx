@@ -111,12 +111,12 @@ const Sidebar = ({
             </span>
           </div>
 
-          <nav className="mt-10  ">
+          <nav className="mt-7">
             {menuData.map((item, index) => {
               const isActive = location.pathname === item.path;
 
               return (
-                <div key={index} className="mb-2  relative ms-4 ">
+                <div key={index} className="mb-2 relative ms-4 ">
                   {/* {isActive && (
                     <span className="absolute left-0 top-0 h-full w-1 bg-[#0d6efd] z-50"></span>
                   )} */}
@@ -184,7 +184,7 @@ const Sidebar = ({
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="flex items-center justify-between p-4 border-b border-gray-300">
+          <div className="flex items-center justify-between p-5 border-b border-gray-300">
             <span className="text-lg font-semibold text-white">Baajar</span>
             <button onClick={toggleSidebar}>
               <RiMenuFold4Fill

@@ -89,7 +89,7 @@ const PasswordSetup = () => {
           Set Password
         </span>
 
-        <div className="w-full bg-[#8B70D1] my-5 sm:w-[600px] p-6 sm:p-10 rounded-xl">
+        <div className="w-full bg-[#DC2626] my-5 sm:w-[600px] p-6 sm:p-10 rounded-xl">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-4 text-white"
