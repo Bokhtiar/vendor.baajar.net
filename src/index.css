@@ -85,3 +85,11 @@ button {
   width: 100%  ;
   border-radius:8px;
 }
+
+.tiptap ,.ProseMirror {
+  height: 220px;
+  outline: 0;
+  padding: 8px;
+  border: 2px dotted gray;
+   overflow-y: auto;
+}

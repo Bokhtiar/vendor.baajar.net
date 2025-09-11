@@ -13,6 +13,11 @@ import { Toastify } from "../../components/toastify";
 import { Navigate, useNavigate } from "react-router-dom";
 import Spinner from "../../utils/loading/spinner";
 import { networkErrorHandeller } from "../../utils/helpers";
+import { EditorSection } from "./richEditor";
+
+
+
+
 
 const ProductCreate = () => {
   const {
@@ -42,6 +47,7 @@ const ProductCreate = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [selectedAttribute, setSelectedAttribute] = useState(null);
+  const [value, seteditValue] = useState("");
 
   const navigate = useNavigate();
 
@@ -256,7 +262,7 @@ const ProductCreate = () => {
       formData.append("offer_price", data?.offerPrice || "");
       formData.append("stock", data.stockQuantity || "");
       formData.append("status", "1");
-      formData.append("description", data?.shortDescription || "");
+      formData.append("description", value || "");
       formData.append("sku", data.sku || "");
       formData.append("purchase_price", data.purchase_price || "");
       formData.append("lat", data.lat || "");
@@ -514,17 +520,16 @@ const ProductCreate = () => {
           error={errors.offerPrice?.message}
         />
       </div>
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2 ">
+            Article Content *
+          </label>
+          <div className="">
+            <EditorSection seteditValue={seteditValue} />
+          </div>
+        </div>
 
-      <div>
-        <TextAreaInput
-          name="shortDescription"
-          placeholder="Enter short description"
-          label="Short Description"
-          control={control}
-          // rules={{ required: "Short description is required" }}
-          error={errors.shortDescription?.message}
-        />
-      </div>
+
 
       <button
         type="submit"
