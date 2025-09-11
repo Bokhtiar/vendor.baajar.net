@@ -8,6 +8,7 @@ import Select from "react-select";
 import { Toastify } from "../../components/toastify";
 import Spinner from "../../utils/loading/spinner";
 import { networkErrorHandeller } from "../../utils/helpers";
+import { EditorSection } from "./richEditor";
 
 const ProductUpdate = () => {
   const { id } = useParams();
@@ -40,6 +41,7 @@ const ProductUpdate = () => {
   const [selectedColor, setSelectedColor] = useState([]);
   const [selectedAttribute, setSelectedAttribute] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState([]);
+    const [value, seteditValue] = useState("");
 
   console.log("product", product);
   const handleColorChange = (option) => {
@@ -71,6 +73,8 @@ const ProductUpdate = () => {
         const data = res?.data?.data?.product;
         const colorData = res?.data?.data?.colors;
         const attributeData = res?.data?.data?.attributes;
+
+        console.log("lll", data);
 
         setProduct(data);
         setColorShow(colorData);
@@ -237,7 +241,10 @@ const ProductUpdate = () => {
       formData.append("product_name", data?.productName || "");
       formData.append("short_description", data?.shortName || "");
       formData.append("category_id", selectedCategory?.value || "");
-      formData.append("brand_id", selectedBrand?.value || product?.brand_id || "");
+      formData.append(
+        "brand_id",
+        selectedBrand?.value || product?.brand_id || ""
+      );
       formData.append(
         "sub_category_id",
         selectedSubCategory?.value || product?.sub_category_id || ""
@@ -278,7 +285,7 @@ const ProductUpdate = () => {
       formData.append("offer_price", data?.offerPrice || "");
       formData.append("stock", data.stockQuantity || "");
       formData.append("status", "1");
-      formData.append("description", data?.shortDescription || "");
+      formData.append("description", value ? value : data?.content || "");
       formData.append("sku", data.sku || "");
       formData.append("purchase_price", data.purchase_price || "");
       formData.append("lat", data.lat || "");
@@ -287,7 +294,7 @@ const ProductUpdate = () => {
       // Thumbnail single image
       if (data.thumbnail) {
         formData.append("thumbnail", data.thumbnail);
-      }else{
+      } else {
         formData.append("thumbnail", product?.thumbnail);
       }
 
@@ -560,14 +567,25 @@ const ProductUpdate = () => {
           error={errors.offerPrice?.message}
         />
       </div>
-
+      {/* 
       <TextAreaInput
         name="shortDescription"
         label="Short Description"
         placeholder="short description"
         control={control}
         error={errors.shortDescription?.message}
-      />
+      /> */}
+      <div className="mt-4">
+        <label className="block text-sm font-medium text-gray-700 mb-2 ">
+          Article Content *
+        </label>
+        <div className="">
+          <EditorSection
+            initialContent={product?.description}
+            seteditValue={seteditValue}
+          />
+        </div>
+      </div>
 
       <button
         type="submit"
