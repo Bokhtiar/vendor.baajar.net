@@ -61,15 +61,18 @@ const ProductDetails = () => {
           {/* Info Section */}
           <div className="space-y-3">
             <h1 className="text-xl font-semibold">
-              <span className="text-[#8B8B8B]">Product:</span> {product?.product_name}
+              <span className="text-[#8B8B8B]">Product:</span>{" "}
+              {product?.product_name}
             </h1>
             <p>
-              <span className="text-[#8B8B8B]">Short Description:</span> {product?.short_description}
+              <span className="text-[#8B8B8B]">Short Description:</span>{" "}
+              {product?.short_description}
             </p>
 
             <div className="flex items-center gap-3">
               <span className="text-xl font-bold text-green-600">
-                <span className="text-[#8B8B8B]">Offer price:</span> ৳{product?.offer_price}
+                <span className="text-[#8B8B8B]">Offer price:</span> ৳
+                {product?.offer_price}
               </span>
               <span className="text-sm">
                 <span className="text-[#8B8B8B]">Reguler price:</span>{" "}
@@ -78,14 +81,17 @@ const ProductDetails = () => {
             </div>
 
             <p className="text-sm">
-              <span className="font-medium text-[#8B8B8B]">Stock:</span> {product?.stock} pcs
+              <span className="font-medium text-[#8B8B8B]">Stock:</span>{" "}
+              {product?.stock} pcs
             </p>
             <p className="text-sm">
-              <span className="font-medium text-[#8B8B8B]">Sold:</span> {product?.sold} pcs
+              <span className="font-medium text-[#8B8B8B]">Sold:</span>{" "}
+              {product?.sold} pcs
             </p>
 
             <p className="text-sm">
-              <span className="font-medium text-[#8B8B8B]">SKU:</span> {product?.sku ?? "N/A"}
+              <span className="font-medium text-[#8B8B8B]">SKU:</span>{" "}
+              {product?.sku ?? "N/A"}
             </p>
             <p className="text-sm">
               <span className="font-medium text-[#8B8B8B]">Category:</span>{" "}
@@ -96,8 +102,14 @@ const ProductDetails = () => {
 
         {/* Description */}
         <div>
-          <h2 className="text-xl font-semibold mb-2 text-[#8B8B8B]">Description</h2>
-          <p>{product?.description ?? "No description available."}</p>
+          <h2 className="text-xl font-semibold mb-2 text-[#8B8B8B]">
+            Description
+          </h2>
+          <p>
+            {product?.description
+              ? product.description.replace(/<[^>]+>/g, "") // remove HTML tags
+              : "No description available."}
+          </p>
         </div>
 
         {/* Vendor Section */}
@@ -109,10 +121,12 @@ const ProductDetails = () => {
           />
           <div>
             <p className="text-md font-semibold">
-              <span className="text-[#8B8B8B]">Vendor:</span> {product?.vendor?.company_name}
+              <span className="text-[#8B8B8B]">Vendor:</span>{" "}
+              {product?.vendor?.company_name}
             </p>
             <p className="text-sm">
-              <span className="text-[#8B8B8B]">Address:</span> {product?.vendor?.company_location}
+              <span className="text-[#8B8B8B]">Address:</span>{" "}
+              {product?.vendor?.company_location}
             </p>
           </div>
         </div>
